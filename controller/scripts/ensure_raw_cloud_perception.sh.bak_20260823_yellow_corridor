@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORKSPACE="${ROBORACER_OBSTACLE_WS:-/home/tianbot/raw_cloud_obstacle_ws}"
+START="$WORKSPACE/start_raw_cloud_obstacle.sh"
+NODE="/raw_cloud_obstacle_perception"
+LOG="$WORKSPACE/raw_cloud_obstacle_race.log"
+WAIT_S="${ROBORACER_OBSTACLE_WAIT_S:-8}"
+TOPIC_WAIT_S="${ROBORACER_OBSTACLE_TOPIC_WAIT_S:-4}"
+
+if ! [[ "$WAIT_S" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[FAIL] ROBORACER_OBSTACLE_WAIT_S must be a positive integer" >&2
+  exit 2
+fi
+if ! awk -v value="$TOPIC_WAIT_S" 'BEGIN { exit !(value > 0.0) }'; then
+  echo "[FAIL] ROBORACER_OBSTACLE_TOPIC_WAIT_S must be positive" >&2
+  exit 2
+fi
+
+[[ -f "$WORKSPACE/devel/setup.bash" ]] || {
+  echo "[FAIL] obstacle-perception workspace is unavailable: $WORKSPACE" >&2
+  exit 1
+}
+[[ -x "$START" ]] || {
+  echo "[FAIL] obstacle-perception launcher is unavailable: $START" >&2
+  exit 1
+}
+
+restore_nounset=false
+case "$-" in *u*) restore_nounset=true ;; esac
+set +u
+source /opt/ros/noetic/setup.bash
+source "$WORKSPACE/devel/setup.bash"
+if [[ "$restore_nounset" == true ]]; then set -u; fi
+unset restore_nounset
+
+rosnode list >/dev/null 2>&1 || {
+  echo "[FAIL] ROS master is unavailable; cannot start obstacle perception" >&2
+  exit 1
+}
+
+topic_has_publisher() {
+  rostopic info "$1" 2>/dev/null \
+    | sed -n '/^Publishers:/,/^Subscribers:/p' \
+    | grep -q '^ \* '
+}
+
+perception_publishers_ready() {
+  rosnode ping -c 1 "$NODE" >/dev/null 2>&1 \
+    && [[ "$(rostopic type /raw_cloud_perception/roi_cloud 2>/dev/null || true)" == "sensor_msgs/PointCloud2" ]] \
+    && topic_has_publisher /raw_cloud_perception/roi_cloud \
+    && [[ "$(rostopic type /raw_cloud_perception/obstacle_cloud 2>/dev/null || true)" == "sensor_msgs/PointCloud2" ]] \
+    && topic_has_publisher /raw_cloud_perception/obstacle_cloud
+}
+
+started_pid=""
+if perception_publishers_ready; then
+  echo "[PERCEPTION] Reusing healthy $NODE"
+else
+  if rosnode ping -c 1 "$NODE" >/dev/null 2>&1; then
+    echo "[PERCEPTION] Replacing stale $NODE without live ROI/obstacle publishers"
+    timeout 3 rosnode kill "$NODE" >/dev/null 2>&1 || true
+  fi
+  mkdir -p "$(dirname "$LOG")"
+  # Detach the perception launcher from the MPCC terminal process group.
+  # nohup alone ignores SIGHUP but still receives a foreground Ctrl-C SIGINT.
+  nohup setsid "$START" >"$LOG" 2>&1 </dev/null &
+  started_pid=$!
+  echo "$started_pid" >"$WORKSPACE/raw_cloud_obstacle_race.pid"
+  echo "[PERCEPTION] Starting isolated $NODE (launcher pid=$started_pid)"
+fi
+
+deadline=$((SECONDS + WAIT_S))
+while (( SECONDS < deadline )); do
+  if perception_publishers_ready; then
+    break
+  fi
+  if [[ -n "$started_pid" ]] && ! kill -0 "$started_pid" 2>/dev/null; then
+    echo "[FAIL] obstacle perception exited during startup; log=$LOG" >&2
+    tail -30 "$LOG" >&2 || true
+    exit 1
+  fi
+  sleep 0.1
+done
+perception_publishers_ready || {
+  echo "[FAIL] timed out waiting for live ROI/obstacle publishers from $NODE; log=$LOG" >&2
+  tail -30 "$LOG" >&2 || true
+  exit 1
+}
+
+require_fresh_topic() {
+  local topic="$1" expected_type="$2" timeout_s="$3" actual_type
+  actual_type="$(rostopic type "$topic" 2>/dev/null || true)"
+  if [[ "$actual_type" != "$expected_type" ]] || ! topic_has_publisher "$topic"; then
+    echo "[FAIL] missing live $topic ($expected_type); actual=$actual_type" >&2
+    return 1
+  fi
+  timeout "$timeout_s" rostopic echo -n 1 --noarr "$topic" >/dev/null 2>&1 || {
+    echo "[FAIL] $topic produced no fresh message within ${timeout_s}s" >&2
+    return 1
+  }
+  echo "[OK] live perception topic $topic ($expected_type)"
+}
+
+require_fresh_topic /cloud_registered_body sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+require_fresh_topic /localization/odom nav_msgs/Odometry "$TOPIC_WAIT_S"
+require_fresh_topic /raw_cloud_perception/roi_cloud sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+require_fresh_topic /raw_cloud_perception/obstacle_cloud sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+echo "[OK] raw-cloud perception is race-ready"

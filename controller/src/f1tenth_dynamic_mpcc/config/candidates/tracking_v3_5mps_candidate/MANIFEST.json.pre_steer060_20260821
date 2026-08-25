@@ -1,0 +1,43 @@
+{
+  "candidate": "tracking_v3_5mps_candidate",
+  "policy": {
+    "global_cap_mps": 5.0,
+    "straight_local_limit_mps": 6.0,
+    "dynamic_arc_local_limit_mps": 4.0,
+    "standard_and_tight_bend_local_limit_mps": 3.5,
+    "pp_max_speed_mps": 4.0,
+    "pp_recovery_speed_range_mps": [
+      1.2,
+      1.5
+    ],
+    "checkpoint_recovery_speed_cap_mps": 1.6,
+    "profile_max_decel_mps2": 1.5
+  },
+  "track_changes": {
+    "changed_rows": 225,
+    "zone_row_counts": {
+      "straight_acceleration": 45,
+      "standard": 190,
+      "tight_bend_1_standard": 19,
+      "tight_bend_2_standard": 16,
+      "round_arc_transition": 5,
+      "dynamic_arc_transition": 45
+    }
+  },
+  "base_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/controller.yaml": "a78197b6c064c9f5f02bf6ed5d08dae0bbf231958d917a69a0ec6593d46e4f54",
+    "src/f1tenth_dynamic_mpcc/config/vehicle_new_surface_step1_candidate.yaml": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/raceline.csv": "3bc7c472ed534331c0798960520294e346a9c931a5aa1adbaaea068a753371f9",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/speed_zones.csv": "2efa8b5fdf7e4433ee408e9b339f5747140669eb20d79b087c20dbb8fbaabd09",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_track_h3_tracking_candidate.launch": "802ad74cb64bf074a9a63d81009cac9a8be9b4e80bf640d980105d6d58a0b9ee",
+    "analysis/stablev2_dev_racelinev3_20260821_000810/config/residual_stablev2_dev_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44"
+  },
+  "output_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/tracking_v3_5mps_candidate/controller.yaml": "7e370f54e9d63e4f7ef82703a10f17e7d54dcba83cbcd3a89a918631faed58a8",
+    "src/f1tenth_dynamic_mpcc/config/candidates/tracking_v3_5mps_candidate/vehicle.yaml": "c642b824cd41d4210137a944a0c4d10c10428135c9f2056a78e07e31b56548bc",
+    "src/f1tenth_dynamic_mpcc/config/candidates/tracking_v3_5mps_candidate/residual_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_candidate/raceline.csv": "751aec7cfb57cde9528f9eeaa849eaf60ca167562d8bad917c7f5b905e54a1c1",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_candidate/speed_zones.csv": "2b6dacdadb6985b736ea22b8f9f6bf087eeb0e08354a5b41543d7f0778bc6c21",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_track_h3_tracking_5mps_candidate.launch": "b75effa26a231d4dcd181d737eb8bea4670840fe05c3acbbe4c8958874c7dad8"
+  }
+}

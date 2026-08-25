@@ -1,0 +1,121 @@
+{
+  "planning_status": "feasible_hand_guided",
+  "source_base_raceline": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/tracks/racelinev1/raceline.csv",
+  "source_map_yaml": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/maps_2d/active/point_lio_map_2d_clean_by_handwaidao.yaml",
+  "source_reference_image": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/tracks/racelinev1/physical_track_extraction_debug.png",
+  "source_annotated_image": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/tracks/racelinev1/physical_track_extraction_debug_handmiaoxie.png",
+  "guide_extraction": {
+    "changed_pixels": 4306,
+    "skeleton_pixels": 1050,
+    "path_pixels": 795,
+    "path_length_m": 13.904713475282406,
+    "start_local_m": [
+      9.284902597402597,
+      10.551468344774984
+    ],
+    "end_local_m": [
+      11.158778721278722,
+      3.2968535469107554
+    ],
+    "bounding_box_local_m": {
+      "minimum": [
+        5.721466033966034,
+        3.2968535469107554
+      ],
+      "maximum": [
+        11.158778721278722,
+        10.582208237986272
+      ]
+    },
+    "plot_axes_pixels": {
+      "left": 168.5,
+      "right": 2170.5,
+      "top": 45.5,
+      "bottom": 1356.5
+    }
+  },
+  "corridor_extraction": {
+    "roi_pixels": [
+      75,
+      85,
+      540,
+      375
+    ],
+    "closing_iterations": 3,
+    "enclosed_free_component_areas_px": [
+      62004,
+      18193,
+      2009,
+      581,
+      250,
+      96,
+      84
+    ],
+    "selected_outer_contour_area_px": 88746.0,
+    "selected_inner_contour_area_px": 28699.5,
+    "corridor_area_px": 60080
+  },
+  "base_replacement_indices": {
+    "start": 206,
+    "end": 248
+  },
+  "raceline_points": 320,
+  "raceline_length_m": 87.26356935463608,
+  "maximum_abs_curvature_radpm": 1.6196688953524407,
+  "maximum_abs_implied_steer_rad": 0.40543305040707955,
+  "minimum_left_width_m": 0.465,
+  "minimum_right_width_m": 0.455,
+  "minimum_margin_after_vehicle_and_buffer_m": 0.265,
+  "round_arc_minimum_left_width_m": 0.505,
+  "round_arc_minimum_right_width_m": 0.545,
+  "speed_min_mps": 1.1244803099373057,
+  "speed_max_mps": 6.0,
+  "maximum_lateral_accel_mps2": 3.200000000000001,
+  "maximum_longitudinal_accel_mps2": 2.4000000000000092,
+  "maximum_longitudinal_decel_mps2": 4.000000000000009,
+  "default_speed_limit_mps": 3.0,
+  "fast_zone_speed_limit_mps": 6.0,
+  "tight_bend_speed_scale": 0.8,
+  "tight_bend_maximum_ratio_to_original": 0.8000000000000002,
+  "zones": [
+    {
+      "zone_name": "round_arc_transition",
+      "zone_name_cn": "圆弧过渡区",
+      "start_s_m": 70.0835541379421,
+      "end_s_m": 83.17308954113751,
+      "wraps_seam": false,
+      "maximum_speed_mps": 6.0
+    },
+    {
+      "zone_name": "straight_acceleration",
+      "zone_name_cn": "直道加速区",
+      "start_s_m": 83.44578819537075,
+      "end_s_m": 8.180959626997133,
+      "wraps_seam": true,
+      "maximum_speed_mps": 6.0
+    },
+    {
+      "zone_name": "tight_bend_1_80pct",
+      "zone_name_cn": "弯道1减速区（原速度80%）",
+      "start_s_m": 59.721005277079065,
+      "end_s_m": 64.62958105327735,
+      "wraps_seam": false,
+      "maximum_speed_mps": 2.4000000000000004,
+      "speed_scale": 0.8
+    },
+    {
+      "zone_name": "tight_bend_2_80pct",
+      "zone_name_cn": "弯道2减速区（原速度80%）",
+      "start_s_m": 65.7203756702103,
+      "end_s_m": 69.81085548370886,
+      "wraps_seam": false,
+      "maximum_speed_mps": 2.4000000000000004,
+      "speed_scale": 0.8
+    }
+  ],
+  "outputs": {
+    "raceline_csv": "raceline.csv",
+    "speed_zones_csv": "speed_zones.csv",
+    "debug_png": "racelineV2_geometry_speed_debug.png"
+  }
+}

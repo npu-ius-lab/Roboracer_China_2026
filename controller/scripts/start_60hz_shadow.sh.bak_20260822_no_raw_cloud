@@ -1,0 +1,212 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 60 Hz residual-MPCC plus independent target perception/overtake shadow.
+# The shadow stack is recorded and visualized, but never feeds a reference or
+# command into MPCC. The original 60 Hz controller remains the sole controller.
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONTROL="$ROOT/scripts/start_mpcc_hardware_stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate.sh"
+AVOIDANCE="$ROOT/avoidance/scripts/start_avoidance.sh"
+RECORDER="$ROOT/scripts/record_auto_relaunch_bag.sh"
+TOPIC_LIST="$ROOT/scripts/record_lightweight_overtake_topics.sh"
+CONTROL_LAUNCH="$ROOT/src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate.launch"
+CONTROL_NODE="$ROOT/src/f1tenth_dynamic_mpcc/src/mpcc_node_auto_relaunch.cpp"
+EXPECTED_TOPIC_LIST_SHA256="6cf2e5536d48207bd70b04fd7187882d6882632119865ea24c7f8354fbc3627b"
+
+# This diagnostic wrapper records the aligned cloud needed to rerun opponent
+# perception. Other controller scripts that source the shared topic list keep
+# its low-bandwidth default unless they explicitly set this variable.
+export MPCC_RECORD_OVERTAKE_ALIGNED_SCAN="${MPCC_RECORD_OVERTAKE_ALIGNED_SCAN:-true}"
+if [[ "$MPCC_RECORD_OVERTAKE_ALIGNED_SCAN" != "true" \
+      && "$MPCC_RECORD_OVERTAKE_ALIGNED_SCAN" != "false" ]]; then
+  echo "[FAIL] MPCC_RECORD_OVERTAKE_ALIGNED_SCAN must be true or false" >&2
+  exit 2
+fi
+
+require_file() {
+  local path="$1"
+  if [[ ! -f "$path" ]]; then
+    echo "[FAIL] required file is missing: $path" >&2
+    exit 1
+  fi
+}
+
+require_hash() {
+  local expected="$1"
+  local path="$2"
+  local actual
+  actual="$(sha256sum "$path" | awk '{print $1}')"
+  if [[ "$actual" != "$expected" ]]; then
+    echo "[FAIL] shadow topic list changed: $path" >&2
+    echo "       expected=$expected" >&2
+    echo "       actual=$actual" >&2
+    exit 1
+  fi
+}
+
+check_shadow_stack() {
+  local path required configured found
+  for path in "$CONTROL" "$AVOIDANCE" "$RECORDER" "$TOPIC_LIST" \
+      "$CONTROL_LAUNCH" "$CONTROL_NODE"; do
+    require_file "$path"
+  done
+  bash -n "$CONTROL" "$AVOIDANCE" "$RECORDER" "$TOPIC_LIST" "$0"
+  require_hash "$EXPECTED_TOPIC_LIST_SHA256" "$TOPIC_LIST"
+
+  # shellcheck source=record_lightweight_overtake_topics.sh
+  source "$TOPIC_LIST"
+  for required in \
+      /perception/targets_detailed \
+      /perception/target_markers \
+      /overtake/diagnostics \
+      /overtake/selected_path \
+      /overtake/valid_area \
+      /avoidance/status \
+      /avoidance/decision \
+      /avoidance/markers \
+      /avoidance/local_plan_red; do
+    found=false
+    for configured in "${LIGHTWEIGHT_OVERTAKE_TOPICS[@]}"; do
+      if [[ "$configured" == "$required" ]]; then
+        found=true
+        break
+      fi
+    done
+    if [[ "$found" != "true" ]]; then
+      echo "[FAIL] recorder is missing required shadow topic: $required" >&2
+      exit 1
+    fi
+  done
+  if [[ "$MPCC_RECORD_OVERTAKE_ALIGNED_SCAN" == "true" ]]; then
+    found=false
+    for configured in "${LIGHTWEIGHT_OVERTAKE_TOPICS[@]}"; do
+      if [[ "$configured" == "/localization/aligned_scan" ]]; then
+        found=true
+        break
+      fi
+    done
+    if [[ "$found" != "true" ]]; then
+      echo "[FAIL] diagnostic recorder is missing /localization/aligned_scan" >&2
+      exit 1
+    fi
+  fi
+  if ! grep -Fq '/automatic_relaunch_supervisor/state' "$RECORDER"; then
+    echo "[FAIL] recorder is missing automatic-relaunch supervisor state" >&2
+    exit 1
+  fi
+
+  "$CONTROL" --check-only
+  "$AVOIDANCE" --check-only
+
+  # Keep this wrapper shadow-only: the 60 Hz launch and MPCC node must not
+  # consume target detections, overtake paths, or avoidance decisions.
+  if grep -nE '(/overtake/|/avoidance/|/perception/targets_detailed)' \
+      "$CONTROL_LAUNCH" "$CONTROL_NODE"; then
+    echo "[FAIL] overtake/avoidance input was found in the 60 Hz control path" >&2
+    exit 1
+  fi
+  echo "[OK] target perception and overtake planning are shadow-only"
+  echo "[OK] rosbag recording defaults to enabled for normal launch"
+  echo "[OK] aligned perception cloud recording=$MPCC_RECORD_OVERTAKE_ALIGNED_SCAN"
+}
+
+ACTION="${1:-mpcc}"
+case "$ACTION" in
+  --check-only)
+    check_shadow_stack
+    exit 0
+    ;;
+  --prepare-only)
+    check_shadow_stack
+    exec "$CONTROL" --prepare-only
+    ;;
+  mpcc)
+    ;;
+  *)
+    echo "usage: $0 [mpcc|--check-only|--prepare-only]" >&2
+    exit 2
+    ;;
+esac
+
+check_shadow_stack
+
+RESTORE_NOUNSET=false
+case "$-" in
+  *u*) RESTORE_NOUNSET=true ;;
+esac
+set +u
+source "$ROOT/scripts/ros_env.sh"
+if [[ "$RESTORE_NOUNSET" == "true" ]]; then
+  set -u
+fi
+unset RESTORE_NOUNSET
+
+if ! rosnode list >/dev/null 2>&1; then
+  echo "[FAIL] ROS master is unavailable; start MID360/localization first" >&2
+  exit 1
+fi
+
+AVOIDANCE_PID=""
+cleanup() {
+  if [[ -n "$AVOIDANCE_PID" ]] && kill -0 "$AVOIDANCE_PID" 2>/dev/null; then
+    # Background bash jobs can inherit SIGINT as ignored. SIGTERM is trapped
+    # by start_avoidance.sh and reliably tears down its child ROS nodes.
+    kill -TERM "$AVOIDANCE_PID" 2>/dev/null || true
+    wait "$AVOIDANCE_PID" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+trap 'exit 130' INT TERM
+
+"$AVOIDANCE" --foreground &
+AVOIDANCE_PID="$!"
+
+SHADOW_READY=false
+for _ in {1..300}; do
+  if ! kill -0 "$AVOIDANCE_PID" 2>/dev/null; then
+    echo "[FAIL] perception/overtake shadow exited during startup" >&2
+    exit 1
+  fi
+  NODES="$(rosnode list 2>/dev/null || true)"
+  TOPICS="$(rostopic list 2>/dev/null || true)"
+  if grep -qx '/opponent_perception' <<<"$NODES" \
+     && grep -qx '/overtake_shadow' <<<"$NODES" \
+     && grep -qx '/avoidance_state_visualizer' <<<"$NODES" \
+     && grep -qx '/perception/targets_detailed' <<<"$TOPICS" \
+     && grep -qx '/overtake/selected_path' <<<"$TOPICS" \
+     && grep -qx '/overtake/diagnostics' <<<"$TOPICS" \
+     && grep -qx '/avoidance/status' <<<"$TOPICS" \
+     && grep -qx '/avoidance/local_plan_red' <<<"$TOPICS"; then
+    SHADOW_READY=true
+    break
+  fi
+  sleep 0.1
+done
+unset NODES TOPICS
+
+if [[ "$SHADOW_READY" != "true" ]]; then
+  echo "[FAIL] perception/overtake shadow was not ready within 30 seconds" >&2
+  exit 1
+fi
+
+export MPCC_RECORD_BAG="${MPCC_RECORD_BAG:-true}"
+if [[ "$MPCC_RECORD_BAG" != "true" && "$MPCC_RECORD_BAG" != "false" ]]; then
+  echo "[FAIL] MPCC_RECORD_BAG must be true or false" >&2
+  exit 2
+fi
+if [[ "$MPCC_RECORD_BAG" == "true" ]]; then
+  mkdir -p "$ROOT/bags"
+  STAMP="$(date +%Y%m%d_%H%M%S)"
+  export MPCC_RECORD_BAG_PATH="${MPCC_RECORD_BAG_PATH:-$ROOT/bags/60hz_shadow_${STAMP}.bag}"
+  echo "[RECORD] default bag -> $MPCC_RECORD_BAG_PATH"
+  echo "[RECORD] /localization/aligned_scan=$MPCC_RECORD_OVERTAKE_ALIGNED_SCAN"
+else
+  echo "[RECORD] disabled explicitly with MPCC_RECORD_BAG=false"
+fi
+
+echo "[SHADOW] MID360 target perception + overtake planner + red visualization are active"
+echo "[SHADOW] command_authority=false; /overtake/selected_path is not connected to MPCC"
+echo "[CONTROL] starting the unchanged 60 Hz raceline controller"
+
+"$CONTROL" mpcc

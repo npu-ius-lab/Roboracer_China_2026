@@ -1,0 +1,30 @@
+<launch>
+  <arg name="pcd_file"
+       default="$(find point_lio_sam_lighterbev)/point_lio/localization_map/point_lio_map.pcd" />
+  <arg name="output_dir"
+       default="$(find point_lio_sam_lighterbev)/point_lio/localization_map" />
+  <arg name="output_name" default="point_lio_map_2d" />
+  <arg name="z_min" default="0.1" />
+  <arg name="z_max" default="1.5" />
+  <arg name="radius" default="0.5" />
+  <arg name="min_neighbors" default="10" />
+  <arg name="resolution" default="0.05" />
+  <arg name="map_topic" default="/point_lio_map_2d" />
+
+  <node pkg="pcd2pgm" name="point_lio_pcd2pgm" type="pcd2pgm" output="screen">
+    <param name="pcd_file" value="$(arg pcd_file)" />
+    <param name="thre_z_min" value="$(arg z_min)" />
+    <param name="thre_z_max" value="$(arg z_max)" />
+    <param name="flag_pass_through" value="0" />
+    <param name="thre_radius" value="$(arg radius)" />
+    <param name="thres_point_count" value="$(arg min_neighbors)" />
+    <param name="map_resolution" value="$(arg resolution)" />
+    <param name="map_topic_name" value="$(arg map_topic)" />
+    <param name="save_filtered_clouds" value="false" />
+  </node>
+
+  <node pkg="point_lio_sam_lighterbev" name="save_point_lio_map_2d"
+        type="save_map_relative.sh"
+        args="$(arg output_dir) $(arg output_name) $(arg map_topic)"
+        output="screen" required="true" />
+</launch>

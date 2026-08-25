@@ -1,0 +1,44 @@
+world_frame: map
+candidate_timeout_s: 0.80
+odom_timeout_s: 0.30
+# The avoidance status is event-driven and may pause for the detector's
+# one-second target-loss hold. Keep the locked MPCC path alive through that
+# interval instead of entering a false ABORT after 350 ms.
+status_timeout_s: 1.20
+maximum_hold_s: 12.0
+committed_pass_target_loss_s: 2.50
+clear_confirmation_s: 0.60
+return_ey_tolerance_m: 0.12
+path_end_distance_m: 0.35
+require_fusion_health: true
+fusion_health_timeout_s: 0.45
+require_supervisor_running_for_maneuver: true
+speed_caps:
+  prepare: 2.00
+  pass: 3.00
+  return: 2.50
+  abort: 0.80
+follow:
+  diagnostic_timeout_s: 0.45
+  standstill_gap_m: 0.70
+  hard_stop_gap_m: 0.35
+  time_headway_s: 0.35
+  gap_gain: 0.90
+  maximum_speed_mps: 3.00
+  maximum_acceleration_mps2: 1.50
+  maximum_deceleration_mps2: 3.50
+  target_speed_alpha: 0.35
+  maximum_target_speed_mps: 3.50
+topics:
+  odom: /localization/odom
+  candidate: /v5_chaoche/overtake/selected_path
+  upstream_status: /v5_chaoche/avoidance/status
+  planner_diagnostics: /v5_chaoche/overtake/diagnostics
+  fusion_status: /v5_chaoche/perception/fusion_status
+  supervisor_state: /automatic_relaunch_supervisor_v5_chaoche/state
+  reference: /v5_chaoche/local_reference
+  red_path: /v5_chaoche/local_plan_red
+  speed_cap: /v5_chaoche/local_speed_cap
+  state: /v5_chaoche/state
+  active: /v5_chaoche/reference_active
+  status: /v5_chaoche/reference_status

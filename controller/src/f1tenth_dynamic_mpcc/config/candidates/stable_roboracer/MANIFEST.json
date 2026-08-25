@@ -1,0 +1,45 @@
+{
+  "release": "stable_roboracer",
+  "status": "frozen_release",
+  "frozen_date": "2026-08-22",
+  "source": "stable_v3pro_raceline_smooth_race_start_v2_candidate",
+  "policy": {
+    "runtime_global_cap_mps": 4.0,
+    "track": "raceline_smooth",
+    "control_rate_hz": 40.0,
+    "publisher_rate_hz": 50.0,
+    "supervisor_rate_hz": 50.0,
+    "contour_cost": 45.0,
+    "race_heading_cost": 1.0,
+    "steering_command_rate_cost": 0.6,
+    "steering_rate_limit_radps": 3.4,
+    "arbitrary_recovery_lateral_acceleration_limit_mps2": 2.0,
+    "race_start_lateral_acceleration_limit_mps2": 3.2,
+    "race_start_dynamic_handoff": true,
+    "race_start_ignore_track_safety": true,
+    "recovery_plan_refresh_s": 0.1,
+    "handoff_maximum_steering_difference_rad": 0.08,
+    "handoff_required_samples": 3,
+    "handoff_blend_duration_s": 0.2,
+    "obstacle_perception_default_enabled": false,
+    "obstacle_perception_enable_environment": "ROBORACER_OBSTACLE_PERCEPTION=true"
+  },
+  "validation": {
+    "operator_hardware_acceptance": true,
+    "source_bag": "stable_v3pro_raceline_smooth_20260822_033149.bag",
+    "source_bag_sha256": "4625dfb0904da57d3ffea40170bfdd69a578c5787de2e1ced858b1d954749646"
+  },
+  "release_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_roboracer/controller.yaml": "df8f558111e09db665a70bafaf4baacf238bbc37095e116e6fc992e88498bfe2",
+    "src/f1tenth_dynamic_mpcc/config/vehicle_stable_v3_racelineV3.yaml": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6",
+    "src/f1tenth_dynamic_mpcc/data/tracks/raceline_smooth/raceline.csv": "1f7b00d996f67c19181094799621dcd4b684a0bf7a1e7be4f22c779ade060476",
+    "src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_roboracer.launch": "c98df2dc8cae30713a0d44143db226a30d417c85af03f3cc8f4d2dc0f9ac914f",
+    "src/f1tenth_dynamic_mpcc/rviz/stable_roboracer.rviz": "461453216a2b459a811e11de73a68aef66ff29883050444ef8e8b82844605b60",
+    "src/f1tenth_dynamic_mpcc/scripts/automatic_relaunch_supervisor_stable_roboracer.py": "fb42de2f5a1bad9e97099b64bd98af40545984d2a2531fcdb9f70b354197d364",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/automatic_relaunch.py": "43760fcbb6a965da5c7d8e68b7683a2a520d2129da30dcc8d4eff8db2521a8d6",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/quick_relaunch.py": "21217b67871accf841c1bef76f9e6c7f874526cfd1bd99c497706b989cb7b178",
+    "scripts/record_stable_v5_bag.sh": "1ebd7a7a5b4b5531058206b3a64377b5bb17ff03643d97bbb5dc294d695302ec",
+    "scripts/start_mpcc_hardware_stable_roboracer.sh": "16266737992cafd396f6e509b449817e9af221868457108ead2426b1911632d2"
+  }
+}

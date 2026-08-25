@@ -1,0 +1,47 @@
+# Outdoor BEV geometry from lbhwyy/Fastlio_Lighterbev at commit
+# 0dba0594815a9868d8bb38eb18210009cdf00f12.
+#
+# Upstream BEVProjector.hpp fixes x/y to [-40, 40] m and uses the 0.4 m voxel
+# size as its pixel resolution, producing 201 x 201 pixels. Although its YAML
+# says downsample=true, upstream run.launch defaults sam_downsample=false and
+# overrides that YAML value. Mirror the effective default launch behaviour so
+# sparse outdoor scans retain enough pixels for local feature verification.
+# Upstream does not apply a height cutoff. Keep this profile paired with maps
+# whose LighterBEV descriptors were generated using the same geometry.
+scene:
+  profile: "outdoor"
+
+# Match the upstream outdoor temporal exclusion. This prevents visually
+# similar nearby frames from consuming the single Top-1 loop candidate.
+basic:
+  loop_exclude_time: 150
+  loop_exclude_keyframes: 150
+
+keyframe:
+  num_submap_keyframes: 10
+
+LighterBEV:
+  # Hard requirement: BEV, REIN, and local keypoints all consume exactly one
+  # synchronized keyframe. Multi-keyframe data is allowed only downstream in
+  # Nano-GICP submap verification.
+  input_mode: "single_frame"
+  range: 40.0
+  resolution: 0.4
+  downsample_enable: false
+  downsample_voxel_size: 0.4
+  z_max_filter_enable: false
+  z_max: 2.0                    # ignored while z_max_filter_enable is false
+  # ORB is used only for local pose verification. Global retrieval remains
+  # the learned LighterBEV descriptor. Offline evaluation on all 69 candidates
+  # from this bag gave 19-23 inliers on the reverse traversal and <=12 on
+  # temporally separated false candidates.
+  keypoint_backend: "orb"
+  orb_nfeatures: 1500
+  orb_scale_factor: 1.15
+  orb_nlevels: 12
+  orb_edge_threshold: 8
+  orb_patch_size: 21
+  orb_fast_threshold: 3
+  match_ratio_test: 0.90
+  min_matches: 16
+  ninliers: 16

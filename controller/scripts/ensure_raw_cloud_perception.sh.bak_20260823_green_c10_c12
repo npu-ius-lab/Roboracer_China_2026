@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORKSPACE="${ROBORACER_OBSTACLE_WS:-/home/tianbot/raw_cloud_obstacle_ws}"
+START="$WORKSPACE/start_raw_cloud_obstacle.sh"
+NODE="/raw_cloud_obstacle_perception"
+LOG="$WORKSPACE/raw_cloud_obstacle_race.log"
+WAIT_S="${ROBORACER_OBSTACLE_WAIT_S:-8}"
+TOPIC_WAIT_S="${ROBORACER_OBSTACLE_TOPIC_WAIT_S:-4}"
+RACELINE_CSV="${ROBORACER_OBSTACLE_RACELINE_CSV:-}"
+BOUNDARY_INSET_M="${ROBORACER_OBSTACLE_BOUNDARY_INSET_M:-}"
+
+if ! [[ "$WAIT_S" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[FAIL] ROBORACER_OBSTACLE_WAIT_S must be a positive integer" >&2
+  exit 2
+fi
+if ! awk -v value="$TOPIC_WAIT_S" 'BEGIN { exit !(value > 0.0) }'; then
+  echo "[FAIL] ROBORACER_OBSTACLE_TOPIC_WAIT_S must be positive" >&2
+  exit 2
+fi
+if [[ -n "$RACELINE_CSV" && ! -f "$RACELINE_CSV" ]]; then
+  echo "[FAIL] requested obstacle-perception raceline is missing: $RACELINE_CSV" >&2
+  exit 2
+fi
+if [[ -n "$BOUNDARY_INSET_M" ]] \
+   && ! awk -v value="$BOUNDARY_INSET_M" 'BEGIN { exit !(value >= 0.0) }'; then
+  echo "[FAIL] ROBORACER_OBSTACLE_BOUNDARY_INSET_M must be non-negative" >&2
+  exit 2
+fi
+
+[[ -f "$WORKSPACE/devel/setup.bash" ]] || {
+  echo "[FAIL] obstacle-perception workspace is unavailable: $WORKSPACE" >&2
+  exit 1
+}
+[[ -x "$START" ]] || {
+  echo "[FAIL] obstacle-perception launcher is unavailable: $START" >&2
+  exit 1
+}
+
+restore_nounset=false
+case "$-" in *u*) restore_nounset=true ;; esac
+set +u
+source /opt/ros/noetic/setup.bash
+source "$WORKSPACE/devel/setup.bash"
+if [[ "$restore_nounset" == true ]]; then set -u; fi
+unset restore_nounset
+
+rosnode list >/dev/null 2>&1 || {
+  echo "[FAIL] ROS master is unavailable; cannot start obstacle perception" >&2
+  exit 1
+}
+
+topic_has_publisher() {
+  rostopic info "$1" 2>/dev/null \
+    | sed -n '/^Publishers:/,/^Subscribers:/p' \
+    | grep -q '^ \* '
+}
+
+perception_publishers_ready() {
+  rosnode ping -c 1 "$NODE" >/dev/null 2>&1 \
+    && [[ "$(rostopic type /raw_cloud_perception/roi_cloud 2>/dev/null || true)" == "sensor_msgs/PointCloud2" ]] \
+    && topic_has_publisher /raw_cloud_perception/roi_cloud \
+    && [[ "$(rostopic type /raw_cloud_perception/obstacle_cloud 2>/dev/null || true)" == "sensor_msgs/PointCloud2" ]] \
+    && topic_has_publisher /raw_cloud_perception/obstacle_cloud
+}
+
+perception_config_matches() {
+  local actual
+  if [[ -n "$RACELINE_CSV" ]]; then
+    actual="$(rosparam get "$NODE/track_corridor/raceline_csv" 2>/dev/null || true)"
+    [[ "$actual" == "$RACELINE_CSV" ]] || return 1
+  fi
+  if [[ -n "$BOUNDARY_INSET_M" ]]; then
+    actual="$(rosparam get "$NODE/track_corridor/boundary_inset" 2>/dev/null || true)"
+    awk -v actual="$actual" -v requested="$BOUNDARY_INSET_M" \
+      'BEGIN { delta=actual-requested; if (delta < 0) delta=-delta; exit !(delta < 1e-6) }' \
+      || return 1
+  fi
+  return 0
+}
+
+started_pid=""
+if perception_publishers_ready && perception_config_matches; then
+  echo "[PERCEPTION] Reusing healthy $NODE with requested corridor configuration"
+else
+  if rosnode ping -c 1 "$NODE" >/dev/null 2>&1; then
+    echo "[PERCEPTION] Replacing stale or corridor-mismatched $NODE"
+    timeout 3 rosnode kill "$NODE" >/dev/null 2>&1 || true
+  fi
+  mkdir -p "$(dirname "$LOG")"
+  # Detach the perception launcher from the MPCC terminal process group.
+  # nohup alone ignores SIGHUP but still receives a foreground Ctrl-C SIGINT.
+  launch_args=()
+  [[ -z "$RACELINE_CSV" ]] || launch_args+=("raceline_csv:=$RACELINE_CSV")
+  [[ -z "$BOUNDARY_INSET_M" ]] || launch_args+=("boundary_inset:=$BOUNDARY_INSET_M")
+  nohup setsid "$START" "${launch_args[@]}" >"$LOG" 2>&1 </dev/null &
+  started_pid=$!
+  echo "$started_pid" >"$WORKSPACE/raw_cloud_obstacle_race.pid"
+  echo "[PERCEPTION] Starting isolated $NODE (launcher pid=$started_pid)"
+fi
+
+deadline=$((SECONDS + WAIT_S))
+while (( SECONDS < deadline )); do
+  if perception_publishers_ready; then
+    break
+  fi
+  if [[ -n "$started_pid" ]] && ! kill -0 "$started_pid" 2>/dev/null; then
+    echo "[FAIL] obstacle perception exited during startup; log=$LOG" >&2
+    tail -30 "$LOG" >&2 || true
+    exit 1
+  fi
+  sleep 0.1
+done
+perception_publishers_ready || {
+  echo "[FAIL] timed out waiting for live ROI/obstacle publishers from $NODE; log=$LOG" >&2
+  tail -30 "$LOG" >&2 || true
+  exit 1
+}
+perception_config_matches || {
+  echo "[FAIL] raw-cloud perception started with the wrong track-corridor configuration" >&2
+  exit 1
+}
+if [[ -n "$RACELINE_CSV" ]]; then
+  echo "[OK] perception and MPCC share track CSV: $RACELINE_CSV"
+fi
+if [[ -n "$BOUNDARY_INSET_M" ]]; then
+  echo "[OK] perception obstacle filter uses MPCC yellow corridor inset=${BOUNDARY_INSET_M}m"
+fi
+
+require_fresh_topic() {
+  local topic="$1" expected_type="$2" timeout_s="$3" actual_type
+  actual_type="$(rostopic type "$topic" 2>/dev/null || true)"
+  if [[ "$actual_type" != "$expected_type" ]] || ! topic_has_publisher "$topic"; then
+    echo "[FAIL] missing live $topic ($expected_type); actual=$actual_type" >&2
+    return 1
+  fi
+  timeout "$timeout_s" rostopic echo -n 1 --noarr "$topic" >/dev/null 2>&1 || {
+    echo "[FAIL] $topic produced no fresh message within ${timeout_s}s" >&2
+    return 1
+  }
+  echo "[OK] live perception topic $topic ($expected_type)"
+}
+
+require_fresh_topic /cloud_registered_body sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+require_fresh_topic /localization/odom nav_msgs/Odometry "$TOPIC_WAIT_S"
+require_fresh_topic /raw_cloud_perception/roi_cloud sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+require_fresh_topic /raw_cloud_perception/obstacle_cloud sensor_msgs/PointCloud2 "$TOPIC_WAIT_S"
+echo "[OK] raw-cloud perception is race-ready"

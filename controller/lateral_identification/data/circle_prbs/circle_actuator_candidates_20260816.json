@@ -1,0 +1,56 @@
+{
+  "generated_from": "circle_actuator_joint_08_20_20260816.json",
+  "generated_at": "2026-08-16T19:36:26",
+  "purpose": "Experimental steering-model candidates from circular PRBS bags",
+  "status": "candidate_only_not_for_stable",
+  "source_bags": {
+    "left": [
+      "circle_v0.8banjin2.0.bag",
+      "circle_v1.2banjin2.0.bag",
+      "circle_v1.6banjin2.0.bag",
+      "circle_r2p5_2p0.bag"
+    ],
+    "right": [
+      "circle_v0.8right.bag",
+      "circle_v1.2right.bag",
+      "circle_v1.6right.bag",
+      "circle_v2.0right.bag"
+    ],
+    "excluded_from_actuator_fit": ["circle_v2.5banjin2.0.bag"]
+  },
+  "model": "delta_eff = first_order(K * delta_cmd(t - Td) + bias, tau)",
+  "wheelbase_m": 0.32,
+  "candidates": {
+    "unified": {
+      "gain": 0.9742991716,
+      "bias_rad": -0.0114994409,
+      "time_constant_s": 0.0626718447,
+      "dead_time_s": 0.105,
+      "dynamic_rmse_rad": 0.0166267885,
+      "dynamic_r2": 0.9850817707
+    },
+    "left": {
+      "gain": 1.0946134381,
+      "bias_rad": -0.0297186222,
+      "time_constant_s": 0.0655475666,
+      "dead_time_s": 0.095,
+      "dynamic_rmse_rad": 0.0149586133,
+      "dynamic_r2": 0.7367327953
+    },
+    "right": {
+      "gain": 0.8946487665,
+      "bias_rad": -0.0214952513,
+      "time_constant_s": 0.0779069929,
+      "dead_time_s": 0.105,
+      "dynamic_rmse_rad": 0.0183598263,
+      "dynamic_r2": 0.5418436504
+    }
+  },
+  "interpretation": {
+    "left_right_gain_ratio": 1.2235,
+    "left_right_delay_difference_s": -0.010,
+    "warning": "No front-wheel-angle sensor; these are effective command-to-motion parameters and include tire/road effects.",
+    "deployment_rule": "Validate by bag replay and a low-speed closed-course test before changing MPCC parameters.",
+    "stable_untouched": true
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "status": "offline_candidate_not_deployed",
+  "input_map": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/bag_20260822_181006_map_crop_ground_removed_hgt0p03_2dv2.pgm",
+  "input_map_sha256": "f252b0762b6770fa541b7aef5b60511e5cf7885bb7d0f7ebe08ced81fb2ae5f5",
+  "source_track": "/home/tianbot/f1tenth/code/f1tenth_residual_controller_ws/src/f1tenth_dynamic_mpcc/data/tracks/raceline_smooth/raceline.csv",
+  "source_track_sha256": "1f7b00d996f67c19181094799621dcd4b684a0bf7a1e7be4f22c779ade060476",
+  "old_to_new_map_registration": {
+    "method": "trimmed_chamfer_rigid_2d",
+    "success": true,
+    "message": "Optimization terminated successfully.",
+    "theta_rad": -0.07353643147084557,
+    "theta_deg": -4.213327163732456,
+    "translation_x_m": 1.1074899982283346,
+    "translation_y_m": -0.20884068234067105,
+    "objective": 0.011166282712896899,
+    "reference_wall_points": 3400,
+    "target_track_points": 12787,
+    "nearest_wall_distance_m": {
+      "median": 0.023722150904368564,
+      "p90": 0.09460585926192905,
+      "p95": 0.2549993495154193
+    }
+  },
+  "map": {
+    "resolution_m": 0.05,
+    "origin": [
+      -14.0,
+      -2.0,
+      0.0
+    ],
+    "shape_pixels": [
+      560,
+      360
+    ],
+    "input_occupied_pixels": 16047,
+    "removed_occupied_pixels_inside_track": 2756,
+    "removed_occupied_pixels_including_wall_cleanup_band": 10345,
+    "old_wall_cleanup_band_pixels_each_side": 5,
+    "output_occupied_pixels": 16952,
+    "physical_boundary_render_thickness_pixels": 2
+  },
+  "boundary_fit": {
+    "left_valid_ray_fraction": 0.7875,
+    "right_valid_ray_fraction": 0.8444444444444444,
+    "left_median_wall_run_pixels": 6.0,
+    "right_median_wall_run_pixels": 6.0,
+    "minimum_physical_left_width_m": 0.446915526020065,
+    "minimum_physical_right_width_m": 0.5179328392475485,
+    "controller_boundary_inward_guard_m": 0.08,
+    "minimum_controller_left_width_m": 0.36600235425004746,
+    "minimum_controller_right_width_m": 0.29994850701369535,
+    "representation": "periodic_cubic_spline_C2"
+  },
+  "arc_preservation": {
+    "source_s_range_m": [
+      70.207772859,
+      83.645979382
+    ],
+    "maximum_allowed_center_shift_m": 0.01,
+    "actual_maximum_center_shift_m": 0.0026241127183108696
+  },
+  "optimizer": {
+    "success": true,
+    "message": "b'CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH'",
+    "iterations": 214,
+    "objective": 1.8022765327487287,
+    "starts": 2,
+    "control_points": 48,
+    "maximum_abs_offset_m": 0.18,
+    "minimum_center_to_left_wall_m": 0.4459269817682098,
+    "minimum_center_to_right_wall_m": 0.37992503756320534,
+    "arc_preservation_bound_m": 0.01
+  },
+  "geometry": {
+    "source_length_m": 87.75971526991167,
+    "candidate_length_m": 87.19315187739483,
+    "source_max_abs_curvature_1pm": 1.5929583500277043,
+    "candidate_max_abs_curvature_1pm": 1.4823456620940576,
+    "source_rms_curvature_1pm": 0.4947827410215234,
+    "candidate_rms_curvature_1pm": 0.4711086275390926,
+    "source_p95_abs_curvature_gradient_1pm2": 1.4006742044925584,
+    "candidate_p95_abs_curvature_gradient_1pm2": 1.3164061246350582
+  },
+  "speed_time": {
+    "speed_cap_mps": 4.0,
+    "standard_zone_cap_mps": 3.0,
+    "maximum_acceleration_mps2": 2.4,
+    "normal_maximum_deceleration_mps2": 2.2,
+    "lateral_acceleration_limit_mps2": 3.2,
+    "source_estimated_lap_time_s_same_limits": 32.696668141149694,
+    "candidate_estimated_lap_time_s": 32.26493491526618,
+    "estimated_gain_s": 0.43173322588351226,
+    "candidate_min_speed_mps": 1.4692653807973601,
+    "candidate_max_speed_mps": 4.0
+  },
+  "outputs": {
+    "map_pgm": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/handdrawn_v2_clean_spline.pgm",
+    "map_yaml": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/handdrawn_v2_clean_spline.yaml",
+    "raceline_csv": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/raceline.csv",
+    "left_boundary_csv": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/left_boundary_physical.csv",
+    "right_boundary_csv": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/right_boundary_physical.csv"
+  }
+}

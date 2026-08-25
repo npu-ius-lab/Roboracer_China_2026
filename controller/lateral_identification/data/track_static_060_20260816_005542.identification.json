@@ -1,0 +1,41 @@
+{
+  "bags": [
+    "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/track_static_060_20260816_005542.bag"
+  ],
+  "generated_at": "2026-08-16T00:58:21",
+  "profiles": [
+    "track_static_060"
+  ],
+  "signals": [
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/track_static_060_20260816_005542.bag",
+      "command_source": "/f1tenth_identification/command_stamped",
+      "imu_acceleration_norm_median_raw": 0.9923623384322549,
+      "pointlio_age_s": {
+        "max": 0.16557073593139648,
+        "median": 0.10860347747802734,
+        "p95": 0.13665041923522947
+      },
+      "samples": 5915,
+      "yaw_rate_source": "livox_imu"
+    }
+  ],
+  "status": "candidate_not_applied",
+  "steering_actuator_candidate": {
+    "dead_time_s": 0.115,
+    "dynamic_delta_rmse_rad": 0.02171792033438557,
+    "dynamic_r2": 0.973047621672551,
+    "offset_rad": -0.013082075254692602,
+    "samples": 5095,
+    "static_delta_rmse_rad": 0.04159841847558188,
+    "static_gain": 1.103737291960973,
+    "static_samples": 2030,
+    "time_constant_s": 0.05370255438118649,
+    "yaw_rate_source": "livox_imu"
+  },
+  "warnings": [
+    "必须使用独立 bag 验证，不能直接把候选参数写入 vehicle.yaml。",
+    "没有真实前轮角传感器，转向拟合仍是 IMU/运动学等效角估计。",
+    "Cf/Cr 与 Iz、质心位置和转向模型耦合，应检查拟合 R² 和跨速度一致性。"
+  ]
+}

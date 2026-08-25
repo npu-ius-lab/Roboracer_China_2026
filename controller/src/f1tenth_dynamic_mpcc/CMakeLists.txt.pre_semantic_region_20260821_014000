@@ -1,0 +1,113 @@
+cmake_minimum_required(VERSION 3.0.2)
+project(f1tenth_dynamic_mpcc)
+
+find_package(catkin REQUIRED COMPONENTS
+  ackermann_msgs
+  geometry_msgs
+  nav_msgs
+  pcl_conversions
+  pcl_ros
+  roscpp
+  roslib
+  sensor_msgs
+  rospy
+  std_msgs
+  std_srvs
+  visualization_msgs
+)
+find_package(Eigen3 REQUIRED)
+find_package(yaml-cpp REQUIRED)
+find_package(PCL REQUIRED)
+
+# vendored jsk_recognition_msgs (PolygonArray) used by PatchWork++
+add_subdirectory(include/jsk_recognition_msgs)
+
+catkin_python_setup()
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES f1tenth_mpcc_core f1tenth_mpcc_acados_runtime
+  CATKIN_DEPENDS ackermann_msgs geometry_msgs nav_msgs roscpp roslib sensor_msgs std_msgs std_srvs visualization_msgs
+  DEPENDS EIGEN3
+)
+
+include_directories(include
+  ${CATKIN_DEVEL_PREFIX}/include
+  /home/tianbot/tianbot_ws/devel/include
+  /home/tianbot/f1tenth_residual_ws/src/f1tenth_residual_dynamics/include
+  ${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
+add_compile_options(-Wall -Wextra -Wpedantic)
+
+add_library(f1tenth_mpcc_core src/core.cpp src/pure_pursuit_candidate.cpp)
+target_compile_features(f1tenth_mpcc_core PUBLIC cxx_std_17)
+target_link_libraries(f1tenth_mpcc_core PUBLIC yaml-cpp
+  /home/tianbot/f1tenth_residual_ws/devel/lib/libf1tenth_residual_model.so)
+
+add_library(f1tenth_mpcc_acados_runtime src/acados_runtime.cpp)
+target_compile_features(f1tenth_mpcc_acados_runtime PUBLIC cxx_std_17)
+target_link_libraries(f1tenth_mpcc_acados_runtime PUBLIC f1tenth_mpcc_core ${CMAKE_DL_LIBS})
+
+add_executable(mpcc_node_cpp src/mpcc_node.cpp)
+target_compile_features(mpcc_node_cpp PUBLIC cxx_std_17)
+target_link_libraries(mpcc_node_cpp f1tenth_mpcc_acados_runtime ${catkin_LIBRARIES})
+
+add_executable(ackermann_command_gate_cpp src/ackermann_command_gate.cpp)
+target_compile_features(ackermann_command_gate_cpp PUBLIC cxx_std_17)
+target_link_libraries(ackermann_command_gate_cpp ${catkin_LIBRARIES})
+
+
+catkin_install_python(PROGRAMS
+  scripts/mpcc_node.py
+  scripts/ackermann_command_gate.py
+  scripts/inspect_raceline.py
+  scripts/replay_odom_bag.py
+  scripts/identify_actuators.py
+  scripts/fit_tire_stiffness.py
+  scripts/run_closed_loop_sim.py
+  scripts/rviz_closed_loop_sim.py
+  scripts/validate_vehicle_model.py
+  scripts/replay_delay_compensation.py
+  scripts/generate_acados_solvers.py
+  scripts/validate_track_geometry.py
+  scripts/telemetry_logger.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY config data docs launch rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(TARGETS f1tenth_mpcc_core f1tenth_mpcc_acados_runtime mpcc_node_cpp ackermann_command_gate_cpp
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+
+if(CATKIN_ENABLE_TESTING)
+  add_executable(cpp_core_smoke tests/cpp_core_smoke.cpp)
+  target_compile_features(cpp_core_smoke PUBLIC cxx_std_17)
+  target_link_libraries(cpp_core_smoke f1tenth_mpcc_core)
+  add_test(NAME cpp_core_smoke COMMAND $<TARGET_FILE:cpp_core_smoke>
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/controller.yaml
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/vehicle.yaml
+    ${CMAKE_CURRENT_SOURCE_DIR}/data/tracks/virtual_track/raceline.csv)
+
+  add_executable(cpp_solver_smoke tests/cpp_solver_smoke.cpp)
+  target_compile_features(cpp_solver_smoke PUBLIC cxx_std_17)
+  target_link_libraries(cpp_solver_smoke f1tenth_mpcc_acados_runtime)
+
+  add_executable(cpp_delayed_closed_loop tests/cpp_delayed_closed_loop.cpp)
+  target_compile_features(cpp_delayed_closed_loop PUBLIC cxx_std_17)
+  target_link_libraries(cpp_delayed_closed_loop f1tenth_mpcc_acados_runtime)
+
+  add_executable(cpp_candidate_closed_loop tests/cpp_candidate_closed_loop.cpp)
+  target_compile_features(cpp_candidate_closed_loop PUBLIC cxx_std_17)
+  target_link_libraries(cpp_candidate_closed_loop f1tenth_mpcc_core)
+  add_test(NAME cpp_candidate_closed_loop COMMAND
+    $<TARGET_FILE:cpp_candidate_closed_loop>
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/controller_stable_v2_racelineV2.yaml
+    ${CMAKE_CURRENT_SOURCE_DIR}/config/vehicle_stable_v2_racelineV2.yaml
+    ${CMAKE_CURRENT_SOURCE_DIR}/data/tracks/racelineV2/raceline.csv)
+endif()

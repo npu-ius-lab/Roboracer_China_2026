@@ -1,0 +1,89 @@
+common:
+    lid_topic: "/livox/lidar"
+    imu_topic: "/livox/imu"
+    con_frame: false
+    con_frame_num: 1
+    cut_frame: false
+    cut_frame_time_interval: 0.1
+    time_diff_lidar_to_imu: 0.0
+
+preprocess:
+    lidar_type: 1               # Livox CustomMsg
+    scan_line: 4                # Mid360 uses lines 0..3
+    timestamp_unit: 1
+    blind: 0.3
+
+mapping:
+    local_map_backend: "ivox"  # "ivox" or "octvox"
+    octvox_resolution: 0.40
+    octvox_capacity: 50000
+    imu_en: true
+    extrinsic_est_en: false
+    imu_time_inte: 0.005        # Mid360 internal IMU is 200 Hz
+    lidar_time_inte: 0.1        # 10 Hz LiDAR packets
+    satu_acc: 3.0
+    satu_gyro: 35
+    acc_norm: 1.0               # Livox driver publishes acceleration in g
+    lidar_meas_cov: 0.01
+    acc_cov_output: 500
+    gyr_cov_output: 1000
+    b_acc_cov: 0.0001
+    b_gyr_cov: 0.0001
+    imu_meas_acc_cov: 0.1
+    imu_meas_omg_cov: 0.1
+    gyr_cov_input: 0.01
+    acc_cov_input: 0.1
+    plane_thr: 0.1
+    match_s: 81
+    fov_degree: 360
+    det_range: 100.0
+    ivox_grid_resolution: 2.0
+    gravity: [0.0, 0.0, -9.810]
+    gravity_init: [0.0, 0.0, -9.810]
+    # Mid360 factory LiDAR->IMU transform used by the source FastLIO map.
+    extrinsic_T: [-0.011, -0.02329, 0.04412]
+    extrinsic_R: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+odometry:
+    publish_odometry_without_downsample: true
+    max_publish_hz: 60.0        # -1: unlimited; 0: disable odom/TF publishing
+
+publish:
+    path_en: false
+    scan_publish_en: true
+    # Fine-grained publish switches (defaults match the legacy values above).
+    scan_world_publish_en: true
+    scan_world_downsample_publish_en: true
+    scan_bodyframe_pub_en: false
+
+runtime_pos_log_enable: true
+
+pcd_save:
+    pcd_save_en: false
+    interval: -1
+
+# Phase 0/1 diagnostics switches. The single-thread mode serialises sensor
+# callbacks on the main thread and is only an A/B switch for the random
+# divergence investigation; it is not the final thread model.
+debug:
+    single_thread_sensor_callbacks: false
+
+# Bounded-latency knobs. LiDAR callbacks stay shallow while the IMU subscriber
+# retains one second of 200 Hz input, enough to ride out a backend spike.
+realtime:
+    sensor_callback_threads: 2
+    lidar_sub_queue_size: 1
+    imu_sub_queue_size: 200
+    odom_pub_queue_size: 10
+    cloud_pub_queue_size: 2
+    path_pub_queue_size: 1
+
+    enable_lidar_backlog_catchup: true
+    # Per-query wall-clock timing is useful for short A/B runs, but costs
+    # several milliseconds per scan on the target N100.
+    enable_map_backend_timing: false
+    lidar_backlog_trigger_s: 0.20
+    lidar_backlog_target_s: 0.10
+    min_lidar_frames_to_keep: 1

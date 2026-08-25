@@ -1,0 +1,294 @@
+<?xml version="1.0"?>
+<!-- Isolated composition: unchanged safe-start-fast2 supervisor and carry
+     recovery + C++ H2H planner/local-reference MPCC + C++ FOLLOW-only floor. -->
+<launch>
+  <arg name="track" default="raceline_smooth"/>
+  <arg name="controller_config" default="candidates/stable_roboracer/controller.yaml"/>
+  <arg name="vehicle_config" default="vehicle_stable_v3_racelineV3.yaml"/>
+  <arg name="runtime_config" default="$(find f1tenth_dynamic_mpcc)/config/candidates/stable_roboracer_h2h_faststart/cpp_runtime.yaml"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="race"/>
+  <arg name="allow_real_hardware" default="false"/>
+  <arg name="rviz" default="false"/>
+  <arg name="rviz_config" default="$(find f1tenth_dynamic_mpcc)/rviz/stable_roboracer.rviz"/>
+  <arg name="lap_timer" default="true"/>
+  <arg name="lap_log_path" default=""/>
+  <arg name="runtime_speed_cap_mps" default="4.0"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_residual_mpcc/acados_stable_roboracer_h2h_faststart"/>
+  <arg name="residual_model_path" default="$(find f1tenth_dynamic_mpcc)/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"/>
+  <arg name="residual_feature_set" default="markov_v1"/>
+  <arg name="hardware_command_topic" default="/tianracer/ackermann_cmd"/>
+  <arg name="race_start_enabled" default="true"/>
+
+  <node pkg="f1tenth_dynamic_mpcc" type="v5_jubu_local_planner_cpp"
+        name="roboracer_h2h_faststart_planner_cpp" output="screen" required="true">
+    <rosparam command="load" file="$(arg runtime_config)"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+  </node>
+
+  <node pkg="f1tenth_dynamic_mpcc" type="mpcc_node_auto_relaunch_jubu_cpp"
+        name="f1tenth_dynamic_mpcc_roboracer_h2h_faststart"
+        output="screen" required="true">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="false"/>
+    <param name="command_topic" value="/roboracer_h2h_faststart/mpcc/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="telemetry_topic" value="/roboracer_h2h_faststart/mpcc/telemetry"/>
+    <param name="markers_topic" value="/roboracer_h2h_faststart/mpcc/markers"/>
+    <param name="prediction_topic" value="/roboracer_h2h_faststart/mpcc/prediction"/>
+    <param name="runtime_speed_cap_mps" value="$(arg runtime_speed_cap_mps)"/>
+    <param name="generated_dir" value="$(arg generated_dir)"/>
+    <param name="residual_model_path" value="$(arg residual_model_path)"/>
+    <param name="residual_feature_set" value="$(arg residual_feature_set)"/>
+
+    <!-- Keep the current ROBORACER H2H race/control parameters unchanged. -->
+    <param name="startup_steering_rate_override" value="3.4"/>
+    <param name="publisher_steering_rate_override" value="3.4"/>
+    <param name="pp_steering_rate_override" value="3.4"/>
+    <param name="oob_recovery_enabled" value="true"/>
+    <param name="cost_contour_override" value="45.0"/>
+    <param name="cost_heading_race_override" value="1.0"/>
+    <param name="cost_steering_command_rate_override" value="0.60"/>
+    <param name="profile_max_decel_override" value="4.0"/>
+    <param name="risk_tiering_enabled" value="true"/>
+    <param name="near_track_horizon_override" value="0.40"/>
+    <param name="predictive_speed_hold_override" value="0.50"/>
+    <param name="predictive_speed_recovery_override" value="1.0"/>
+    <param name="pp_current_margin_override" value="0.02"/>
+    <param name="pp_confirmation_cycles_override" value="2"/>
+
+    <param name="local_reference_topic" value="/roboracer_h2h_faststart/local_reference"/>
+    <param name="local_speed_cap_topic" value="/roboracer_h2h_faststart/local_speed_cap"/>
+    <param name="local_state_topic" value="/roboracer_h2h_faststart/state"/>
+    <param name="local_reference_status_topic" value="/roboracer_h2h_faststart/mpcc_reference_status"/>
+    <param name="planner_health_topic" value="/roboracer_h2h_faststart/health"/>
+    <param name="planner_required" value="true"/>
+    <param name="planner_health_timeout_s" value="0.45"/>
+    <param name="local_reference_timeout_s" value="0.30"/>
+    <param name="local_reference_max_start_distance_m" value="0.75"/>
+    <param name="local_reference_min_length_m" value="2.00"/>
+    <param name="local_reference_max_curvature_ratio" value="0.85"/>
+    <param name="local_reference_return_tolerance_m" value="0.12"/>
+    <param name="local_reference_default_speed_cap_mps" value="4.00"/>
+
+    <!-- Internal checkpoint recovery remains available, but the external
+         safe-start supervisor owns the hardware until a continuous handoff. -->
+    <param name="race_start_enabled" value="true"/>
+    <param name="race_start_center_x_m" value="0.0"/>
+    <param name="race_start_center_y_m" value="0.0"/>
+    <param name="race_start_radius_m" value="2.00"/>
+    <param name="race_start_s_m" value="0.0"/>
+    <param name="race_start_s_tolerance_m" value="1.50"/>
+    <param name="race_start_maximum_contour_error_m" value="0.60"/>
+    <param name="race_start_maximum_heading_error_deg" value="20.0"/>
+    <param name="race_start_minimum_vehicle_margin_m" value="-0.05"/>
+    <param name="race_start_merge_lookahead_m" value="2.50"/>
+    <param name="race_start_speed_mps" value="4.00"/>
+    <param name="race_start_lateral_acceleration_limit_mps2" value="3.20"/>
+  </node>
+
+  <!-- Exact safe-start-fast2 grid launch and frozen RoboRacer carry recovery.
+       Its output is intermediate; the FOLLOW gate below is the sole hardware
+       publisher. -->
+  <node if="$(arg allow_real_hardware)" pkg="f1tenth_dynamic_mpcc"
+        type="automatic_relaunch_supervisor_stable_roboracer_race_start_only_candidate.py"
+        name="automatic_relaunch_supervisor_roboracer_h2h_faststart"
+        output="screen" required="true">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="enable_service" value="/f1tenth_dynamic_mpcc_roboracer_h2h_faststart/set_enabled"/>
+    <param name="mpcc_command_topic" value="/roboracer_h2h_faststart/mpcc/ackermann_cmd_stamped"/>
+    <param name="hardware_command_topic" value="/roboracer_h2h_faststart/supervised_command"/>
+    <param name="vehicle_odom_topic" value="/localization/vehicle_odom"/>
+    <param name="lidar_odom_topic" value="/localization/odom"/>
+    <param name="wheel_odom_topic" value="/tianracer/odom"/>
+    <param name="imu_topic" value="/tianracer/imu"/>
+    <param name="localization_status_topic" value="/localization/status"/>
+    <param name="publish_rate_hz" value="50.0"/>
+
+    <param name="carry_window_s" value="0.25"/>
+    <param name="carry_wheel_speed_mps" value="0.10"/>
+    <param name="carry_z_span_m" value="0.10"/>
+    <param name="carry_xy_span_m" value="0.15"/>
+    <param name="carry_yaw_span_rad" value="0.20"/>
+    <param name="carry_tilt_deg" value="8.0"/>
+    <param name="carry_gyro_xy_radps" value="0.80"/>
+    <param name="carry_confirmation_samples" value="3"/>
+
+    <param name="ground_window_s" value="0.30"/>
+    <param name="ground_z_span_m" value="0.025"/>
+    <param name="ground_xy_span_m" value="0.040"/>
+    <param name="ground_yaw_span_rad" value="0.060"/>
+    <param name="ground_tilt_deg" value="6.0"/>
+    <param name="ground_gyro_xy_radps" value="0.20"/>
+    <param name="ground_wheel_speed_mps" value="0.10"/>
+    <param name="boundary_buffer_m" value="0.08"/>
+    <param name="maximum_heading_error_rad" value="0.60"/>
+    <param name="maximum_pp_recovery_angle_rad" value="1.0471975512"/>
+    <param name="maximum_stationary_speed_mps" value="0.12"/>
+    <param name="minimum_recovery_path_margin_m" value="0.05"/>
+    <param name="recovery_plan_refresh_s" value="0.10"/>
+    <param name="recovery_lookahead_minimum_m" value="0.45"/>
+    <param name="recovery_lookahead_maximum_m" value="1.20"/>
+
+    <param name="probe_speed_mps" value="2.00"/>
+    <param name="probe_lookahead_m" value="0.90"/>
+    <param name="probe_lookahead_speed_gain_s" value="0.25"/>
+    <param name="probe_lookahead_maximum_m" value="1.20"/>
+    <param name="probe_steering_limit_rad" value="0.55"/>
+    <param name="probe_steering_rate_limit_radps" value="3.4"/>
+    <param name="recovery_minimum_speed_mps" value="1.20"/>
+    <param name="recovery_speed_preview_m" value="3.0"/>
+    <param name="recovery_lateral_acceleration_limit_mps2" value="2.0"/>
+    <param name="recovery_handoff_minimum_speed_mps" value="1.00"/>
+    <param name="recovery_handoff_speed_margin_mps" value="0.20"/>
+
+    <param name="race_start_enabled" value="$(arg race_start_enabled)"/>
+    <param name="race_start_ignore_track_safety" value="true"/>
+    <param name="race_start_center_x_m" value="0.0"/>
+    <param name="race_start_center_y_m" value="0.0"/>
+    <param name="race_start_radius_m" value="2.00"/>
+    <param name="race_start_s_m" value="0.0"/>
+    <param name="race_start_s_tolerance_m" value="1.50"/>
+    <param name="race_start_maximum_contour_error_m" value="0.60"/>
+    <param name="race_start_maximum_heading_error_deg" value="10.0"/>
+    <param name="race_start_minimum_vehicle_margin_m" value="0.00"/>
+    <param name="race_start_minimum_path_margin_m" value="0.00"/>
+    <param name="race_start_merge_lookahead_m" value="2.50"/>
+    <param name="race_start_speed_mps" value="2.00"/>
+    <param name="race_start_lateral_acceleration_limit_mps2" value="3.20"/>
+    <param name="race_start_dynamic_handoff" value="true"/>
+    <param name="race_start_handoff_speed_mps" value="3.00"/>
+    <param name="release_wheel_speed_mps" value="0.08"/>
+    <param name="release_required_samples" value="3"/>
+    <param name="handoff_minimum_mpcc_speed_mps" value="1.80"/>
+    <param name="handoff_maximum_steering_difference_rad" value="0.08"/>
+    <param name="handoff_required_samples" value="3"/>
+    <param name="handoff_blend_duration_s" value="0.20"/>
+
+    <param name="safe_release_probe_speed_mps" value="0.50"/>
+    <param name="safe_pp_maximum_speed_mps" value="2.00"/>
+    <param name="safe_pp_acceleration_limit_mps2" value="1.50"/>
+    <param name="safe_pp_deceleration_limit_mps2" value="3.00"/>
+    <param name="safe_corridor_slow_margin_m" value="0.15"/>
+    <param name="safe_corridor_abort_margin_m" value="0.02"/>
+    <param name="safe_lateral_error_speed_gain" value="1.50"/>
+    <param name="safe_lateral_error_minimum_speed_mps" value="0.80"/>
+    <param name="safe_handoff_abort_heading_error_rad" value="0.35"/>
+  </node>
+
+  <node if="$(arg allow_real_hardware)" pkg="f1tenth_dynamic_mpcc"
+        type="roboracer_h2h_follow_gate_cpp"
+        name="roboracer_h2h_faststart_follow_gate_cpp"
+        output="screen" required="true">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="input_topic" value="/roboracer_h2h_faststart/supervised_command"/>
+    <param name="output_topic" value="/roboracer_h2h_faststart/pre_escape_command"/>
+    <param name="state_topic" value="/roboracer_h2h_faststart/follow_gate_state"/>
+    <param name="planner_state_topic" value="/roboracer_h2h_faststart/state"/>
+    <param name="planner_status_topic" value="/roboracer_h2h_faststart/status"/>
+    <param name="planner_diagnostics_topic" value="/roboracer_h2h_faststart/candidate_diagnostics"/>
+    <param name="planner_health_topic" value="/roboracer_h2h_faststart/health"/>
+    <param name="supervisor_state_topic" value="/automatic_relaunch_supervisor_roboracer_h2h_faststart/state"/>
+    <param name="telemetry_topic" value="/roboracer_h2h_faststart/mpcc/telemetry"/>
+    <param name="vehicle_odom_topic" value="/localization/vehicle_odom"/>
+    <param name="wheel_odom_topic" value="/tianracer/odom"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="minimum_follow_speed_mps" value="1.0"/>
+    <param name="minimum_floor_input_speed_mps" value="0.05"/>
+    <param name="follow_confirmation_s" value="0.18"/>
+    <param name="minimum_follow_gap_m" value="0.45"/>
+    <param name="minimum_normal_track_margin_m" value="0.05"/>
+    <param name="maximum_normal_heading_error_rad" value="0.35"/>
+    <param name="stalled_speed_max_mps" value="0.15"/>
+    <param name="stall_command_min_mps" value="0.80"/>
+    <param name="stall_confirmation_s" value="0.18"/>
+    <param name="publish_rate_hz" value="60.0"/>
+  </node>
+
+  <!-- Final hardware arbiter. It is transparent during launch, global
+       tracking, FOLLOW and overtaking. Reverse can arm only after the fast2
+       supervisor reaches RUNNING and a confirmed physical predicament is
+       present; a normal detected FOLLOW target suppresses PP-risk-only
+       triggering. -->
+  <node if="$(arg allow_real_hardware)" pkg="f1tenth_dynamic_mpcc"
+        type="roboracer_contact_escape_gate_cpp"
+        name="roboracer_h2h_faststart_contact_escape_gate_cpp"
+        output="screen" required="true">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="input_topic" value="/roboracer_h2h_faststart/pre_escape_command"/>
+    <param name="output_topic" value="$(arg hardware_command_topic)"/>
+    <param name="state_topic" value="/roboracer_h2h_faststart/contact_escape_state"/>
+    <param name="raw_mpcc_command_topic" value="/roboracer_h2h_faststart/mpcc/ackermann_cmd_stamped"/>
+    <param name="vehicle_odom_topic" value="/localization/vehicle_odom"/>
+    <param name="wheel_odom_topic" value="/tianracer/odom"/>
+    <param name="imu_topic" value="/tianracer/imu"/>
+    <param name="roi_cloud_topic" value="/raw_cloud_perception/roi_cloud"/>
+    <param name="telemetry_topic" value="/roboracer_h2h_faststart/mpcc/telemetry"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="integration_guard_enabled" value="true"/>
+    <param name="supervisor_state_topic" value="/automatic_relaunch_supervisor_roboracer_h2h_faststart/state"/>
+    <param name="planner_state_topic" value="/roboracer_h2h_faststart/state"/>
+    <param name="planner_status_topic" value="/roboracer_h2h_faststart/status"/>
+    <param name="planner_diagnostics_topic" value="/roboracer_h2h_faststart/candidate_diagnostics"/>
+    <param name="integration_state_timeout_s" value="0.35"/>
+    <param name="follow_obstacle_minimum_gap_m" value="0.15"/>
+    <param name="body_width_m" value="0.24"/>
+    <param name="boundary_margin_m" value="0.10"/>
+    <param name="publish_rate_hz" value="60.0"/>
+    <param name="command_timeout_s" value="0.25"/>
+    <param name="odom_timeout_s" value="0.25"/>
+    <param name="cloud_timeout_s" value="0.35"/>
+    <param name="contact_command_min_mps" value="0.80"/>
+    <param name="stalled_speed_max_mps" value="0.15"/>
+    <param name="stall_confirmation_s" value="0.18"/>
+    <param name="impact_ax_threshold_mps2" value="-8.0"/>
+    <param name="impact_evidence_hold_s" value="1.0"/>
+    <param name="brake_minimum_s" value="0.18"/>
+    <param name="brake_maximum_s" value="0.75"/>
+    <param name="direction_change_dwell_s" value="0.20"/>
+    <param name="reverse_speed_mps" value="0.55"/>
+    <param name="reverse_steering_rad" value="0.32"/>
+    <param name="reverse_maximum_s" value="0.70"/>
+    <param name="reverse_maximum_distance_m" value="0.35"/>
+    <param name="rear_clearance_m" value="0.90"/>
+    <param name="rear_half_width_m" value="0.38"/>
+    <param name="rear_block_point_count" value="3"/>
+    <param name="forward_recovery_speed_mps" value="1.0"/>
+    <param name="forward_recovery_steering_rad" value="0.32"/>
+    <param name="forward_recovery_maximum_s" value="1.50"/>
+    <param name="release_raw_margin_m" value="0.05"/>
+    <param name="release_heading_error_rad" value="0.30"/>
+    <param name="release_confirmation_s" value="0.20"/>
+    <param name="cooldown_s" value="0.45"/>
+    <param name="cooldown_speed_cap_mps" value="2.0"/>
+  </node>
+
+  <node if="$(arg lap_timer)" pkg="f1tenth_dynamic_mpcc"
+        type="lap_timer_node_cpp"
+        name="f1tenth_mpcc_lap_timer_roboracer_h2h_faststart" output="screen">
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="odom_topic" value="/localization/vehicle_odom"/>
+    <param name="world_frame" value="map"/>
+    <param name="minimum_start_speed_mps" value="0.5"/>
+    <param name="minimum_lap_time_s" value="3.0"/>
+    <param name="maximum_progress_step_m" value="1.0"/>
+    <param name="maximum_odom_gap_s" value="0.5"/>
+    <param name="log_path" value="$(arg lap_log_path)"/>
+  </node>
+
+  <node if="$(arg rviz)" pkg="rviz" type="rviz"
+        name="rviz_roboracer_h2h_faststart"
+        args="-d $(arg rviz_config)" output="screen"/>
+</launch>

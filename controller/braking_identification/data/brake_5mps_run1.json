@@ -1,0 +1,18 @@
+{
+  "run_id": "brake_5mps_run1",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/braking_identification/data/brake_5mps_run1.bag",
+  "target_speed_mps": 5.0,
+  "trigger_speed_mps": 4.8,
+  "course_length_m": 20.0,
+  "watchdog_decel_mps2": 1.5,
+  "trigger_stop_reserve_m": 10.879999999999999,
+  "reached_trigger": true,
+  "stopped": true,
+  "completed": true,
+  "abort_reason": "",
+  "maximum_measured_speed_mps": 5.337917982421141,
+  "maximum_along_distance_m": 5.449825335538425,
+  "maximum_abs_cross_track_m": 0.5337618073485093,
+  "brake_start_ros_time": 1787313738.3114386,
+  "started_wall_time": 1787313733.1085634
+}

@@ -1,0 +1,247 @@
+{
+  "bags": [
+    "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v0.8right.bag",
+    "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.2right.bag",
+    "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.6right.bag",
+    "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v2.0right.bag"
+  ],
+  "bootstrap": {
+    "failures": [],
+    "group_resampling": "complete_bags_with_replacement",
+    "interval_95": {
+      "bias_rad": {
+        "lower_2p5": -0.02690413937902122,
+        "median": -0.021495251620307805,
+        "upper_97p5": -0.00952527215458148
+      },
+      "dead_time_s": {
+        "lower_2p5": 0.10275000000000002,
+        "median": 0.10500000000000002,
+        "upper_97p5": 0.11500000000000003
+      },
+      "gain": {
+        "lower_2p5": 0.846546847496766,
+        "median": 0.8946487661210574,
+        "upper_97p5": 0.9559928655654816
+      },
+      "time_constant_s": {
+        "lower_2p5": 0.061739996297109315,
+        "median": 0.07790699330295049,
+        "upper_97p5": 0.10324050045486276
+      }
+    },
+    "iterations": 32,
+    "successful": 32
+  },
+  "generated_at": "2026-08-16T19:36:26",
+  "joint_candidate": {
+    "dead_time_s": 0.105,
+    "dynamic_delta_rmse_rad": 0.018359826262181588,
+    "dynamic_r2": 0.541843650388926,
+    "offset_rad": -0.021495251321239067,
+    "samples": 4875,
+    "static_delta_rmse_rad": null,
+    "static_gain": 0.8946487664842473,
+    "static_samples": 0,
+    "time_constant_s": 0.07790699288383346,
+    "yaw_rate_source": "/livox/imu"
+  },
+  "leave_one_run_out": [
+    {
+      "fit": {
+        "dead_time_s": 0.105,
+        "dynamic_delta_rmse_rad": 0.01718248997840465,
+        "dynamic_r2": 0.5925800402355984,
+        "offset_rad": -0.018003976296649998,
+        "samples": 3049,
+        "static_delta_rmse_rad": null,
+        "static_gain": 0.8927505231564593,
+        "static_samples": 0,
+        "time_constant_s": 0.06808251281405857,
+        "yaw_rate_source": "/livox/imu"
+      },
+      "held_out": "circle_v0.8right",
+      "metrics": {
+        "bias_rad": 0.013952152967976984,
+        "p95_abs_error_rad": 0.03925417511651243,
+        "p95_optimistic_abs_delta_rad": 0.015203498399294864,
+        "r2": 0.2539648962778488,
+        "rmse_rad": 0.02178989980512131,
+        "samples": 1826
+      },
+      "trained_on": [
+        "circle_v1.2right",
+        "circle_v1.6right",
+        "circle_v2.0right"
+      ]
+    },
+    {
+      "fit": {
+        "dead_time_s": 0.115,
+        "dynamic_delta_rmse_rad": 0.019158321648856804,
+        "dynamic_r2": 0.5118165785326894,
+        "offset_rad": -0.02536701594253636,
+        "samples": 3623,
+        "static_delta_rmse_rad": null,
+        "static_gain": 0.857366282814206,
+        "static_samples": 0,
+        "time_constant_s": 0.06730247479663655,
+        "yaw_rate_source": "/livox/imu"
+      },
+      "held_out": "circle_v1.2right",
+      "metrics": {
+        "bias_rad": 0.0021137195563817783,
+        "p95_abs_error_rad": 0.0289018257581465,
+        "p95_optimistic_abs_delta_rad": 0.02276795491041953,
+        "r2": 0.6175358845428505,
+        "rmse_rad": 0.01623425150360426,
+        "samples": 1252
+      },
+      "trained_on": [
+        "circle_v0.8right",
+        "circle_v1.6right",
+        "circle_v2.0right"
+      ]
+    },
+    {
+      "fit": {
+        "dead_time_s": 0.105,
+        "dynamic_delta_rmse_rad": 0.018354371222960464,
+        "dynamic_r2": 0.5269784015520395,
+        "offset_rad": -0.025824354336350278,
+        "samples": 3771,
+        "static_delta_rmse_rad": null,
+        "static_gain": 0.8733184085420554,
+        "static_samples": 0,
+        "time_constant_s": 0.07616545495143917,
+        "yaw_rate_source": "/livox/imu"
+      },
+      "held_out": "circle_v1.6right",
+      "metrics": {
+        "bias_rad": -0.007587438647175659,
+        "p95_abs_error_rad": 0.03368236106285895,
+        "p95_optimistic_abs_delta_rad": 0.03307934150940795,
+        "r2": 0.5586962474720112,
+        "rmse_rad": 0.018218123964019443,
+        "samples": 1104
+      },
+      "trained_on": [
+        "circle_v0.8right",
+        "circle_v1.2right",
+        "circle_v2.0right"
+      ]
+    },
+    {
+      "fit": {
+        "dead_time_s": 0.105,
+        "dynamic_delta_rmse_rad": 0.017665878791917878,
+        "dynamic_r2": 0.5692868238028344,
+        "offset_rad": -0.01887636540036808,
+        "samples": 4182,
+        "static_delta_rmse_rad": null,
+        "static_gain": 0.9374811617647413,
+        "static_samples": 0,
+        "time_constant_s": 0.09014206029818604,
+        "yaw_rate_source": "/livox/imu"
+      },
+      "held_out": "circle_v2.0right",
+      "metrics": {
+        "bias_rad": -0.013271874895730578,
+        "p95_abs_error_rad": 0.03804788441532169,
+        "p95_optimistic_abs_delta_rad": 0.03804788441532169,
+        "r2": 0.24313236870760113,
+        "rmse_rad": 0.022316545465780324,
+        "samples": 693
+      },
+      "trained_on": [
+        "circle_v0.8right",
+        "circle_v1.2right",
+        "circle_v1.6right"
+      ]
+    }
+  ],
+  "method": "joint_grouped_fopdt_equivalent_steering_angle",
+  "per_run_metrics": [
+    {
+      "bias_rad": 0.01020460298817025,
+      "name": "circle_v0.8right",
+      "p95_abs_error_rad": 0.036721025727385496,
+      "p95_optimistic_abs_delta_rad": 0.018566876776279002,
+      "r2": 0.40516585345979905,
+      "rmse_rad": 0.019456895543995024,
+      "samples": 1826,
+      "source": "/livox/imu",
+      "static_platform_fit": false
+    },
+    {
+      "bias_rad": 0.0012884406562562077,
+      "name": "circle_v1.2right",
+      "p95_abs_error_rad": 0.02860350374354485,
+      "p95_optimistic_abs_delta_rad": 0.023352792680619922,
+      "r2": 0.6244927605149488,
+      "rmse_rad": 0.01608592650170934,
+      "samples": 1252,
+      "source": "/livox/imu",
+      "static_platform_fit": false
+    },
+    {
+      "bias_rad": -0.00596713939502472,
+      "name": "circle_v1.6right",
+      "p95_abs_error_rad": 0.032310354032217624,
+      "p95_optimistic_abs_delta_rad": 0.03179870227338666,
+      "r2": 0.5908374146528327,
+      "rmse_rad": 0.017542149170360538,
+      "samples": 1104,
+      "source": "/livox/imu",
+      "static_platform_fit": false
+    },
+    {
+      "bias_rad": -0.010507020239848478,
+      "name": "circle_v2.0right",
+      "p95_abs_error_rad": 0.035059028758712384,
+      "p95_optimistic_abs_delta_rad": 0.035059028758712384,
+      "r2": 0.3677314728013652,
+      "rmse_rad": 0.020397069887621192,
+      "samples": 693,
+      "source": "/livox/imu",
+      "static_platform_fit": false
+    }
+  ],
+  "preliminary_thresholds": {
+    "leave_one_run_out_pass": false,
+    "minimum_independent_bags_pass": true,
+    "multiple_speed_groups_pass": true
+  },
+  "speed_coverage": [
+    {
+      "median_mps": 0.797859048925242,
+      "name": "circle_v0.8right",
+      "p05_mps": 0.7304383892484022,
+      "p95_mps": 0.8561572022884257
+    },
+    {
+      "median_mps": 1.198713029461051,
+      "name": "circle_v1.2right",
+      "p05_mps": 1.113212247318777,
+      "p95_mps": 1.2741093868812008
+    },
+    {
+      "median_mps": 1.6014265599380009,
+      "name": "circle_v1.6right",
+      "p05_mps": 1.0977148391632958,
+      "p95_mps": 1.7319628482436529
+    },
+    {
+      "median_mps": 1.993781284804261,
+      "name": "circle_v2.0right",
+      "p05_mps": 1.4357715601587706,
+      "p95_mps": 2.0576550356000802
+    }
+  ],
+  "status": "candidate_needs_new_independent_bags",
+  "warnings": [
+    "No steering-angle sensor: this is an effective command-to-motion model.",
+    "Do not write the candidate into controller YAML without untouched-bag rollout validation.",
+    "Fit tire parameters only after freezing the actuator model."
+  ]
+}

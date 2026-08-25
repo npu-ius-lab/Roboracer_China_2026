@@ -1,0 +1,57 @@
+{
+  "profile": "stableV3",
+  "frozen_at": "2026-08-21",
+  "status": "accepted_stablev2_dev_tracking_4mps",
+  "authoritative_command": "RESIDUAL_MPCC_SPEED_CAP=4.0 ./scripts/start_mpcc_hardware_stablev2_dev_tracking.sh mpcc",
+  "authoritative_remote_launcher_sha256": "d99240ca56157a1f51a5a716eb67035a4426498236df547eb3640bf154854b8c",
+  "inputs": {
+    "controller": {
+      "path": "config/controller_stable_v3_racelineV3.yaml",
+      "sha256": "a78197b6c064c9f5f02bf6ed5d08dae0bbf231958d917a69a0ec6593d46e4f54"
+    },
+    "vehicle": {
+      "path": "config/vehicle_stable_v3_racelineV3.yaml",
+      "sha256": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6"
+    },
+    "residual": {
+      "path": "config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml",
+      "sha256": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44"
+    },
+    "launch": {
+      "path": "launch/hardware_mpcc_stable_v3.launch",
+      "sha256": "2a8ec34a2b503b8ca8eb6ce3851350ff89211f89ce343e6f7e03c522bbda6791"
+    },
+    "track": {
+      "path": "data/tracks/racelinev3/raceline.csv",
+      "sha256": "3bc7c472ed534331c0798960520294e346a9c931a5aa1adbaaea068a753371f9"
+    },
+    "mpcc_node": {
+      "path": "src/mpcc_node.cpp",
+      "sha256": "ee3e752f6321a1cb0ad74c7f47a71d63227bd9a646941a4ea39f32a3a9004b3d"
+    }
+  },
+  "runtime_overrides": {
+    "track": "racelinev3",
+    "speed_cap_mps": 4.0,
+    "cost_contour": 45.0,
+    "cost_heading_race": 1.0,
+    "cost_steering_command_rate": 0.6,
+    "profile_max_decel_mps2": 3.0,
+    "startup_steering_rate_radps": 3.4,
+    "publisher_steering_rate_radps": 3.4,
+    "pure_pursuit_steering_rate_radps": 3.4,
+    "residual_feature_set": "markov_v1",
+    "residual_horizon_steps": 3,
+    "residual_output_scale": 0.3
+  },
+  "acceptance_evidence": {
+    "bag": "analysis/stable_v3_acceptance_decel300_20260821_020958/raw/stablev2_dev_tracking_racelinev3_steer060_decel300_20260821_020958.bag",
+    "bag_sha256": "5bf152bd0fe1288e241db015fd982dc0add268902f18371b4cd89926125c14a8",
+    "telemetry": "analysis/stable_v3_acceptance_decel300_20260821_020958/raw/hardware_stablev2_dev_tracking_racelinev3_steer060_decel300_mpcc_20260821_020958.jsonl",
+    "telemetry_sha256": "5c06971569d33fafa650b49fabe4d417f5ee82d0bb869055b534e47783d7e8f8"
+  },
+  "isolation": {
+    "stable_v2_modified": false,
+    "racelinev5_candidate_is_separate": true
+  }
+}

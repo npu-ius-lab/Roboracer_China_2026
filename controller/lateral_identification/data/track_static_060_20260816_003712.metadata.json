@@ -1,0 +1,80 @@
+{
+  "abort_reason": "vehicle odometry became stale",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/track_static_060_20260816_003712.bag",
+  "body_width_m": 0.24,
+  "command_topic": "/tianracer/ackermann_cmd",
+  "completed": false,
+  "completed_distance_m": 1.6305334347696938,
+  "effective_profile": {
+    "excitation_kind": "static_multilevel",
+    "excitation_rad": 0.14,
+    "maximum_laps": 1.5,
+    "name": "track_static_060",
+    "speed_mps": 0.6,
+    "timeout_s": 100.0,
+    "warmup_s": 2.0
+  },
+  "excitation_active_time_s": 0.0,
+  "excitation_enabled_time_s": 0.0,
+  "excitation_rad": 0.14,
+  "excitation_suppression_count": 0,
+  "excitation_transition_count": 0,
+  "identified_steering_model": {
+    "bias_rad": -0.015,
+    "dead_time_s": 0.09,
+    "gain": 1.147,
+    "time_constant_s": 0.073
+  },
+  "imu_topic": "/livox/imu",
+  "maximum_abs_contour_error_m": 0.14143736652106528,
+  "minimum_physical_margin_m": 0.2411339637661433,
+  "minimum_predicted_margin_m": 0.2123699653283065,
+  "odom_topic": "/localization/vehicle_odom",
+  "profile": "track_static_060",
+  "run_id": "track_static_060_20260816_003712",
+  "safety": {
+    "actuator_model_envelope": [
+      {
+        "bias": 0.0,
+        "delay": 0.0,
+        "gain": 1.0,
+        "tau": 0.08
+      },
+      {
+        "bias": -0.0125,
+        "delay": 0.075,
+        "gain": 1.158,
+        "tau": 0.085
+      },
+      {
+        "bias": -0.0183,
+        "delay": 0.105,
+        "gain": 1.136,
+        "tau": 0.062
+      },
+      {
+        "bias": -0.025,
+        "delay": 0.135,
+        "gain": 1.08,
+        "tau": 0.11
+      },
+      {
+        "bias": 0.005,
+        "delay": 0.135,
+        "gain": 1.2,
+        "tau": 0.1
+      }
+    ],
+    "current_abort_margin_m": 0.15,
+    "excitation_predicted_margin_m": 0.15,
+    "predicted_abort_margin_m": 0.12,
+    "prediction_horizon_s": 1.0,
+    "start_margin_m": 0.25
+  },
+  "speed_cap_mps": 0.6,
+  "stamped_command_topic": "/f1tenth_identification/command_stamped",
+  "started_ros_time": 1786811832.7662184,
+  "track_csv": "/home/tianbot/f1tenth_residual_controller_ws/src/f1tenth_dynamic_mpcc/data/tracks/virtual_track/raceline.csv",
+  "track_length_m": 21.755095333043123,
+  "wheelbase_m": 0.32
+}

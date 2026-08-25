@@ -1,0 +1,41 @@
+{
+  "run_id": "circle_r2p5_left_v3p5_20260820_162714",
+  "profile": "circle_constant",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/fixed_radius_r2p5/circle_r2p5_left_v3p5_20260820_162714.bag",
+  "radius_m": 2.5,
+  "wheelbase_m": 0.32,
+  "direction": "left",
+  "speed_command_mps": 3.5,
+  "speed_limit_mps": 4.5,
+  "base_effective_angle_rad": 0.1273077418708541,
+  "base_command_angle_rad": 0.12406952211931482,
+  "excitation_rad": 0.0,
+  "duration_s": 30.0,
+  "estimated_lateral_accel_mps2": 4.9,
+  "lateral_accel_limit_mps2": 8.2,
+  "estimated_lap_time_s": 4.487989505128276,
+  "recorded_topics": [
+    "/tianracer/ackermann_cmd",
+    "/f1tenth_identification/command_stamped",
+    "/localization/vehicle_odom",
+    "/aft_mapped_to_init",
+    "/localization/odom",
+    "/tianracer/odom",
+    "/livox/imu",
+    "/tianracer/imu",
+    "/localization/status",
+    "/lio/relocalization/lighterbev_match",
+    "/f1tenth_mpcc/real/ackermann_cmd_stamped",
+    "/f1tenth_mpcc/telemetry",
+    "/f1tenth_mpcc/prediction",
+    "/f1tenth_mpcc/markers",
+    "/diagnostics",
+    "/tf",
+    "/tf_static"
+  ],
+  "dataset_uses": [
+    "constant_circle_identification",
+    "residual_dynamics"
+  ],
+  "started_wall_time": 1787214436.203528
+}

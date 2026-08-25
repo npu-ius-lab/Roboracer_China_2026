@@ -1,0 +1,218 @@
+{
+  "name": "racelinev5_candidate_min_curvature",
+  "status": "offline_candidate_not_deployed",
+  "source_sha256": "3bc7c472ed534331c0798960520294e346a9c931a5aa1adbaaea068a753371f9",
+  "output_sha256": "31285098a7ed40a2321d469a244cede5008d63a7b7cf185845cb1a3c255dfb9f",
+  "optimizer": {
+    "success": true,
+    "message": "b'CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH'",
+    "objective": 1.0189862162602032,
+    "iterations": 10,
+    "starts": 1
+  },
+  "optimization_knots_m": [
+    10.0,
+    11.5,
+    13.0,
+    14.5,
+    16.0,
+    17.5,
+    19.0,
+    20.5,
+    22.0,
+    23.5,
+    25.0,
+    26.5,
+    28.0,
+    29.5,
+    31.0,
+    32.5,
+    34.0,
+    35.5,
+    37.0,
+    38.5,
+    40.0,
+    41.5,
+    43.0,
+    44.5,
+    46.0,
+    47.5,
+    49.0,
+    50.5,
+    52.0,
+    53.5,
+    55.0
+  ],
+  "optimization_offsets_m": [
+    0.0,
+    0.0,
+    -0.16633071870170163,
+    -0.12308476360999251,
+    -0.06898315418452561,
+    -0.19690317378538047,
+    -0.01164884098550919,
+    -0.1987182016942474,
+    -0.04862134746637854,
+    -0.14551251247415162,
+    -0.16526449766085263,
+    0.125282633982348,
+    0.1999966981767409,
+    0.19941500928385392,
+    0.19831555842667936,
+    0.14249181217550172,
+    -0.13871573603082257,
+    -0.1647002214006451,
+    -0.00978261938995251,
+    -0.18999687071247026,
+    -0.16055551274775723,
+    -0.18291787306431942,
+    0.11397193989701615,
+    0.19925574677855784,
+    0.19969160874839,
+    0.19884832728483157,
+    0.18438124353891305,
+    0.13509181811937288,
+    0.19408212067811245,
+    0.0,
+    0.0
+  ],
+  "output_resample_factor": 4,
+  "continuous_lateral_accel_target_mps2": 3.15,
+  "source_length_m": 87.75971526991167,
+  "candidate_length_m": 89.68087759697066,
+  "maximum_abs_centerline_shift_m": 0.2000536539490146,
+  "minimum_left_width_m": 0.32445599512358536,
+  "minimum_right_width_m": 0.3573106838791106,
+  "minimum_center_clearance_requirement_m": 0.25,
+  "runtime_speed_profile": {
+    "source_estimated_lap_time_s": 32.44706525341002,
+    "candidate_estimated_lap_time_s": 32.66781821759864,
+    "estimated_gain_s": -0.22075296418861967,
+    "source_minimum_speed_mps": 1.4173359113387947,
+    "candidate_minimum_speed_mps": 1.409549682
+  },
+  "targets": {
+    "C1": {
+      "source_center_s_m": 18.25,
+      "source_bounds_s_m": [
+        14.0,
+        24.5
+      ],
+      "candidate_bounds_s_m": [
+        13.902445279097014,
+        24.643182623239124
+      ],
+      "old": {
+        "maximum_abs_curvature_1pm": 1.1050111957960125,
+        "minimum_radius_m": 0.904968206480147,
+        "maximum_abs_curvature_gradient_1pm2": 1.4619119214263492,
+        "minimum_runtime_speed_prior_mps": 1.7002904156037697,
+        "maximum_steering_rate_at_prior_radps": 0.9698896057377441,
+        "minimum_left_width_m": 0.646169384177711,
+        "minimum_right_width_m": 0.6367266377412167
+      },
+      "candidate": {
+        "maximum_abs_curvature_1pm": 0.8360158294475883,
+        "minimum_radius_m": 1.1961496000150702,
+        "maximum_abs_curvature_gradient_1pm2": 1.2108510100589882,
+        "minimum_runtime_speed_prior_mps": 1.947047036,
+        "maximum_steering_rate_at_prior_radps": 0.8383771636958309,
+        "minimum_left_width_m": 0.7241964299701844,
+        "minimum_right_width_m": 0.43700931114180075
+      }
+    },
+    "C2": {
+      "source_center_s_m": 28.75,
+      "source_bounds_s_m": [
+        26.0,
+        32.0
+      ],
+      "candidate_bounds_s_m": [
+        26.310013370070337,
+        32.96517247972277
+      ],
+      "old": {
+        "maximum_abs_curvature_1pm": 1.3793125061025526,
+        "minimum_radius_m": 0.7249988639816258,
+        "maximum_abs_curvature_gradient_1pm2": 2.046906790436509,
+        "minimum_runtime_speed_prior_mps": 1.5227237845978174,
+        "maximum_steering_rate_at_prior_radps": 1.0936201129283716,
+        "minimum_left_width_m": 0.5324497678242958,
+        "minimum_right_width_m": 0.6831720892536042
+      },
+      "candidate": {
+        "maximum_abs_curvature_1pm": 1.0861414444830553,
+        "minimum_radius_m": 0.9206903990998576,
+        "maximum_abs_curvature_gradient_1pm2": 1.3725027174205024,
+        "minimum_runtime_speed_prior_mps": 1.703247046,
+        "maximum_steering_rate_at_prior_radps": 0.8685291035383761,
+        "minimum_left_width_m": 0.33279784815920377,
+        "minimum_right_width_m": 0.8731964415537634
+      }
+    },
+    "C3": {
+      "source_center_s_m": 36.25,
+      "source_bounds_s_m": [
+        34.0,
+        41.5
+      ],
+      "candidate_bounds_s_m": [
+        34.916981269742834,
+        42.71293246159427
+      ],
+      "old": {
+        "maximum_abs_curvature_1pm": 0.9916006581667471,
+        "minimum_radius_m": 1.0084704883604871,
+        "maximum_abs_curvature_gradient_1pm2": 1.1100296870324087,
+        "minimum_runtime_speed_prior_mps": 1.7956540419515437,
+        "maximum_steering_rate_at_prior_radps": 0.7343594185825071,
+        "minimum_left_width_m": 0.6146958586305148,
+        "minimum_right_width_m": 0.5618011071056018
+      },
+      "candidate": {
+        "maximum_abs_curvature_1pm": 0.7954825945228046,
+        "minimum_radius_m": 1.2570985297294677,
+        "maximum_abs_curvature_gradient_1pm2": 0.9247210994072361,
+        "minimum_runtime_speed_prior_mps": 1.995116771,
+        "maximum_steering_rate_at_prior_radps": 0.7026028182586872,
+        "minimum_left_width_m": 0.762226776043094,
+        "minimum_right_width_m": 0.3620567014487927
+      }
+    },
+    "C4": {
+      "source_center_s_m": 44.75,
+      "source_bounds_s_m": [
+        43.0,
+        51.5
+      ],
+      "candidate_bounds_s_m": [
+        44.38823440396213,
+        53.568305508397685
+      ],
+      "old": {
+        "maximum_abs_curvature_1pm": 1.341144623746371,
+        "minimum_radius_m": 0.7456317404506212,
+        "maximum_abs_curvature_gradient_1pm2": 2.048189014029248,
+        "minimum_runtime_speed_prior_mps": 1.543634764152747,
+        "maximum_steering_rate_at_prior_radps": 1.6225923830917535,
+        "minimum_left_width_m": 0.5206434934689184,
+        "minimum_right_width_m": 0.619423894760238
+      },
+      "candidate": {
+        "maximum_abs_curvature_1pm": 1.0673877301448407,
+        "minimum_radius_m": 0.9368666809241882,
+        "maximum_abs_curvature_gradient_1pm2": 1.6258994913139624,
+        "minimum_runtime_speed_prior_mps": 1.724005462,
+        "maximum_steering_rate_at_prior_radps": 1.521352684608085,
+        "minimum_left_width_m": 0.3244550017776498,
+        "minimum_right_width_m": 0.8035228807348556
+      }
+    }
+  },
+  "vehicle_limits": {
+    "wheelbase_m": 0.32,
+    "ego_width_m": 0.24,
+    "max_steer_rad": 0.55,
+    "lateral_accel_limit_mps2": 3.2
+  }
+}

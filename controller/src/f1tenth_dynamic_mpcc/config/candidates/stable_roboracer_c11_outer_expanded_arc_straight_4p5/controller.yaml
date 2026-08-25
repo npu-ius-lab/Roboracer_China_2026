@@ -1,0 +1,211 @@
+# Additive 4.5 m/s arc/straight speed candidate for the C11-expanded raceline.
+# All C11 control, recovery and command-slew settings remain unchanged.
+mode: debug
+residual_dynamics:
+  enabled: true
+  model_path: config/residual/residual_markov_v1.yaml
+  required_feature_set: markov_v1
+speed_planning:
+  enabled: true
+  min_speed_mps: 0.2
+  max_speed_mps: 4.5
+  profile_max_accel_mps2: 1.5
+  profile_max_decel_mps2: 2.0
+timing:
+  control_rate_hz: 40.0
+  horizon_steps: 25
+  horizon_dt_s: 0.05
+  odom_timeout_s: 0.75
+  max_state_prediction_s: 0.75
+  actuation_prediction_s: 0.0
+  solver_deadline_s: 0.025
+localization_prediction:
+  nominal_age_s: 0.12
+  warning_age_s: 0.16
+  hard_age_s: 0.25
+  max_repropagation_s: 0.3
+  benign_reorder_tolerance_s: 0.001
+  benign_reorder_position_tolerance_m: 0.05
+  benign_reorder_yaw_tolerance_rad: 0.05
+low_speed_state_conditioning:
+  enabled: true
+  stationary_enter_vx_mps: 0.12
+  stationary_exit_vx_mps: 0.2
+  stationary_command_max_mps: 0.2
+  full_dynamic_vx_mps: 0.45
+topics:
+  odom: /localization/vehicle_odom
+  wheel_odom: /tianracer/odom
+  collision: /tianracer/collision
+  command: /f1tenth_mpcc/debug/ackermann_cmd_stamped
+  telemetry: /f1tenth_mpcc/telemetry
+  markers: /f1tenth_mpcc/markers
+  prediction_markers: /f1tenth_mpcc/prediction
+output:
+  prediction_marker_rate_hz: 5.0
+  full_prediction_log_rate_hz: 2.0
+  telemetry_queue_size: 512
+startup:
+  enabled: true
+  steering_center_command_rad: 0.0
+  steer_settle_time_s: 0.1
+  crawl_speed_mps: 2.0
+  crawl_delta_max_rad: 0.55
+  crawl_delta_rate_max_radps: 3.4
+  observer_confidence_threshold: 0.6
+  observer_valid_samples_required: 8
+  localization_jump_distance_m: 0.5
+  localization_jump_yaw_rad: 0.7
+  mpcc_ramp_time_s: 0.35
+  mpcc_valid_solutions_required: 5
+  steering_rate_max_radps: 3.4
+fallback:
+  single_failure_use_shifted_solution: true
+  enter_safe_decel_after_failures: 2
+  stop_after_failures: 20
+  decel_mps2: 4.0
+  hold_last_steering_while_decelerating: true
+  steering_recenter_below_speed_mps: 0.35
+  steering_recenter_rate_radps: 0.75
+pure_pursuit_candidate:
+  enabled: true
+  trigger_track_slack_m: 0.04
+  activation_current_margin_m: 0.02
+  prediction_risk_confirmation_cycles: 2
+  horizon_s: 1.25
+  dt_s: 0.05
+  boundary_margin_m: 0.1
+  max_speed_mps: 4.0
+  recovery_speed_min_mps: 2.0
+  recovery_speed_max_mps: 2.0
+  recovery_full_slowdown_depth_m: 0.12
+  max_steering_rate_radps: 3.4
+  lookahead_base_m: 0.35
+  lookahead_speed_gain_s: 0.3
+  lookahead_lateral_gain: 0.7
+  lookahead_min_m: 0.45
+  lookahead_max_m: 1.2
+  steering_delay_s: 0.08
+  lateral_accel_limit_mps2: 2.8
+  curvature_preview_m: 1.2
+  lateral_error_soft_m: 0.12
+  lateral_error_hard_m: 0.42
+  heading_error_soft_rad: 0.15
+  heading_error_hard_rad: 0.7
+  minimum_speed_scale: 0.25
+  arbitration:
+    enabled: true
+    minimum_margin_improvement_m: 0.05
+    minimum_candidate_margin_m: 0.02
+    minimum_candidate_margin_tolerance_m: 0.001
+    recovery_minimum_initial_margin_m: -0.12
+    recovery_maximum_worsening_m: 0.02
+    recovery_reentry_time_s: 0.6
+    recovery_final_margin_m: 0.05
+    recovery_minimum_progress_m: 0.07
+    minimum_hold_s: 0.5
+    release_mpcc_margin_m: 0.08
+    release_safe_cycles: 5
+  checkpoint_recovery:
+    enabled: true
+    speed_cap_mps: 2.0
+    activation_lateral_error_m: 0.15
+    activation_heading_error_rad: 0.18
+    maximum_outside_margin_m: 0.08
+    candidate_maximum_worsening_m: 0.015
+    candidate_reentry_time_s: 0.7
+    candidate_final_margin_m: 0.06
+    release_lateral_error_m: 0.1
+    release_heading_error_rad: 0.12
+    release_mpcc_margin_m: 0.08
+    release_safe_cycles: 4
+publisher:
+  rate_hz: 50.0
+  steering_slew_rate_limit_radps: 3.4
+  acceleration_limit_mps2: 1.5
+  deceleration_limit_mps2: 2.0
+  max_dt_s: 0.1
+  command_timeout_s: 0.25
+frames:
+  world: map
+  body: localization_base_link
+safety:
+  start_enabled: true
+  allow_real_command_topic: false
+  collision_required: false
+  global_speed_max_mps: 4.5
+  baseline_speed_max_mps: 4.5
+  debug_speed_max_mps: 4.5
+  high_speed_tracking_gate:
+    enabled: false
+    base_speed_mps: 4.0
+    lateral_full_speed_m: 0.0
+    lateral_base_speed_m: 1.0
+    heading_full_speed_rad: 0.0
+    heading_base_speed_rad: 1.0
+    margin_base_speed_m: 0.0
+    margin_full_speed_m: 1.0
+  prediction_soft_margin_m: 0.0
+  max_consecutive_failures: 20
+  emergency_track_slack_m: 0.08
+  near_track_horizon_s: 0.3
+  far_track_slack_hard_m: 0.25
+  far_track_retry_speed_scale: 0.8
+  far_track_retry_min_speed_mps: 1.2
+  predictive_speed_hold_s: 2.0
+  predictive_speed_recovery_mps2: 0.5
+  dynamic_speed_cap_feasibility_guard: true
+  recovery_speed_mps: 0.35
+  track_control_margin_m: 0.05
+  collision_timeout_s: 0.5
+  latency_speed_reduction_start_s: 0.16
+  latency_speed_limit_mps: 0.5
+  observer_model_only_speed_limit_mps: 1.0
+  observer_invalid_speed_limit_mps: 0.35
+actuator:
+  speed_static_gain: 1.0
+  speed_time_constant_s: 0.2
+  speed_dead_time_s: 0.13
+  steering_static_gain: 1.0
+  steering_time_constant_s: 0.08
+  steering_dead_time_s: 0.0
+cost:
+  contour: 18.0
+  lag: 40.0
+  heading_debug: 3.0
+  heading_race: 0.5
+  sideslip: 8.0
+  yaw_rate_tracking: 3.0
+  progress_consistency: 4.0
+  speed_prior_debug: 5.0
+  speed_prior_race: 0.0
+  speed_command: 0.04
+  steering_command: 0.15
+  virtual_speed: 0.02
+  speed_command_rate: 0.2
+  steering_command_rate: 0.6
+  virtual_speed_rate: 0.05
+  progress_reward_debug: 0.0
+  progress_reward_race: 1.0
+  track_slack_linear: 10000.0
+  track_slack_quadratic: 100000.0
+  tire_slack_quadratic: 200.0
+constraints:
+  virtual_speed_max_mps: 6.0
+  tire_slip_soft_limit_rad: 0.3
+solver:
+  backend: acados
+  nlp_solver_type: SQP_RTI
+  rti_iterations: 2
+  max_corrective_rti_per_cycle: 1
+  rti_min_iterations: 1
+  rti_early_stop_track_slack_m: 0.04
+  rti_early_stop_steer_rate_tolerance_radps: 0.1
+  predictive_retry_rti_iterations: 1
+  qp_solver: PARTIAL_CONDENSING_HPIPM
+  integrator_type: ERK
+  hessian_approx: GAUSS_NEWTON
+  levenberg_marquardt: 0.0001
+  sim_method_num_steps: 5
+  hpipm_mode: ROBUST
+  print_level: 0

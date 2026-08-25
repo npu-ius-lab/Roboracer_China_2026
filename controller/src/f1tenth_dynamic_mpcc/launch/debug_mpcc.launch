@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="track" default="virtual_track"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="debug"/>
+  <arg name="start_enabled" default="false"/>
+  <arg name="telemetry_path" default=""/>
+
+  <!-- Safe default: this launch can never publish to the TianRacer hardware topic. -->
+  <node pkg="f1tenth_dynamic_mpcc"
+        type="mpcc_node_cpp"
+        name="f1tenth_dynamic_mpcc_debug"
+        output="screen">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/controller.yaml"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/vehicle.yaml"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="$(arg start_enabled)"/>
+    <param name="command_topic" value="/f1tenth_mpcc/debug/ackermann_cmd_stamped"/>
+    <param name="telemetry_topic" value="/f1tenth_mpcc/debug/telemetry"/>
+    <param name="markers_topic" value="/f1tenth_mpcc/debug/markers"/>
+    <param name="prediction_topic" value="/f1tenth_mpcc/debug/prediction"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="telemetry_path" value="$(arg telemetry_path)"/>
+    <param name="startup_steering_rate_override" value="-1.0"/>
+    <param name="publisher_steering_rate_override" value="-1.0"/>
+    <param name="pp_steering_rate_override" value="-1.0"/>
+    <param name="oob_recovery_enabled" value="false"/>
+  </node>
+</launch>

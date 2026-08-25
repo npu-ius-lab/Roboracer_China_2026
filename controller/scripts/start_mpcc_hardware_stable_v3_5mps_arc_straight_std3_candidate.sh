@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+STABLE_LAUNCHER="$ROOT/scripts/start_mpcc_hardware_stable_v3.sh"
+CANDIDATE="stable_v3_5mps_arc_straight_std3_candidate"
+TRACK="racelinev3_5mps_arc_straight_std3_candidate"
+CONTROLLER_CONFIG="candidates/$CANDIDATE/controller.yaml"
+VEHICLE_CONFIG="candidates/$CANDIDATE/vehicle.yaml"
+CONTROLLER="$ROOT/src/f1tenth_dynamic_mpcc/config/$CONTROLLER_CONFIG"
+VEHICLE="$ROOT/src/f1tenth_dynamic_mpcc/config/$VEHICLE_CONFIG"
+MANIFEST="$ROOT/src/f1tenth_dynamic_mpcc/config/candidates/$CANDIDATE/MANIFEST.json"
+RACELINE="$ROOT/src/f1tenth_dynamic_mpcc/data/tracks/$TRACK/raceline.csv"
+SPEED_ZONES="$ROOT/src/f1tenth_dynamic_mpcc/data/tracks/$TRACK/speed_zones.csv"
+RESIDUAL="$ROOT/src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"
+AVOIDANCE="$ROOT/avoidance/scripts/start_avoidance.sh"
+OVERTAKE_SHADOW="${MPCC_OVERTAKE_SHADOW:-true}"
+
+if [[ "$OVERTAKE_SHADOW" != "true" && "$OVERTAKE_SHADOW" != "false" ]]; then
+  echo "[FAIL] MPCC_OVERTAKE_SHADOW must be true or false" >&2
+  exit 2
+fi
+
+check_hash() {
+  local expected="$1"
+  local path="$2"
+  local actual
+  actual="$(sha256sum "$path" | awk '{print $1}')"
+  if [[ "$actual" != "$expected" ]]; then
+    echo "[FAIL] 5mps arc/straight candidate file changed: $path" >&2
+    echo "       expected=$expected" >&2
+    echo "       actual=$actual" >&2
+    exit 1
+  fi
+}
+
+# Prove the frozen stableV3 profile first, then pin only the isolated candidate.
+"$STABLE_LAUNCHER" --check-only
+check_hash "34a7aa0bfe2b09fce908321ec739b6b134ca977ca400678ebe27439677ddc113" "$CONTROLLER"
+check_hash "fbe6f459a81deb2814c77c4d9b5b6b50769e36e3fda42e7ede865eb92460a778" "$VEHICLE"
+check_hash "1acf911316dbebf4bd238aeaff6ffbdd0d06681b47329e5e8d401da58f7ae0ab" "$MANIFEST"
+check_hash "21c9e3c13727c510aa017e3415bd983d099bc7099bbe0d0a85f81a870b60569b" "$RACELINE"
+check_hash "47896590f87c0fe5f0801c3ae627394b544739dec06cc0718c9e27c5e4caad1f" "$SPEED_ZONES"
+check_hash "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44" "$RESIDUAL"
+
+ACTION="${1:-mpcc}"
+if [[ "$ACTION" == "--check-only" ]]; then
+  if [[ "$OVERTAKE_SHADOW" == "true" ]]; then
+    AVOIDANCE_RACELINE="$RACELINE" "$AVOIDANCE" --check-only
+  fi
+  echo "[OK] isolated stableV3 5.0 arc/straight + 3.0 standard candidate hashes match"
+  exit 0
+fi
+
+PREPARE_ONLY=false
+if [[ "$ACTION" == "--prepare-only" ]]; then
+  PREPARE_ONLY=true
+elif [[ "$ACTION" != "mpcc" ]]; then
+  echo "usage: $0 [mpcc|--check-only|--prepare-only]" >&2
+  exit 2
+fi
+
+GENERATED_DIR="${MPCC_GENERATED_DIR:-$HOME/.cache/f1tenth_residual_mpcc/acados_stable_v3_5mps_arc_straight_std3}"
+if [[ -z "${RESIDUAL_DYNAMICS_WS:-}" ]] \
+   && [[ ! -f "$(dirname "$ROOT")/f1tenth_residual_ws/devel/setup.bash" ]]; then
+  export RESIDUAL_DYNAMICS_WS="$ROOT"
+fi
+source "$ROOT/scripts/ros_env.sh"
+export MPCC_GENERATED_DIR="$GENERATED_DIR"
+export MPCC_TRACK="$TRACK"
+export MPCC_CONTROLLER_CONFIG="$CONTROLLER_CONFIG"
+export MPCC_VEHICLE_CONFIG="$VEHICLE_CONFIG"
+export MPCC_RESIDUAL_MODEL_PATH="$RESIDUAL"
+export MPCC_RESIDUAL_FEATURE_SET="markov_v1"
+export MPCC_COST_CONTOUR_OVERRIDE="45.0"
+export MPCC_COST_HEADING_RACE_OVERRIDE="1.0"
+export MPCC_COST_STEERING_COMMAND_RATE_OVERRIDE="0.60"
+"$ROOT/scripts/ensure_acados_solvers.sh"
+
+if [[ "$PREPARE_ONLY" == "true" ]]; then
+  echo "[OK] stableV3 5mps arc/straight candidate solvers are ready; hardware was not started"
+  exit 0
+fi
+
+"$ROOT/scripts/check_mpcc_topics.sh"
+
+RESIDUAL_MPCC_SPEED_CAP="${RESIDUAL_MPCC_SPEED_CAP:-5.0}"
+if ! awk -v value="$RESIDUAL_MPCC_SPEED_CAP" \
+  'BEGIN { exit !(value > 0.0 && value <= 5.0) }'; then
+  echo "[FAIL] RESIDUAL_MPCC_SPEED_CAP must be in (0, 5.0]" >&2
+  exit 2
+fi
+
+mkdir -p "$ROOT/log"
+STAMP="$(date +%Y%m%d_%H%M%S)"
+RECORD_PID=""
+AVOIDANCE_PID=""
+cleanup() {
+  if [[ -n "$RECORD_PID" ]]; then
+    kill -INT "$RECORD_PID" 2>/dev/null || true
+    wait "$RECORD_PID" 2>/dev/null || true
+  fi
+  if [[ -n "$AVOIDANCE_PID" ]]; then
+    kill -INT "$AVOIDANCE_PID" 2>/dev/null || true
+    wait "$AVOIDANCE_PID" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT INT TERM
+
+if [[ "$OVERTAKE_SHADOW" == "true" ]]; then
+  AVOIDANCE_RACELINE="$RACELINE" "$AVOIDANCE" --foreground &
+  AVOIDANCE_PID=$!
+  for _ in {1..100}; do
+    if rosnode list 2>/dev/null | grep -qx '/avoidance_state_visualizer'; then
+      break
+    fi
+    if ! kill -0 "$AVOIDANCE_PID" 2>/dev/null; then
+      echo "[FAIL] overtake shadow module exited during startup" >&2
+      exit 1
+    fi
+    sleep 0.1
+  done
+  if ! rosnode list 2>/dev/null | grep -qx '/avoidance_state_visualizer'; then
+    echo "[FAIL] overtake shadow module did not become ready in 10 seconds" >&2
+    exit 1
+  fi
+  echo "[OVERTAKE_SHADOW] perception and candidate visualization active; command_authority=false"
+fi
+
+if [[ "${MPCC_RECORD_BAG:-false}" == "true" ]]; then
+  mkdir -p "$ROOT/bags"
+  BAG_PATH="${MPCC_RECORD_BAG_PATH:-$ROOT/bags/stable_v3_5mps_arc_straight_std3_${STAMP}.bag}"
+  "$ROOT/scripts/record_analysis_bag.sh" "$BAG_PATH" &
+  RECORD_PID=$!
+  echo "[RECORD] analysis bag -> $BAG_PATH"
+fi
+
+echo "[5MPS_CANDIDATE] stableV3 algorithm/residual + racelineV3 geometry"
+echo "[5MPS_CANDIDATE] arc/round-arc/straight local cap=5.0 m/s; standard/tight zones=3.0 m/s"
+echo "[5MPS_CANDIDATE] contour/heading=45.0/1.0; steering_command_rate=0.60; profile_decel=3.0"
+echo "[5MPS_CANDIDATE] runtime cap=${RESIDUAL_MPCC_SPEED_CAP} m/s; PP fallback hard max remains 4.0 m/s"
+echo "[5MPS_CANDIDATE] stableV3, existing V5 and other candidates remain unchanged"
+echo "[WARNING] Speeds above 4 m/s exceed validated residual-model coverage. Record a bag and keep emergency stop ready."
+
+LAUNCH_ARGS=(
+  track:="$TRACK"
+  controller_config:="$CONTROLLER_CONFIG"
+  vehicle_config:="$VEHICLE_CONFIG"
+  formulation:=mpcc
+  allow_real_hardware:=true
+  start_enabled:=true
+  rviz:="${MPCC_REMOTE_RVIZ:-false}"
+  runtime_speed_cap_mps:="$RESIDUAL_MPCC_SPEED_CAP"
+  generated_dir:="$GENERATED_DIR"
+  residual_model_path:="$RESIDUAL"
+  residual_feature_set:=markov_v1
+  telemetry_path:="$ROOT/log/hardware_stable_v3_5mps_arc_straight_std3_${STAMP}.jsonl"
+  lap_timer:=true
+  lap_log_path:="$ROOT/log/laps_stable_v3_5mps_arc_straight_std3_${STAMP}.csv"
+)
+
+if [[ -n "$RECORD_PID" || -n "$AVOIDANCE_PID" ]]; then
+  roslaunch f1tenth_dynamic_mpcc hardware_mpcc_stable_v3.launch "${LAUNCH_ARGS[@]}"
+else
+  exec roslaunch f1tenth_dynamic_mpcc hardware_mpcc_stable_v3.launch "${LAUNCH_ARGS[@]}"
+fi

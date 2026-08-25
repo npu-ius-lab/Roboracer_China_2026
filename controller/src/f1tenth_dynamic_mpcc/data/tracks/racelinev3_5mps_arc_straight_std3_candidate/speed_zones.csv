@@ -1,0 +1,5 @@
+zone_name,zone_name_cn,start_s_m,end_s_m,wraps_seam,maximum_speed_mps,speed_scale
+tight_bend_1_standard,弯道1普通速度区,59.786306575,64.722790604,false,3.000000000,1.000000000
+tight_bend_2_standard,弯道2普通速度区,65.819787055,69.933523746,false,3.000000000,1.000000000
+dynamic_arc_transition,A3-A6动力学平滑圆弧候选5.0,70.482021971,82.548982931,false,5.000000000,1.000000000
+straight_acceleration,直道加速区候选5.0,83.920228495,8.227473382,true,5.000000000,1.000000000

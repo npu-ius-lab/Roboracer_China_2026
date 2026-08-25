@@ -1,0 +1,68 @@
+{
+  "name": "racelinev4_candidate_p3p4",
+  "status": "offline_candidate_not_deployed",
+  "source_sha256": "e44fe674e4c8bbc976adc980067ee9b9806dec352516d66a32761184e79b6635",
+  "output_sha256": "5f81d1ef3ef0a9f44ffa02ae3912c7ac678a3646057502dce6773315e2ea3196",
+  "source_length_m": 87.75971526991167,
+  "output_length_m": 88.20585774991167,
+  "maximum_centerline_shift_m": 0.08,
+  "minimum_left_width_m": 0.4675,
+  "minimum_right_width_m": 0.44749999999999995,
+  "p3_offset_range_m": [
+    -0.08,
+    0.03
+  ],
+  "p4_offset_range_m": [
+    -0.08,
+    -0.0
+  ],
+  "removed_speed_multiplier": {
+    "zones": [
+      "tight_bend_1",
+      "tight_bend_2"
+    ],
+    "old_scale": 0.8,
+    "new_scale": 1.0,
+    "old_local_ceiling_mps": 2.4,
+    "new_local_ceiling_mps": 3.0,
+    "dynamic_constraints_remain_enabled": true
+  },
+  "p3_old": {
+    "maximum_abs_curvature_1pm": 1.34200131105996,
+    "maximum_abs_curvature_gradient_1pm2": 2.0481342082487544,
+    "minimum_runtime_speed_prior_mps": 1.543634764152747,
+    "maximum_steering_rate_at_prior_radps": 1.6691389585278993,
+    "minimum_left_width_m": 0.5206435178607218,
+    "minimum_right_width_m": 0.524279035563158
+  },
+  "p3_new": {
+    "maximum_abs_curvature_1pm": 1.2904868458979288,
+    "maximum_abs_curvature_gradient_1pm2": 1.8953615489967035,
+    "minimum_runtime_speed_prior_mps": 1.573077067040848,
+    "maximum_steering_rate_at_prior_radps": 1.708348792224864,
+    "minimum_left_width_m": 0.5416590949416256,
+    "minimum_right_width_m": 0.44478039541254394
+  },
+  "p4_old": {
+    "maximum_abs_curvature_1pm": 0.4014103551842038,
+    "maximum_abs_curvature_gradient_1pm2": 0.26514929414675237,
+    "minimum_runtime_speed_prior_mps": 2.790236655408753,
+    "maximum_steering_rate_at_prior_radps": 0.2538861760041586,
+    "minimum_left_width_m": 0.47590134720646265,
+    "minimum_right_width_m": 0.5274783773855997
+  },
+  "p4_new": {
+    "maximum_abs_curvature_1pm": 0.3954247871399571,
+    "maximum_abs_curvature_gradient_1pm2": 0.29847063557956943,
+    "minimum_runtime_speed_prior_mps": 2.844711044792214,
+    "maximum_steering_rate_at_prior_radps": 0.3300175301848136,
+    "minimum_left_width_m": 0.5558930311883894,
+    "minimum_right_width_m": 0.4474784064449613
+  },
+  "vehicle_limits": {
+    "max_steer_rad": 0.55,
+    "physical_max_steer_rate_radps": 5.5,
+    "hardware_launch_steer_rate_radps": 3.4,
+    "lateral_accel_limit_mps2": 3.2
+  }
+}

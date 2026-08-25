@@ -1,0 +1,37 @@
+<!-- -->
+<launch>
+<arg name="pcd_file" default="" />
+<arg name="file_directory" default="" />
+<arg name="file_name" default="map" />
+<arg name="thre_z_min" default="0.1" />
+<arg name="thre_z_max" default="1.5" />
+<arg name="flag_pass_through" default="0" />
+<arg name="thre_radius" default="0.5" />
+<arg name="thres_point_count" default="10" />
+<arg name="map_resolution" default="0.05" />
+<arg name="map_topic_name" default="map" />
+<arg name="save_filtered_clouds" default="false" />
+<node pkg="pcd2pgm" name="pcd2pgm" type="pcd2pgm" output="screen">
+<param name="pcd_file" value="$(arg pcd_file)" />
+<!-- 存放pcd文件的路径-->
+<param name="file_directory" value="$(arg file_directory)" />
+<!-- pcd文件名称-->
+<param name="file_name" value="$(arg file_name)" />
+<!-- 选取的范围　最小的高度-->
+<param name="thre_z_min" value="$(arg thre_z_min)" />
+<!-- 选取的范围　最大的高度-->
+<param name="thre_z_max" value="$(arg thre_z_max)" />
+<!--0 选取高度范围内的，１选取高度范围外的-->
+<param name="flag_pass_through" value="$(arg flag_pass_through)" />
+<!-- 半径滤波的半径-->
+<param name="thre_radius" value="$(arg thre_radius)" />
+<!-- 半径滤波的要求点数个数-->
+<param name="thres_point_count" value="$(arg thres_point_count)" />
+<!-- 存储的栅格map的分辨率-->
+<param name="map_resolution" value="$(arg map_resolution)" />
+<!-- 转换后发布的二维地图的topic，默认使用map即可，可使用map_server保存-->
+<param name="map_topic_name" value="$(arg map_topic_name)" />
+<param name="save_filtered_clouds" value="$(arg save_filtered_clouds)" />
+</node>
+
+</launch>

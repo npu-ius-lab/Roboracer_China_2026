@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="track" default="racelinev3_stable_v5_fast5_std32"/>
+  <arg name="controller_config" default="candidates/v5_jubu/controller.yaml"/>
+  <arg name="vehicle_config" default="candidates/v5_jubu/vehicle.yaml"/>
+  <arg name="runtime_config" default="$(find f1tenth_dynamic_mpcc)/config/candidates/v5_jubu/cpp_runtime.yaml"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="race"/>
+  <arg name="allow_real_hardware" default="false"/>
+  <arg name="start_planner" default="true"/>
+  <arg name="start_controller" default="true"/>
+  <arg name="rviz" default="true"/>
+  <arg name="rviz_config" default="$(find f1tenth_dynamic_mpcc)/rviz/nav.rviz"/>
+  <arg name="telemetry_path" default=""/>
+  <arg name="lap_timer" default="true"/>
+  <arg name="lap_log_path" default=""/>
+  <arg name="runtime_speed_cap_mps" default="3.0"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_residual_mpcc/acados_v5_jubu"/>
+  <arg name="residual_model_path" default="$(find f1tenth_dynamic_mpcc)/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"/>
+  <arg name="residual_feature_set" default="markov_v1"/>
+  <arg name="hardware_command_topic" default="/tianracer/ackermann_cmd"/>
+
+  <!-- Direct low-latency /perception/roi_cloud ingestion, obstacle extraction,
+       local planning, behavior state and health gating all run in C++. -->
+  <node if="$(arg start_planner)" pkg="f1tenth_dynamic_mpcc"
+        type="v5_jubu_local_planner_cpp"
+        name="v5_jubu_local_planner_cpp" output="screen" required="true">
+    <rosparam command="load" file="$(arg runtime_config)"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+  </node>
+
+  <!-- This isolated C++ MPCC publishes only to the private stamped topic. -->
+  <node if="$(arg start_controller)" pkg="f1tenth_dynamic_mpcc"
+        type="mpcc_node_auto_relaunch_jubu_cpp"
+        name="f1tenth_dynamic_mpcc_v5_jubu" output="screen" required="true">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="false"/>
+    <param name="command_topic" value="/f1tenth_mpcc/v5_jubu/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="telemetry_path" value="$(arg telemetry_path)"/>
+    <param name="runtime_speed_cap_mps" value="$(arg runtime_speed_cap_mps)"/>
+    <param name="generated_dir" value="$(arg generated_dir)"/>
+    <param name="residual_model_path" value="$(arg residual_model_path)"/>
+    <param name="residual_feature_set" value="$(arg residual_feature_set)"/>
+    <param name="startup_steering_rate_override" value="3.0"/>
+    <param name="publisher_steering_rate_override" value="3.0"/>
+    <param name="pp_steering_rate_override" value="3.0"/>
+    <param name="oob_recovery_enabled" value="true"/>
+    <param name="cost_contour_override" value="45.0"/>
+    <param name="cost_heading_race_override" value="1.0"/>
+    <param name="cost_steering_command_rate_override" value="0.60"/>
+    <param name="profile_max_decel_override" value="4.0"/>
+    <param name="risk_tiering_enabled" value="true"/>
+    <param name="near_track_horizon_override" value="0.40"/>
+    <param name="predictive_speed_hold_override" value="0.50"/>
+    <param name="predictive_speed_recovery_override" value="1.0"/>
+    <param name="pp_current_margin_override" value="0.02"/>
+    <param name="pp_confirmation_cycles_override" value="2"/>
+    <param name="local_reference_topic" value="/v5_jubu/local_reference"/>
+    <param name="local_speed_cap_topic" value="/v5_jubu/local_speed_cap"/>
+    <param name="local_state_topic" value="/v5_jubu/state"/>
+    <param name="planner_health_topic" value="/v5_jubu/health"/>
+    <param name="planner_required" value="true"/>
+    <param name="planner_health_timeout_s" value="0.50"/>
+    <param name="local_reference_timeout_s" value="0.40"/>
+    <param name="local_reference_max_start_distance_m" value="0.75"/>
+    <param name="local_reference_min_length_m" value="1.50"/>
+    <param name="local_reference_max_curvature_ratio" value="0.90"/>
+    <param name="local_reference_return_tolerance_m" value="0.15"/>
+    <param name="local_reference_default_speed_cap_mps" value="2.20"/>
+  </node>
+
+  <!-- Sole hardware-topic publisher. It enables MPCC only while planner
+       health is fresh and true, and publishes zero on every fault. -->
+  <group if="$(arg start_controller)">
+  <node if="$(arg allow_real_hardware)"
+        pkg="f1tenth_dynamic_mpcc" type="v5_jubu_command_gate_cpp"
+        name="v5_jubu_command_gate_cpp" output="screen" required="true">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="input_topic" value="/f1tenth_mpcc/v5_jubu/ackermann_cmd_stamped"/>
+    <param name="output_topic" value="$(arg hardware_command_topic)"/>
+    <param name="planner_health_topic" value="/v5_jubu/health"/>
+    <param name="mpcc_enable_service" value="/f1tenth_dynamic_mpcc_v5_jubu/set_enabled"/>
+    <param name="state_topic" value="/v5_jubu/command_gate_state"/>
+    <param name="start_armed" value="true"/>
+    <param name="planner_health_timeout_s" value="0.50"/>
+    <param name="command_timeout_s" value="0.25"/>
+    <param name="command_startup_timeout_s" value="1.0"/>
+    <param name="publish_rate_hz" value="60.0"/>
+  </node>
+
+  <node if="$(arg lap_timer)"
+        pkg="f1tenth_dynamic_mpcc" type="lap_timer_node_cpp"
+        name="f1tenth_mpcc_lap_timer" output="screen">
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="odom_topic" value="/localization/vehicle_odom"/>
+    <param name="world_frame" value="map"/>
+    <param name="minimum_start_speed_mps" value="0.5"/>
+    <param name="minimum_lap_time_s" value="3.0"/>
+    <param name="maximum_progress_step_m" value="1.0"/>
+    <param name="maximum_odom_gap_s" value="0.5"/>
+    <param name="log_path" value="$(arg lap_log_path)"/>
+  </node>
+
+  <node if="$(arg rviz)"
+        pkg="rviz" type="rviz" name="rviz_f1tenth_mpcc_v5_jubu"
+        args="-d $(arg rviz_config)" output="screen"/>
+  </group>
+</launch>

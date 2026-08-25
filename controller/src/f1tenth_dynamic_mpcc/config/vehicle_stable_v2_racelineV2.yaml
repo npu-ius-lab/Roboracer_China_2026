@@ -1,0 +1,113 @@
+# Stable V2 snapshot: the verified 10-lap candidate from 2026-08-17 plus the
+# conservative tire identification frozen on 2026-08-17 (Cf=70, Cr=110).
+# Unified steering actuator (8 circular PRBS bags), 3.4 rad/s rate,
+# out-of-bounds PP recovery enabled. This racelineV2 deployment variant raises
+# only the global speed ceiling; curvature and local track limits still apply.
+schema_version: 1
+profile_name: tianracer_stable_v2
+updated_at: "2026-08-17"
+
+vehicle:
+  wheelbase: 0.320
+  track_width: 0.18
+  front_hinge_track: 0.13
+  ego_width: 0.24
+  ego_length: 0.40
+  wheel_radius: 0.032
+
+dynamic_model:
+  mass: 3.80
+  yaw_inertia: 0.060
+  lf: 0.195
+  lr: 0.125
+  cg_height: 0.074
+  tire_cornering_front: 70.0
+  tire_cornering_rear: 110.0
+  friction_coefficient: 1.0489
+  gravity: 9.81
+  vx_epsilon: 0.20
+
+limits:
+  min_speed: 0.20
+  max_speed: 6.0
+  max_steer: 0.55
+  max_accel: 2.4
+  max_decel: 4.0
+  max_steer_rate: 5.5
+  lateral_accel_limit: 3.2
+  track_margin: 0.08
+  speed_time_constant: 0.20
+  steering_time_constant: 0.062671845
+
+planning:
+  minimum_tracker_boundary_margin: 0.25
+  localization_margin: 0.05
+  friction_usage_fraction: 0.40
+  raceline_points: 260
+
+actuator_calibration:
+  steering_command_gain: 0.974299172
+  steering_command_offset_rad: -0.011499441
+  steering_dead_time_s: 0.105
+  speed_command_gain: 1.0
+  speed_command_offset_mps: 0.0
+  speed_dead_time_s: 0.13
+
+# Unified effective command-to-motion model from 8 circular PRBS bags.
+# No front-wheel-angle sensor is installed; this includes tire/road effects.
+steering_actuator:
+  identified: true
+  parameter_status: stable_v2_verified_snapshot
+  map_type: linear
+  gain: 0.974299172
+  bias: -0.011499441
+  tau: 0.062671845
+  delay: 0.105
+  delta_min: -0.55
+  delta_max: 0.55
+
+steering_observer:
+  enabled: true
+  rate_hz: 50.0
+  model_only_max_speed_mps: 0.3
+  dynamic_correction_min_speed_mps: 1.5
+  kinematic_gain_max: 0.15
+  dynamic_gain_max: 0.10
+  vy_derivative_cutoff_hz: 1.5
+  yaw_rate_derivative_cutoff_hz: 1.5
+  pseudo_angle_cutoff_hz: 1.5
+  innovation_limit_rad: 0.15
+  dropout_timeout_s: 0.25
+  initial_variance_rad2: 0.04
+
+deployment_limits:
+  first_test_command_speed_mps: 3.0
+  first_test_speed_slew_mps2: 1.0
+  first_test_steer_slew_radps: 3.4
+  servo_hard_steer_limit_rad: 0.60
+
+approval:
+  geometry_ready_for_low_speed: true
+  actuator_model_identified: true
+  dynamic_model_identified: false
+  tire_model_identified: true
+  high_speed_closed_loop_approved: true
+
+parameter_status:
+  steering_actuator:
+    status: stable_v2_verified
+    method: circular_prbs_0p8_to_2p0_mps_left_and_right
+    uncertainty: "directional replay gain improvement was only 1.3 percent"
+    measured_at: "2026-08-16"
+  closed_loop_verification:
+    status: verified_10_laps_at_3p0_mps
+    measured_at: "2026-08-17"
+    best_lap_s: 7.297
+    max_contour_error_m: 0.214
+  tire_model:
+    status: stable_v2_frozen_conservative
+    method: circle_steady_kus_plus_prbs_output_error_then_conservative_step
+    kus_rad_per_mps2: 0.0002
+    cf_n_per_rad: 70.0
+    cr_n_per_rad: 110.0
+    measured_at: "2026-08-17"

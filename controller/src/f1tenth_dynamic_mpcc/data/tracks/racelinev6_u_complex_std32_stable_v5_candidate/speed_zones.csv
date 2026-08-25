@@ -1,0 +1,5 @@
+zone_name,zone_name_cn,start_s_m,end_s_m,wraps_seam,maximum_speed_mps,speed_scale
+tight_bend_1_standard,T8/U1普通速度区3.2,59.800043399,65.571442936,false,3.200000000,1.000000000
+tight_bend_2_standard,T9/U2普通速度区3.2,66.475397081,71.481912342,false,3.200000000,1.000000000
+dynamic_arc_transition,动力学平滑圆弧快速区5.0,71.829587013,84.067735429,false,5.000000000,1.000000000
+straight_acceleration,直道快速区5.0,85.180294376,8.483261971,true,5.000000000,1.000000000

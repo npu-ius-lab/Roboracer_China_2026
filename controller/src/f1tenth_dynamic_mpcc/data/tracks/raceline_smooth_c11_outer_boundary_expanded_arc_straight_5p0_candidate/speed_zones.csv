@@ -1,0 +1,10 @@
+name,zone,start_s_m,end_s_m,wraps_seam,maximum_speed_mps,speed_scale
+straight_acceleration_01,straight_acceleration,0.000000000,8.227473382,false,5.000000000,1.000000000
+standard_02,standard,8.501722495,59.512057462,false,3.000000000,1.000000000
+tight_bend_1_standard_03,tight_bend_1_standard,59.786306575,64.722790604,false,3.000000000,1.000000000
+standard_04,standard,64.997039717,65.545537942,false,3.000000000,1.000000000
+tight_bend_2_standard_05,tight_bend_2_standard,65.819787055,69.933523746,false,3.000000000,1.000000000
+round_arc_transition_06,round_arc_transition,70.207772859,70.207772859,false,3.000000000,1.000000000
+dynamic_arc_transition_07,dynamic_arc_transition,70.482021971,82.548982931,false,5.000000000,1.000000000
+round_arc_transition_08,round_arc_transition,82.823232044,83.645979382,false,5.000000000,1.000000000
+straight_acceleration_09,straight_acceleration,83.920228495,87.485466960,false,5.000000000,1.000000000

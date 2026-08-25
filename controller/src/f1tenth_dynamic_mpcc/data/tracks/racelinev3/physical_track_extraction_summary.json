@@ -1,0 +1,47 @@
+{
+  "roi_pixels": [
+    75,
+    85,
+    540,
+    375
+  ],
+  "closing_iterations": 3,
+  "enclosed_free_component_areas_px": [
+    62004,
+    18193,
+    2009,
+    581,
+    250,
+    96,
+    84
+  ],
+  "selected_outer_contour_area_px": 88746.0,
+  "selected_inner_contour_area_px": 28699.5,
+  "corridor_area_px": 60080,
+  "source_map_yaml": "../../maps_2d/active/point_lio_map_2d_clean_by_handwaidao.yaml",
+  "raw_skeleton_pixels": 1859,
+  "centerline_points": 260,
+  "centerline_length_m": 87.31725047514237,
+  "start_pose": {
+    "x_m": -0.00148719,
+    "y_m": -0.00277697,
+    "yaw_rad": 0.0010247572155856611
+  },
+  "start_centerline": {
+    "x_m": 0.10615051231254746,
+    "y_m": 0.17339375387763267,
+    "yaw_rad": 0.030027895246196028
+  },
+  "minimum_left_width_m": 0.5102441710934909,
+  "minimum_right_width_m": 0.48522061233657543,
+  "minimum_total_width_m": 1.0887305073442621,
+  "maximum_abs_centerline_curvature_radpm": 1.8646456270798375,
+  "outputs": {
+    "corridor_csv": "physical_track_corridor.csv",
+    "left_boundary_csv": "physical_left_boundary.csv",
+    "right_boundary_csv": "physical_right_boundary.csv",
+    "controller_left_boundary_csv": "left_boundary.csv",
+    "controller_right_boundary_csv": "right_boundary.csv",
+    "debug_png": "physical_track_extraction_debug.png"
+  }
+}

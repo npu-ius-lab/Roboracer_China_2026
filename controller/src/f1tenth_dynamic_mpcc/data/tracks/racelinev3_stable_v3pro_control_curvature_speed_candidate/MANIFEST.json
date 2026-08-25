@@ -1,0 +1,201 @@
+{
+  "candidate": "stable_v3pro_control_curvature_speed_candidate",
+  "track": "racelinev3_stable_v3pro_control_curvature_speed_candidate",
+  "status": "offline_validated_candidate_not_hardware_approved",
+  "method": "V3PRO bag-guided curvature + steering-rate + speed optimization",
+  "source_hashes": {
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/raceline.csv": "3bc7c472ed534331c0798960520294e346a9c931a5aa1adbaaea068a753371f9",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/speed_zones.csv": "2efa8b5fdf7e4433ee408e9b339f5747140669eb20d79b087c20dbb8fbaabd09",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3pro/controller.yaml": "df8f558111e09db665a70bafaf4baacf238bbc37095e116e6fc992e88498bfe2",
+    "src/f1tenth_dynamic_mpcc/config/vehicle_stable_v3_racelineV3.yaml": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_global_curvature_race_candidate/raceline.csv": "1b69e51d9dfd59f64b7371d29c20c642eea3fc0e4db7847dbc8393c7bbd9be1a",
+    "bags/stable_v3pro_20260822_latest/stable_v3pro_20260822_015637.bag": "637c1cb0b461af9eefc45ca446b662f0400e5a7afacaaad56be0cb95979f543b"
+  },
+  "frozen_controller": "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3pro/controller.yaml",
+  "optimizer": {
+    "success": false,
+    "accepted_feasible": true,
+    "message": "b'STOP: TOTAL NO. of f AND g EVALUATIONS EXCEEDS LIMIT'",
+    "iterations": 192,
+    "evaluations": 18019,
+    "objective": 2.0619119575431966,
+    "initial_components": {
+      "curvature": 0.3342776521050409,
+      "gradient": 0.26367236939056105,
+      "control": 0.12339748811569097,
+      "lap": 33.32304188339083,
+      "smooth": 0.0012147686865973486,
+      "tracking": 0.015812811514726254,
+      "length": 89.63906043494116,
+      "boundary": 0.0
+    },
+    "final_components": {
+      "curvature": 0.3121974738231037,
+      "gradient": 0.23449706855725108,
+      "control": 0.11284073086135141,
+      "lap": 33.664104466537665,
+      "smooth": 0.0025008304985692925,
+      "tracking": 0.021965625127582634,
+      "length": 90.2494122822709,
+      "boundary": 0.0
+    }
+  },
+  "geometry_constraints": {
+    "maximum_abs_shift_m": 0.1594925618054692,
+    "limit_m": 0.16,
+    "minimum_center_clearance_m": 0.34
+  },
+  "speed_policy": {
+    "raw_speed_limits_never_lowered": true,
+    "standard_clear_limits_mps": [
+      3.3,
+      3.5
+    ],
+    "global_runtime_cap_mps": 4.0,
+    "boosted_output_nodes": {
+      "standard_control_clear_3p3": 129,
+      "standard_control_clear_3p5": 95
+    }
+  },
+  "bag_profile": {
+    "samples": 5903,
+    "running_window_s": [
+      19.5,
+      137.5
+    ],
+    "median_abs_contour_m": 0.08162262343880952,
+    "maximum_smoothed_error_p95_m": 0.4011767875096327,
+    "maximum_smoothed_heading_p95_rad": 0.6357424710181747,
+    "minimum_smoothed_margin_p05_m": 0.08272603245030907
+  },
+  "v3pro": {
+    "length_m": 87.75971526991167,
+    "maximum_abs_curvature_1pm": 1.5929256873399427,
+    "curvature_rms_1pm": 0.4927085706764242,
+    "maximum_abs_curvature_gradient_1pm2": 2.187666406945084,
+    "feedforward_steering_rate_p95_radps": 0.9004549872902281,
+    "feedforward_steering_rate_max_radps": 1.669146274059655,
+    "minimum_speed_mps": 1.4173359113387947,
+    "mean_speed_mps": 2.913359714919999,
+    "maximum_speed_mps": 4.0,
+    "ideal_profile_lap_s": 32.27046836657517,
+    "minimum_left_width_m": 0.4560499031320936,
+    "minimum_right_width_m": 0.4380165107209712
+  },
+  "candidate_metrics": {
+    "length_m": 90.1977426199494,
+    "maximum_abs_curvature_1pm": 1.3952010340492,
+    "curvature_rms_1pm": 0.46232249886548754,
+    "maximum_abs_curvature_gradient_1pm2": 1.7681116108127242,
+    "feedforward_steering_rate_p95_radps": 0.7139111245716396,
+    "feedforward_steering_rate_max_radps": 1.4366346270283874,
+    "minimum_speed_mps": 1.514387432094423,
+    "mean_speed_mps": 2.9792238452190705,
+    "maximum_speed_mps": 4.0,
+    "ideal_profile_lap_s": 32.24033022476371,
+    "minimum_left_width_m": 0.340518419500535,
+    "minimum_right_width_m": 0.37028189436053627
+  },
+  "regions": {
+    "C0": {
+      "source_s_m": [
+        7.0,
+        12.0
+      ],
+      "source_max_abs_curvature_1pm": 1.4510652515137097,
+      "candidate_max_abs_curvature_1pm": 1.1847596101292872,
+      "source_minimum_speed_mps": 1.484238247911074,
+      "candidate_minimum_speed_mps": 1.6434627654531895,
+      "source_mean_speed_mps": 2.6647500385478846,
+      "candidate_mean_speed_mps": 2.77847618267668
+    },
+    "C1": {
+      "source_s_m": [
+        14.0,
+        25.0
+      ],
+      "source_max_abs_curvature_1pm": 1.104098875937499,
+      "candidate_max_abs_curvature_1pm": 0.9804331002700704,
+      "source_minimum_speed_mps": 1.7002904156037697,
+      "candidate_minimum_speed_mps": 1.8066166426846966,
+      "source_mean_speed_mps": 2.6970716013877216,
+      "candidate_mean_speed_mps": 2.8878600810172856
+    },
+    "C2": {
+      "source_s_m": [
+        26.0,
+        33.0
+      ],
+      "source_max_abs_curvature_1pm": 1.37826600901234,
+      "candidate_max_abs_curvature_1pm": 1.1252073107186273,
+      "source_minimum_speed_mps": 1.5227237845978174,
+      "candidate_minimum_speed_mps": 1.6863927115652106,
+      "source_mean_speed_mps": 2.4585385616179787,
+      "candidate_mean_speed_mps": 2.5479507656301466
+    },
+    "C3": {
+      "source_s_m": [
+        34.0,
+        42.0
+      ],
+      "source_max_abs_curvature_1pm": 0.9913280172765364,
+      "candidate_max_abs_curvature_1pm": 0.8980036564135828,
+      "source_minimum_speed_mps": 1.7956540419515437,
+      "candidate_minimum_speed_mps": 1.8877128696073406,
+      "source_mean_speed_mps": 2.5716992824885905,
+      "candidate_mean_speed_mps": 2.711817023171909
+    },
+    "C4": {
+      "source_s_m": [
+        43.0,
+        56.0
+      ],
+      "source_max_abs_curvature_1pm": 1.3405649350754105,
+      "candidate_max_abs_curvature_1pm": 1.1607539396314803,
+      "source_minimum_speed_mps": 1.543634764152747,
+      "candidate_minimum_speed_mps": 1.6603701076399389,
+      "source_mean_speed_mps": 2.552123866979266,
+      "candidate_mean_speed_mps": 2.6133079516656315
+    },
+    "C5": {
+      "source_s_m": [
+        59.0,
+        65.5
+      ],
+      "source_max_abs_curvature_1pm": 1.577500726012547,
+      "candidate_max_abs_curvature_1pm": 1.270250845001711,
+      "source_minimum_speed_mps": 1.4233299001232333,
+      "candidate_minimum_speed_mps": 1.5871948400152571,
+      "source_mean_speed_mps": 2.42941200538385,
+      "candidate_mean_speed_mps": 2.4537629247201784
+    },
+    "C6": {
+      "source_s_m": [
+        65.5,
+        70.5
+      ],
+      "source_max_abs_curvature_1pm": 1.5918627186114467,
+      "candidate_max_abs_curvature_1pm": 1.3953269574570804,
+      "source_minimum_speed_mps": 1.4173363902589389,
+      "candidate_minimum_speed_mps": 1.514387432094423,
+      "source_mean_speed_mps": 2.305125749854223,
+      "candidate_mean_speed_mps": 2.332578446901637
+    },
+    "A3_A6": {
+      "source_s_m": [
+        70.5,
+        83.5
+      ],
+      "source_max_abs_curvature_1pm": 0.40141080199285384,
+      "candidate_max_abs_curvature_1pm": 0.40472284835223077,
+      "source_minimum_speed_mps": 2.823423377328213,
+      "candidate_minimum_speed_mps": 2.811875758880413,
+      "source_mean_speed_mps": 3.498618075698961,
+      "candidate_mean_speed_mps": 3.4945223049648066
+    }
+  },
+  "output_hashes": {
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v3pro_control_curvature_speed_candidate/raceline.csv": "197a5e6db20b2a1dbea0782f9812926de550642e4beaf5647973404b4bbe7fce",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v3pro_control_curvature_speed_candidate/speed_zones.csv": "e000850ddcd65b59a0f155f9d6e3f4805df98c7ac177100a4a5fc30599f014f3"
+  }
+}

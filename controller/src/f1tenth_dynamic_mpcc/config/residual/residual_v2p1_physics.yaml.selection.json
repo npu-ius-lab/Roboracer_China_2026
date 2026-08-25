@@ -1,0 +1,9 @@
+{
+  "model_path": "data/models/residual_v2p1_physics_candidate_a011.yaml",
+  "model_version": "V2.1",
+  "selection": "stage_a_stage_b_weight_interpolation",
+  "stage_a": "/home/ros/f1tenth_residual_v2_ws/data/models/residual_v2p1_physics_gpu_constrained_20260814.stage_a.yaml",
+  "stage_b": "/home/ros/f1tenth_residual_v2_ws/data/models/residual_v2p1_physics_gpu_constrained_20260814.yaml",
+  "alpha": 0.11,
+  "feature_set": "physics_v2"
+}

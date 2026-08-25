@@ -1,0 +1,5 @@
+zone_name,zone_name_cn,start_s_m,end_s_m,wraps_seam,maximum_speed_mps,speed_scale
+round_arc_transition,圆弧过渡区,70.083554138,83.173089541,false,6.000000000,1.000000000
+straight_acceleration,直道加速区,83.445788195,8.180959627,true,6.000000000,1.000000000
+tight_bend_1_80pct,弯道1减速区（原速度80%）,59.721005277,64.629581053,false,2.400000000,0.800000000
+tight_bend_2_80pct,弯道2减速区（原速度80%）,65.720375670,69.810855484,false,2.400000000,0.800000000

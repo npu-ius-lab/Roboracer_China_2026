@@ -1,0 +1,44 @@
+# Six semantic regions from the Blender/Gazebo Point-LIO competition track.
+# State IDs: 0 unknown, 1 obstacle slalom, 2 dual-channel bends,
+# 3 teardrop transition, 4 middle switchbacks, 5 right pear loop,
+# 6 outer return/straight.
+odom_topic: /localization/vehicle_odom
+state_topic: /semantic_region/state
+raw_state_topic: /semantic_region/raw_state
+name_topic: /semantic_region/name
+
+expected_frame_id: map
+require_expected_frame: true
+publish_raw_state: true
+update_rate_hz: 10.0
+odom_timeout_s: 0.5
+persistence_samples: 5
+
+origin_x: -15.217452
+origin_y: -3.122564
+resolution: 0.05
+image_width: 615
+image_height: 403
+
+# Ordered region rules in semantic-map pixel coordinates. Region 6 is the
+# fallback for an in-bounds position; the later rules override it.
+right_region_u_min: 415.0
+middle_region_u_min: 300.0
+upper_regions_v_max: 315.0
+left_lower_u_max: 300.0
+left_lower_v_min: 190.0
+left_upper_u_max: 245.0
+left_upper_v_max: 215.0
+teardrop_center_u: 285.0
+teardrop_center_v: 225.0
+teardrop_radius_u: 52.0
+teardrop_radius_v: 66.0
+
+region_names:
+  - unknown
+  - obstacle_slalom
+  - dual_channel_bends
+  - teardrop_transition
+  - middle_switchbacks
+  - right_pear_loop
+  - outer_return_straight

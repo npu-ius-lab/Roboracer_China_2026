@@ -1,0 +1,129 @@
+{
+  "release": "stable_v5",
+  "status": "frozen_release",
+  "frozen_date": "2026-08-21",
+  "source": "stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate",
+  "policy": {
+    "runtime_global_cap_mps": 5.0,
+    "fast_arc_and_straight_cap_mps": 5.0,
+    "ordinary_cap_mps": 3.2,
+    "profile_max_decel_mps2": 4.0,
+    "control_rate_hz": 60.0,
+    "publisher_rate_hz": 60.0,
+    "supervisor_rate_hz": 60.0,
+    "arbitrary_recovery_mpcc_handoff_min_mps": 1.0,
+    "race_start_radius_m": 2.0,
+    "race_start_speed_mps": 4.0,
+    "race_start_handoff_speed_mps": 1.2
+  },
+  "track": {
+    "length_m": 87.75971526991167,
+    "rows": 320,
+    "fast_entry_rows": [
+      256
+    ],
+    "zone_counts": {
+      "straight_acceleration": 45,
+      "standard": 190,
+      "tight_bend_1_standard": 19,
+      "tight_bend_2_standard": 16,
+      "round_arc_transition": 5,
+      "dynamic_arc_transition": 45
+    },
+    "zone_envelopes": {
+      "dynamic_arc_transition": {
+        "rows": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.823423377328213,
+          4.896627932093731
+        ]
+      },
+      "round_arc_transition": {
+        "rows": 5,
+        "local_limit_mps": [
+          3.2,
+          5.0
+        ],
+        "planned_speed_mps": [
+          3.076831125844004,
+          5.0
+        ]
+      },
+      "standard": {
+        "rows": 190,
+        "local_limit_mps": [
+          3.2,
+          3.2
+        ],
+        "planned_speed_mps": [
+          1.484238247911074,
+          3.2
+        ]
+      },
+      "straight_acceleration": {
+        "rows": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.430805527501177,
+          5.0
+        ]
+      },
+      "tight_bend_1_standard": {
+        "rows": 19,
+        "local_limit_mps": [
+          3.2,
+          3.2
+        ],
+        "planned_speed_mps": [
+          1.4233299001232333,
+          3.2
+        ]
+      },
+      "tight_bend_2_standard": {
+        "rows": 16,
+        "local_limit_mps": [
+          3.2,
+          3.2
+        ],
+        "planned_speed_mps": [
+          1.4173359113387947,
+          3.2
+        ]
+      }
+    }
+  },
+  "source_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate/controller.yaml": "5b03916a4d8e53e2d15a692ff5f909a1df3f4ac5f2d9af1f66f828df87ac3fff",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3_5mps_arc_straight_std3_candidate/vehicle.yaml": "fbe6f459a81deb2814c77c4d9b5b6b50769e36e3fda42e7ede865eb92460a778",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_arc_straight_std3_candidate/raceline.csv": "21c9e3c13727c510aa017e3415bd983d099bc7099bbe0d0a85f81a870b60569b",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_arc_straight_std3_candidate/speed_zones.csv": "47896590f87c0fe5f0801c3ae627394b544739dec06cc0718c9e27c5e4caad1f",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate.launch": "f099815be9262454a8d62598ec95fd5ef7a1c0092a0f6fea77619d60d72d374c",
+    "scripts/start_mpcc_hardware_stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate.sh": "2d3a77b4f345d66b2ef8f7efcbedf05a2cdb1464b75c825e365aee4b6b471f1a",
+    "src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/src/mpcc_node_auto_relaunch.cpp": "344bc7003ff491ff082351a2fb6979a608b9ead2df0238a0cee6c0d1b911bde0",
+    "src/f1tenth_dynamic_mpcc/scripts/automatic_relaunch_supervisor.py": "f9996adfb6c59f66a2ccaf7522f40825e2c74a9e3370c7f8ffc5e4fa1a22545a",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/automatic_relaunch.py": "43760fcbb6a965da5c7d8e68b7683a2a520d2129da30dcc8d4eff8db2521a8d6",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/quick_relaunch.py": "21217b67871accf841c1bef76f9e6c7f874526cfd1bd99c497706b989cb7b178"
+  },
+  "release_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5/controller.yaml": "350b532ca033aba4c7fd03a63cb7170cfd34989673705767752ab95491c685cb",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5/vehicle.yaml": "fd5f9d91bc1fe967d7429cb12f42d982e8527d0d8e559f41dbefd8f2cf24366d",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_fast5_std32/raceline.csv": "88ca2acf725207a68d0ea20aa9e26d8af93dcff027afd235b9ce2045f866b82a",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_fast5_std32/speed_zones.csv": "3ace10062380356525c99d02e07d61f125c971b476594bdd4c26c2da6f250132",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_v5.launch": "424aa1ff257834587468726679b7b29b51b794e5b0c5de46c11fd66628d92f25",
+    "scripts/start_mpcc_hardware_stable_v5.sh": "fa5e0257c1e55b2afeea01e232bf3834d41aeb4fc983136651dc98b90f6c29f9",
+    "src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/src/mpcc_node_auto_relaunch.cpp": "344bc7003ff491ff082351a2fb6979a608b9ead2df0238a0cee6c0d1b911bde0",
+    "src/f1tenth_dynamic_mpcc/scripts/automatic_relaunch_supervisor.py": "f9996adfb6c59f66a2ccaf7522f40825e2c74a9e3370c7f8ffc5e4fa1a22545a",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/automatic_relaunch.py": "43760fcbb6a965da5c7d8e68b7683a2a520d2129da30dcc8d4eff8db2521a8d6",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/quick_relaunch.py": "21217b67871accf841c1bef76f9e6c7f874526cfd1bd99c497706b989cb7b178",
+    "scripts/record_stable_v5_bag.sh": "1ebd7a7a5b4b5531058206b3a64377b5bb17ff03643d97bbb5dc294d695302ec"
+  }
+}

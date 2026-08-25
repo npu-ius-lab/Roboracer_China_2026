@@ -1,0 +1,17 @@
+# Shared by mapping and localization. Keep all BEV geometry in this file so
+# map descriptors and live-query descriptors always use identical pixels.
+scene:
+  profile: "indoor"
+
+LighterBEV:
+  input_mode: "single_frame"
+  range: 5.0                    # x/y in [-5, 5] m: 10 m x 10 m coverage
+  resolution: 0.05             # m/pixel; closed interval produces 201 x 201
+  downsample_enable: true
+  downsample_voxel_size: 0.1    # input-cloud voxel size, independent of pixels
+  z_max_filter_enable: true     # remove ceiling/high points only for BEV input
+  z_max: 2.0                    # keep points with z <= this height in metres
+  keypoint_backend: "learned_fast"
+  fast_threshold: 10
+  fast_nonmax_suppression: true
+  

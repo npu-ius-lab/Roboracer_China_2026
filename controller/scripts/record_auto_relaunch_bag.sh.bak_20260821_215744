@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: $0 BAG_PATH" >&2
+  exit 2
+fi
+
+exec rosbag record -O "$1" \
+  /aft_mapped_to_init \
+  /localization/odom \
+  /localization/vehicle_odom \
+  /localization/status \
+  /tf /tf_static \
+  /f1tenth_mpcc/real/ackermann_cmd_stamped \
+  /f1tenth_mpcc/telemetry \
+  /automatic_relaunch_supervisor/state \
+  /tianracer/ackermann_cmd \
+  /tianracer/odom \
+  /tianracer/imu \
+  /livox/imu

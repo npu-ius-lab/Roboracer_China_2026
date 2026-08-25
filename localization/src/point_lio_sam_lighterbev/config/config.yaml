@@ -1,0 +1,66 @@
+basic:
+  map_frame: "map"                            # 发布坐标系
+  dataset: "generic"
+  loop_update_hz: 1                         # 回环检测频率（Hz）
+  vis_hz: 1.0                                 # 可视化频率（Hz）
+  enable: true
+  loop_exclude_time: 10
+  loop_exclude_keyframes: 10
+  odom: "/aft_mapped_to_init"               # Point-LIO odometry output
+  cloud: "/cloud_registered"                # Point-LIO world-frame registered scan
+
+
+keyframe:
+  keyframe_threshold: 1.0                     # 单位[米]：每累计该位移生成一帧关键帧
+  num_submap_keyframes: 5                      # 子地图关键帧数量：以最近帧为中心前后各取（存在则合并）用于ICP
+  enable_submap_matching: true               # 设为true时启用子地图级（粗到精）配准
+  
+loop_matching_voxel_resolution: 0.5           # Nano-GICP匹配使用的体素分辨率
+save_voxel_resolution: 0.3                    # 保存 .pcd 地图时使用的体素分辨率
+
+
+nano_gicp:                                    # 参数参考 Nano-GICP 官方仓库（Direct LiDAR Odometry）
+  thread_number: 0                            # 设为0时自动使用最大CPU核心数
+  icp_score_threshold: 0.4                    # 回环判定分数阈值，越小通常越严格
+  correspondences_number: 15
+  max_correspondence_distance: 2.0            # GICP最大对应距离（建议2~8米，过大易误配）
+  max_iter: 32
+  transformation_epsilon: 0.01
+  euclidean_fitness_epsilon: 0.01
+  ransac:
+    max_iter: 5
+    outlier_rejection_threshold: 1.0
+
+
+LighterBEV:
+  # enable: true                                # 是否启用 LighterBEV
+  save_png: true                           # 实时保存BEV；触发/save_dir时也会完整导出内存中的BEV
+  save_dir: ""                             # 留空时默认保存到 point_lio_sam_lighterbev/<seq_name>/bev_imgs
+  ninliers: 20                             # 判定候选有效所需最小内点数（过高会误杀正确闭环）
+  iterations: 1000                          # RANSAC迭代次数
+  threshold: 0.5                           # 点被视为内点的距离阈值（米）
+  match_ratio_test: 0.9                    # Lowe ratio test 阈值（与 python 后端一致）
+  min_matches: 20                          # 统一阈值：BEV最少匹配数 + RANSAC最少内点数
+  model_path: ""                          # package-relative; empty uses models/pca_kitti_best.pt
+  pr_threshold: 0.70
+result:
+  save_map_pcd: true                         # 以 .pcd 格式保存结果地图（流式降采样聚合）
+  save_map_bag: false                         # 以 .bag 格式保存优化后的结果地图
+  save_in_kitti_format: true                 # 导出scan、BEV及优化后的KITTI/TUM位姿
+  save_raw_keyframes_on_save_dir: true       # 触发 /save_dir 时保存原始关键帧到 keyframes_raw/
+  aggregate_voxel_size: 0.1                  # 优化后全局地图聚合使用的体素大小
+  aggregate_downsample_interval: 20          # 每聚合N个关键帧做一次降采样
+  save_root: "point_lio"                      # 相对功能包目录；空/save_dir时使用
+  seq_name: "map_save"                        # 地图包目录名，可由run.launch的map_name覆盖
+  save_src_dst_dir: ""
+
+stability:
+  loop_timeout_ms: 8000.0                     # 0表示不限制；若回环耗时超过该值（ms）则跳过
+  loop_max_score: 0.25                        # 配准分数过高时拒绝该回环因子
+  loop_noise_variance_min: 0.05               # 回环因子噪声方差下限夹紧
+  loop_noise_variance_max: 1.0                # 回环因子噪声方差上限夹紧
+  loop_huber_k: 1.35                         # 回环因子的鲁棒核参数
+  loop_use_odom_pose_for_bev_init: true      # BEV初值转世界时使用里程计位姿（对齐 python 实现）
+  loop_bidirectional_check: true              # 双向一致性校验开关：前向/反向GICP结果需互相可逆
+  loop_bidirectional_max_translation_error: 0.8   # 双向闭环复合误差平移阈值（m）
+  loop_bidirectional_max_rotation_error_deg: 1.5  # 双向闭环复合误差旋转阈值（deg）

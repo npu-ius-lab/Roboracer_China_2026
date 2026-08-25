@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONTROLLER="$ROOT/src/f1tenth_dynamic_mpcc/config/controller.yaml"
+RESIDUAL="$ROOT/src/f1tenth_dynamic_mpcc/config/residual/residual_markov_v1.yaml"
+VEHICLE="$ROOT/src/f1tenth_dynamic_mpcc/config/vehicle_stable_v2.yaml"
+TRACK="${MPCC_TRACK:-test1}"
+RACELINE="$ROOT/src/f1tenth_dynamic_mpcc/data/tracks/$TRACK/raceline.csv"
+VEHICLE_CONFIG="vehicle_stable_v2.yaml"
+
+check_hash() {
+  local expected="$1"
+  local path="$2"
+  local actual
+  actual="$(sha256sum "$path" | awk '{print $1}')"
+  if [[ "$actual" != "$expected" ]]; then
+    echo "[FAIL] stable V2 profile file changed: $path" >&2
+    echo "       expected=$expected" >&2
+    echo "       actual=$actual" >&2
+    exit 1
+  fi
+}
+
+# Frozen snapshot of the verified 2026-08-17 candidate run:
+# unified steering model + 3.4 rad/s + OOB PP recovery + tire Cf=70/Cr=110,
+# speed cap 3.0 m/s. The controller/residual/vehicle hashes stay pinned to
+# that verified profile; the raceline hash follows MPCC_TRACK (default:
+# the current map track "test1").
+check_hash "a78197b6c064c9f5f02bf6ed5d08dae0bbf231958d917a69a0ec6593d46e4f54" "$CONTROLLER"
+check_hash "16a18c94442f90415cf8bd0cea81b7c7887e0624adfa1f3e80a26e44246fe3fc" "$RESIDUAL"
+check_hash "bc3c6662a862a1de7f1d8de095df3f621d4af2aa39138cd0300825aa1d5eed1d" "$VEHICLE"
+check_hash "c121d4bc901abe29b53a2c59f0893ee59684e69f5d0c979b5cb6bc293345af23" "$RACELINE"
+
+if [[ "${1:-}" == "--check-only" ]]; then
+  echo "[OK] stable V2 profile hashes match"
+  exit 0
+fi
+
+FORMULATION="${1:-mpcc}"
+if [[ "$FORMULATION" != "baseline" && "$FORMULATION" != "mpcc" ]]; then
+  echo "usage: $0 [baseline|mpcc|--check-only]" >&2
+  exit 2
+fi
+
+GENERATED_DIR="${MPCC_GENERATED_DIR:-$HOME/.cache/f1tenth_residual_mpcc/acados_stable_v2}"
+source "$ROOT/scripts/ros_env.sh"
+export MPCC_GENERATED_DIR="$GENERATED_DIR"
+export MPCC_TRACK="$TRACK"
+export MPCC_VEHICLE_CONFIG="$VEHICLE_CONFIG"
+"$ROOT/scripts/ensure_acados_solvers.sh"
+"$ROOT/scripts/check_mpcc_topics.sh"
+
+RESIDUAL_MPCC_SPEED_CAP="${RESIDUAL_MPCC_SPEED_CAP:-3.0}"
+mkdir -p "$ROOT/log"
+STAMP="$(date +%Y%m%d_%H%M%S)"
+RECORD_PID=""
+if [[ "${MPCC_RECORD_BAG:-false}" == "true" ]]; then
+  mkdir -p "$ROOT/bags"
+  BAG_PATH="${MPCC_RECORD_BAG_PATH:-$ROOT/bags/stable_v2_${STAMP}.bag}"
+  "$ROOT/scripts/record_analysis_bag.sh" "$BAG_PATH" &
+  RECORD_PID=$!
+  echo "[RECORD] analysis bag -> $BAG_PATH (localization+tf+control+telemetry+imu)"
+  trap 'kill -INT "$RECORD_PID" 2>/dev/null || true' EXIT
+fi
+echo "[STABLE_V2] Unified steering model: K=0.974299, bias=-0.011499 rad, tau=0.062672 s, Td=0.105 s"
+echo "[STABLE_V2] tire Cf=70.0 N/rad Cr=110.0 N/rad (conservative identification, Kus≈+0.0002)"
+echo "[STABLE_V2] steering rate=3.4 rad/s (startup/publisher/PP), out-of-bounds PP recovery=enabled"
+echo "[STABLE_V2] speed cap=${RESIDUAL_MPCC_SPEED_CAP} m/s"
+echo "[STABLE_V2] track=$TRACK"
+echo "[WARNING] This profile starts the real command gate enabled. Keep emergency stop ready."
+
+LAUNCH_ARGS=(
+  track:="$TRACK"
+  formulation:="$FORMULATION"
+  allow_real_hardware:=true
+  start_enabled:=true
+  rviz:="${MPCC_REMOTE_RVIZ:-false}"
+  runtime_speed_cap_mps:="${RESIDUAL_MPCC_SPEED_CAP}"
+  generated_dir:="$GENERATED_DIR"
+  telemetry_path:="$ROOT/log/hardware_stable_v2_${FORMULATION}_${STAMP}.jsonl"
+  lap_timer:=true
+  lap_log_path:="$ROOT/log/laps_stable_v2_${FORMULATION}_${STAMP}.csv"
+)
+if [[ -n "$RECORD_PID" ]]; then
+  roslaunch f1tenth_dynamic_mpcc hardware_mpcc_stable_v2.launch "${LAUNCH_ARGS[@]}"
+else
+  exec roslaunch f1tenth_dynamic_mpcc hardware_mpcc_stable_v2.launch "${LAUNCH_ARGS[@]}"
+fi

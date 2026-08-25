@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="track" default="racelinev3_5mps_arc_straight_std3_candidate"/>
+  <arg name="controller_config" default="candidates/stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate/controller.yaml"/>
+  <arg name="vehicle_config" default="candidates/stable_v3_5mps_arc_straight_std3_candidate/vehicle.yaml"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="race"/>
+  <arg name="allow_real_hardware" default="false"/>
+  <arg name="rviz" default="true"/>
+  <arg name="rviz_config" default="$(find f1tenth_dynamic_mpcc)/rviz/nav.rviz"/>
+  <arg name="telemetry_path" default=""/>
+  <arg name="lap_timer" default="true"/>
+  <arg name="lap_log_path" default=""/>
+  <arg name="runtime_speed_cap_mps" default="5.0"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_residual_mpcc/acados_stable_v3_5mps_auto_relaunch_brake4_asym_60hz"/>
+  <arg name="residual_model_path" default="$(find f1tenth_dynamic_mpcc)/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"/>
+  <arg name="residual_feature_set" default="markov_v1"/>
+  <arg name="hardware_command_topic" default="/tianracer/ackermann_cmd"/>
+
+  <!-- MPCC never owns the hardware topic in this candidate. The supervisor is
+       the only /tianracer/ackermann_cmd publisher and starts hard-locked. -->
+  <node pkg="f1tenth_dynamic_mpcc" type="mpcc_node_auto_relaunch_cpp"
+        name="f1tenth_dynamic_mpcc" output="screen">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="false"/>
+    <param name="command_topic" value="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="telemetry_path" value="$(arg telemetry_path)"/>
+    <param name="runtime_speed_cap_mps" value="$(arg runtime_speed_cap_mps)"/>
+    <param name="generated_dir" value="$(arg generated_dir)"/>
+    <param name="residual_model_path" value="$(arg residual_model_path)"/>
+    <param name="residual_feature_set" value="$(arg residual_feature_set)"/>
+    <param name="startup_steering_rate_override" value="3.0"/>
+    <param name="publisher_steering_rate_override" value="3.0"/>
+    <param name="pp_steering_rate_override" value="3.0"/>
+    <param name="oob_recovery_enabled" value="true"/>
+    <param name="cost_contour_override" value="45.0"/>
+    <param name="cost_heading_race_override" value="1.0"/>
+    <param name="cost_steering_command_rate_override" value="0.60"/>
+    <param name="profile_max_decel_override" value="4.0"/>
+    <param name="risk_tiering_enabled" value="true"/>
+    <param name="near_track_horizon_override" value="0.40"/>
+    <param name="predictive_speed_hold_override" value="0.50"/>
+    <param name="predictive_speed_recovery_override" value="1.0"/>
+    <param name="pp_current_margin_override" value="0.02"/>
+    <param name="pp_confirmation_cycles_override" value="2"/>
+  </node>
+
+  <node if="$(arg allow_real_hardware)" pkg="f1tenth_dynamic_mpcc"
+        type="automatic_relaunch_supervisor.py"
+        name="automatic_relaunch_supervisor" output="screen" required="true">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="enable_service" value="/f1tenth_dynamic_mpcc/set_enabled"/>
+    <param name="mpcc_command_topic" value="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+    <param name="hardware_command_topic" value="$(arg hardware_command_topic)"/>
+    <param name="vehicle_odom_topic" value="/localization/vehicle_odom"/>
+    <param name="lidar_odom_topic" value="/localization/odom"/>
+    <param name="wheel_odom_topic" value="/tianracer/odom"/>
+    <param name="imu_topic" value="/tianracer/imu"/>
+    <param name="localization_status_topic" value="/localization/status"/>
+    <!-- Supervisor is the sole hardware publisher, so it must match the
+         solver/publisher rate instead of bottlenecking commands at 50 Hz. -->
+    <param name="publish_rate_hz" value="60.0"/>
+
+    <param name="carry_window_s" value="0.25"/>
+    <param name="carry_wheel_speed_mps" value="0.10"/>
+    <param name="carry_z_span_m" value="0.10"/>
+    <param name="carry_xy_span_m" value="0.15"/>
+    <param name="carry_yaw_span_rad" value="0.20"/>
+    <param name="carry_tilt_deg" value="8.0"/>
+    <param name="carry_gyro_xy_radps" value="0.80"/>
+    <param name="carry_confirmation_samples" value="3"/>
+
+    <param name="ground_window_s" value="0.30"/>
+    <param name="ground_z_span_m" value="0.025"/>
+    <param name="ground_xy_span_m" value="0.040"/>
+    <param name="ground_yaw_span_rad" value="0.060"/>
+    <param name="ground_tilt_deg" value="6.0"/>
+    <param name="ground_gyro_xy_radps" value="0.20"/>
+    <param name="ground_wheel_speed_mps" value="0.10"/>
+    <param name="boundary_buffer_m" value="0.08"/>
+    <param name="maximum_heading_error_rad" value="0.60"/>
+    <param name="maximum_pp_recovery_angle_rad" value="1.0471975512"/>
+    <param name="maximum_stationary_speed_mps" value="0.12"/>
+    <param name="minimum_recovery_path_margin_m" value="0.05"/>
+    <param name="recovery_lookahead_minimum_m" value="0.45"/>
+    <param name="recovery_lookahead_maximum_m" value="1.20"/>
+
+    <!-- The Tianracer drivetrain does not produce wheel odometry at 0.15 m/s.
+         Use the requested race-start PP speed so E-stop release produces an
+         immediate, detectable launch before handing off to checkpoint PP. -->
+    <param name="probe_speed_mps" value="2.00"/>
+    <param name="probe_lookahead_m" value="0.90"/>
+    <param name="probe_lookahead_speed_gain_s" value="0.25"/>
+    <param name="probe_lookahead_maximum_m" value="1.20"/>
+    <param name="probe_steering_limit_rad" value="0.55"/>
+    <param name="probe_steering_rate_limit_radps" value="3.0"/>
+    <param name="recovery_minimum_speed_mps" value="1.20"/>
+    <param name="recovery_speed_preview_m" value="3.0"/>
+    <param name="recovery_lateral_acceleration_limit_mps2" value="2.0"/>
+    <param name="recovery_handoff_minimum_speed_mps" value="1.00"/>
+    <param name="recovery_handoff_speed_margin_mps" value="0.20"/>
+
+    <!-- Both alternating lateral grid slots are valid competition starts.
+         Footprint/path margins and heading remain the physical safety gates. -->
+    <param name="race_start_enabled" value="true"/>
+    <param name="race_start_center_x_m" value="0.0"/>
+    <param name="race_start_center_y_m" value="0.0"/>
+    <param name="race_start_radius_m" value="1.20"/>
+    <param name="race_start_s_m" value="0.0"/>
+    <param name="race_start_s_tolerance_m" value="1.50"/>
+    <param name="race_start_maximum_contour_error_m" value="0.60"/>
+    <param name="race_start_maximum_heading_error_deg" value="10.0"/>
+    <param name="race_start_minimum_vehicle_margin_m" value="0.05"/>
+    <param name="race_start_minimum_path_margin_m" value="0.05"/>
+    <param name="race_start_merge_lookahead_m" value="2.50"/>
+    <param name="race_start_speed_mps" value="3.00"/>
+    <param name="race_start_handoff_speed_mps" value="2.70"/>
+    <param name="release_wheel_speed_mps" value="0.08"/>
+    <param name="release_required_samples" value="3"/>
+    <param name="handoff_minimum_mpcc_speed_mps" value="1.80"/>
+    <param name="handoff_maximum_steering_difference_rad" value="0.08"/>
+    <param name="handoff_required_samples" value="3"/>
+    <param name="handoff_blend_duration_s" value="0.20"/>
+  </node>
+
+  <node if="$(eval arg('telemetry_path') != '')"
+        pkg="f1tenth_dynamic_mpcc" type="telemetry_logger.py"
+        name="f1tenth_mpcc_telemetry_logger" output="screen">
+    <param name="path" value="$(arg telemetry_path)"/>
+  </node>
+
+  <node if="$(arg lap_timer)" pkg="f1tenth_dynamic_mpcc"
+        type="lap_timer_node_cpp" name="f1tenth_mpcc_lap_timer" output="screen">
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="odom_topic" value="/localization/vehicle_odom"/>
+    <param name="world_frame" value="map"/>
+    <param name="minimum_start_speed_mps" value="0.5"/>
+    <param name="minimum_lap_time_s" value="3.0"/>
+    <param name="maximum_progress_step_m" value="1.0"/>
+    <param name="maximum_odom_gap_s" value="0.5"/>
+    <param name="log_path" value="$(arg lap_log_path)"/>
+  </node>
+
+  <node if="$(arg rviz)" pkg="rviz" type="rviz"
+        name="rviz_f1tenth_mpcc_auto_relaunch_brake4_asym_60hz_candidate"
+        args="-d $(arg rviz_config)" output="screen"/>
+</launch>

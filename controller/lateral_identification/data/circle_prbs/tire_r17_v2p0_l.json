@@ -1,0 +1,15 @@
+{
+  "run_id": "tire_r17_v2p0_l",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/tire_r17_v2p0_l.bag",
+  "radius_m": 1.7,
+  "wheelbase_m": 0.32,
+  "direction": "left",
+  "speed_command_mps": 2.0,
+  "base_effective_angle_rad": 0.1860581771490038,
+  "base_command_angle_rad": 0.17529047702615852,
+  "excitation_rad": 0.03490658503988659,
+  "duration_s": 30.0,
+  "estimated_lateral_accel_mps2": 2.3529411764705883,
+  "estimated_lap_time_s": 5.340707511102648,
+  "started_wall_time": 1786969293.901407
+}

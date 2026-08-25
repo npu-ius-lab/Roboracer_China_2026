@@ -1,0 +1,95 @@
+# PointLIO high-rate odometry + lightweight 10 Hz map localization.
+map_dir: ""                     # package-relative; empty uses point_lio/localization_map
+model_path: ""                  # package-relative; empty uses models/pca_kitti_best.pt
+lighterbev_device: "cpu"        # cpu, cuda, or auto
+odom_topic: "/aft_mapped_to_init"
+cloud_topic: "/cloud_registered"
+map_frame: "map"
+odom_frame: "odom"
+body_frame: "body"
+
+# Vehicle reference output for control. The physical order is
+# front -> MID360/body -> base_link, so body is 0.135 m ahead of the vehicle
+# center. Keep a distinct TF child name because tianracer/base_link already
+# belongs to the chassis odometry tree.
+vehicle_odom_topic: "/localization/vehicle_odom"
+vehicle_base_frame: "localization_base_link"
+vehicle_base_to_body_x_m: 0.135
+vehicle_base_to_body_y_m: 0.0
+vehicle_base_to_body_z_m: 0.0
+
+# Input is capped at 50 Hz. The expensive backend consumes only the latest
+# synchronized frame at 10 Hz, so queues do not grow when PointLIO is faster.
+frontend_max_hz: 50.0
+# Additional safety limit for corrected map->body odometry sent to control.
+# PointLIO already limits /aft_mapped_to_init through odometry/max_publish_hz.
+control_output_hz: 50.0
+backend_hz: 10.0
+accumulation_frames: 3
+# Keep the full-resolution deskewed cloud for LighterBEV. Nano-GICP is
+# independently reduced by registration_voxel_size at its call boundary.
+input_voxel_size: 0.0
+registration_voxel_size: 0.20
+
+# Lightweight local submap. It is rebuilt only after moving 2 m.
+local_map_radius: 15.0
+local_map_refresh_distance: 2.0
+local_map_max_keyframes: 40
+relocalization_submap_half_width: 5
+
+# PointLIO health guard. Three consecutive implausible increments cause a
+# transition to global recovery instead of corrupting map->odom.
+frontend_max_speed_mps: 15.0
+frontend_max_angular_speed_degps: 180.0
+frontend_max_frame_jump_m: 2.0
+frontend_bad_frame_limit: 3
+
+# Continuous 10 Hz Nano-GICP tracking.
+gicp_threads: 2
+gicp_correspondences: 15
+gicp_max_iterations: 20
+gicp_max_correspondence_distance: 1.2
+continuous_max_score: 0.35
+continuous_min_correspondence_ratio: 0.25
+continuous_max_translation_update: 1.0
+continuous_max_rotation_update_deg: 10.0
+correction_smoothing_alpha: 0.20
+tracking_failure_limit: 10
+
+# Runtime diagnostic thresholds only; they do not reject or modify poses.
+# The first global localization and first corrected output establish a baseline
+# and are excluded. Subsequent output jumps record raw PointLIO motion and the
+# exact map->odom correction/relocalization event that preceded them.
+pose_jump_log_translation_m: 0.20
+pose_jump_log_rotation_deg: 8.0
+
+# Startup/recovery global localization: LighterBEV top-k + local feature pose
+# initialization + Nano-GICP verification + temporal confirmation.
+bev_threads: 2
+relocalization_top_k: 5
+descriptor_max_distance: 0.80
+# Let plausible descriptor candidates reach Nano-GICP. Final acceptance still
+# requires the configured GICP score and correspondence-ratio checks.
+lighterbev_min_inliers: 10
+relocalization_max_score: 0.50
+relocalization_min_correspondence_ratio: 0.20
+# Same 3x2 retrieval panel/topic used by the reference localization RViz.
+lighterbev_enable_viz: true
+lighterbev_viz_topic: "/lio/relocalization/lighterbev_match"
+relocalization_required_confirmations: 1
+hypothesis_max_translation_delta: 1.0
+hypothesis_max_rotation_delta_deg: 5.0
+# Before the first valid map->odom, search aggressively for startup localization.
+relocalization_retry_sec: 0.5
+# Only when the predicted position has no usable prior-map submap, keep odometry
+# output continuous and slow the expensive global search to every 10 s.
+# Frontend jumps, registration drift and global inconsistency still use 0.5 s.
+outside_map_relocalization_retry_sec: 10.0
+
+# Disable periodic global checks after localization. Recovery remains active
+# for frontend jumps, registration drift and global inconsistency.
+global_probe_interval_sec: 0.0
+severe_global_translation_error: 3.0
+severe_global_rotation_error_deg: 15.0
+recovery_settle_sec: 1.0
+reset_pointlio_local_map_on_recovery: true

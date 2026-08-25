@@ -1,0 +1,19 @@
+<launch>
+  <arg name="config" default="$(find raw_cloud_obstacle_perception)/config/raw_cloud_obstacle.yaml"/>
+  <arg name="cloud_topic" default="/cloud_registered_body"/>
+  <arg name="odom_topic" default="/localization/odom"/>
+  <arg name="raceline_csv"
+       default="$(find raw_cloud_obstacle_perception)/data/roboracer_raceline.csv"/>
+  <arg name="boundary_inset" default="0.08"/>
+
+  <node pkg="raw_cloud_obstacle_perception"
+        type="raw_cloud_obstacle_node"
+        name="raw_cloud_obstacle_perception"
+        output="screen">
+    <rosparam command="load" file="$(arg config)"/>
+    <param name="cloud_topic" value="$(arg cloud_topic)"/>
+    <param name="odom_topic" value="$(arg odom_topic)"/>
+    <param name="track_corridor/raceline_csv" value="$(arg raceline_csv)"/>
+    <param name="track_corridor/boundary_inset" value="$(arg boundary_inset)"/>
+  </node>
+</launch>

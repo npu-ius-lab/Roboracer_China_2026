@@ -1,0 +1,37 @@
+topics:
+  odom: /localization/odom
+  targets: /perception/targets_detailed
+  selected_path: /overtake/selected_path
+  diagnostics: /overtake/diagnostics
+  markers: /avoidance/markers
+  track_markers: /avoidance/track_markers
+  red_local_plan: /avoidance/local_plan_red
+  status: /avoidance/status
+  decision: /avoidance/decision
+
+frames:
+  world: map
+
+input:
+  odom_twist_frame: body
+  odom_timeout_s: 0.30
+  target_timeout_s: 0.45
+  target_message_timeout_s: 0.80
+  target_measurement_max_age_s: 0.80
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.30
+  maximum_odom_extrapolation_s: 0.10
+
+classification:
+  obstacle_half_width_m: 0.18
+  track_overlap_margin_m: 0.03
+  maximum_projection_distance_m: 1.20
+
+state_machine:
+  prepare_time: 0.40
+  follow_target_loss_timeout: 1.00
+  return_confirm_gap: 0.45
+  return_ey_tolerance: 0.10
+  abort_center_distance: 0.30
+  abort_recovery_distance: 0.55
+  reference_hold_timeout_s: 10.0

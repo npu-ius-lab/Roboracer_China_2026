@@ -1,0 +1,56 @@
+# Hardware shadow planner. It publishes visualization and status only.
+topics:
+  odom: /localization/odom
+  targets: /perception/targets_detailed
+  left_path: /overtake/candidate_left
+  right_path: /overtake/candidate_right
+  selected_path: /overtake/selected_path
+  markers: /overtake/markers
+  diagnostics: /overtake/diagnostics
+  valid_area: /overtake/valid_area
+
+frames:
+  world: map
+
+input:
+  odom_twist_frame: body
+  odom_timeout_s: 0.30
+  # Message liveness, confirmed-target loss and sensor timestamp age are
+  # intentionally independent. Empty arrays still prove perception is alive.
+  target_timeout_s: 0.45
+  # Point-LIO may publish aligned scans near 2 Hz on the car. Allow one
+  # delayed scan without treating a live empty TargetArray stream as dead.
+  target_message_timeout_s: 0.80
+  target_loss_timeout_s: 0.80
+  target_measurement_max_age_s: 0.80
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.30
+  maximum_odom_extrapolation_s: 0.10
+
+planner:
+  ego_width: 0.24
+  ego_length: 0.40
+  opponent_width: 0.35
+  opponent_length: 0.40
+  boundary_margin: 0.08
+  minimum_boundary_clearance_for_pass: 0.03
+  lateral_clearance: 0.06
+  longitudinal_clearance: 0.20
+  detection_distance: 6.0
+  trigger_distance: 4.0
+  trigger_ttc: 4.0
+  minimum_closing_speed: 0.10
+  minimum_lane_change_length: 0.80
+  nominal_lane_change_length: 1.60
+  pass_hold_after_opponent: 0.70
+  return_length: 1.60
+  horizon: 7.0
+  maximum_candidate_length: 12.0
+  sample_ds: 0.10
+  minimum_plan_speed: 0.80
+  maximum_plan_speed: 3.00
+  pass_speed_advantage: 0.60
+  maximum_path_curvature: 2.50
+  maximum_track_curvature_for_pass: 1.20
+  maximum_projection_distance: 1.00
+  preferred_side: left

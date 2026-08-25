@@ -1,0 +1,39 @@
+# Catkin/CMake outputs
+build/
+devel/
+install/
+logs/
+log/
+.catkin_tools/
+.catkin_workspace
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+CTestTestfile.cmake
+CTestConfiguration.ini
+CTestCustom.cmake
+catkin_generated/
+atomic_configure/
+gtest/
+
+# Runtime data
+*.bag
+*.bag.active
+*.jsonl
+__pycache__/
+*.py[cod]
+.ros/
+
+# Generated solver/cache data
+acados_ocp_*/
+c_generated_code/
+
+# catkin top-level links generated when building a nonstandard source folder
+third_party/CMakeLists.txt
+residual/src/CMakeLists.txt
+simulation_ws/src/CMakeLists.txt
+
+# Upstream reference checkout/archive used only while deriving the track model
+Roboracer_China_2025/
+Roboracer_China_2025.zip

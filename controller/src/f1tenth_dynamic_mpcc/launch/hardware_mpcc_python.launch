@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Explicit legacy/reference Python runtime. The default hardware launch
+       remains the C++ realtime implementation. -->
+  <arg name="track" default="virtual_track"/>
+  <arg name="formulation" default="baseline"/>
+  <arg name="allow_real_hardware" default="false"/>
+  <arg name="start_enabled" default="true"/>
+  <arg name="rviz" default="true"/>
+  <arg name="rviz_config" default="$(find f1tenth_dynamic_mpcc)/rviz/nav.rviz"/>
+  <arg name="telemetry_path" default=""/>
+  <!-- Python currently solves below the requested 20 Hz control rate. Keep
+       enough distance per solve for the closed-loop track constraint. -->
+  <arg name="speed_cap_mps" default="1.50"/>
+
+  <node pkg="f1tenth_dynamic_mpcc"
+        type="mpcc_node.py"
+        name="f1tenth_dynamic_mpcc_python"
+        output="screen">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/controller.yaml"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/vehicle.yaml"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="start_enabled" value="$(arg start_enabled)"/>
+    <param name="command_topic" value="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <!-- Measured Python control period: median 0.187 s, max 0.307 s. This
+         avoids false stale-command drops while retaining bounded fail-close. -->
+    <param name="command_timeout_s" value="0.50"/>
+    <param name="runtime_speed_cap_mps" value="$(arg speed_cap_mps)"/>
+    <param name="telemetry_path" value="$(arg telemetry_path)"/>
+  </node>
+
+  <node if="$(arg allow_real_hardware)"
+        pkg="f1tenth_dynamic_mpcc"
+        type="ackermann_command_gate.py"
+        name="f1tenth_mpcc_command_gate_python"
+        output="screen">
+    <param name="allow_real_hardware" value="true"/>
+    <param name="start_enabled" value="$(arg start_enabled)"/>
+    <param name="collision_required" value="false"/>
+    <param name="input_topic" value="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+    <param name="output_topic" value="/tianracer/ackermann_cmd"/>
+  </node>
+
+  <node if="$(arg rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="rviz_f1tenth_mpcc_nav_python"
+        args="-d $(arg rviz_config)"
+        output="screen"/>
+</launch>

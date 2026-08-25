@@ -1,0 +1,65 @@
+{
+  "track_name": "racelinev3",
+  "status": "offline_candidate_not_deployed",
+  "source": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/tracks/racelineV2/raceline.csv",
+  "output": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/tracks/racelinev3/raceline.csv",
+  "transition": {
+    "join_start_s_m": 69.5,
+    "join_end_s_m": 82.0,
+    "original_segment_length_m": 12.5,
+    "candidate_segment_length_m": 12.933779335103734,
+    "entry_tangent_scale": 11.5,
+    "exit_tangent_scale": 16.0,
+    "start_curvature_radpm": -0.2682580303033862,
+    "end_curvature_radpm": 0.06678681416300503,
+    "position_closure_error_m": 0.0,
+    "construction": "single_G2_quintic_arc_like_transition"
+  },
+  "new_join_start_s_m": 69.6592746330923,
+  "new_join_end_s_m": 82.54898293134165,
+  "transition_speed_cap_mps": 4.0,
+  "length_m": 87.75971607318715,
+  "length_change_m": 0.4961467188752664,
+  "required_centerline_clearance_m": 0.45,
+  "transition_minimum_left_width_m": 0.4825,
+  "transition_minimum_right_width_m": 0.5275000000000001,
+  "transition_minimum_width_m": 0.4825,
+  "maximum_abs_implied_steer_rad": 0.47664710179034847,
+  "maximum_lateral_acceleration_mps2": 3.200000000000001,
+  "maximum_longitudinal_acceleration_mps2": 2.4000000000000075,
+  "maximum_longitudinal_deceleration_mps2": 1.5000000000000047,
+  "old_transition_max_abs_curvature_gradient_radpm2": 2.1860914683256087,
+  "new_transition_max_abs_curvature_gradient_radpm2": 0.429089866225123,
+  "new_transition_local_speed_minima": [
+    {
+      "s_m": 72.40176576037939,
+      "speed_mps": 2.8234233773445636
+    },
+    {
+      "s_m": 78.70949535313972,
+      "speed_mps": 3.223014621315582
+    }
+  ],
+  "corridor": {
+    "roi_pixels": [
+      75,
+      85,
+      540,
+      375
+    ],
+    "closing_iterations": 3,
+    "enclosed_free_component_areas_px": [
+      62004,
+      18193,
+      2009,
+      581,
+      250,
+      96,
+      84
+    ],
+    "selected_outer_contour_area_px": 88746.0,
+    "selected_inner_contour_area_px": 28699.5,
+    "corridor_area_px": 60080
+  },
+  "comparison_plot": "dynamic_arc_candidate_comparison.png"
+}

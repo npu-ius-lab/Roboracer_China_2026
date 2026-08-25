@@ -1,0 +1,93 @@
+# V5 Jubu live runtime contract. All nodes in this path are C++.
+topics:
+  odom: /localization/odom
+  roi_cloud: /perception/roi_cloud
+  local_reference: /v5_jubu/local_reference
+  candidate_left: /v5_jubu/candidate_left
+  candidate_right: /v5_jubu/candidate_right
+  selected_path: /v5_jubu/selected_path
+  valid_area: /v5_jubu/valid_area
+  health: /v5_jubu/health
+  speed_cap: /v5_jubu/local_speed_cap
+  state: /v5_jubu/state
+  status: /v5_jubu/status
+  diagnostics: /v5_jubu/candidate_diagnostics
+
+frames:
+  world: map
+  roi_primary: body
+  roi_secondary: body_leveled
+
+input:
+  odom_timeout_s: 0.30
+  cloud_timeout_s: 0.50
+  cloud_measurement_max_age_s: 0.80
+  cloud_future_tolerance_s: 0.05
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.30
+  maximum_odom_extrapolation_s: 0.10
+  obstacle_memory_timeout_s: 2.00
+  # Used until two ROI observations give a track-coordinate velocity.
+  unknown_obstacle_speed_mps: 1.00
+  obstacle_speed_min_mps: -0.50
+  obstacle_speed_max_mps: 3.00
+  obstacle_speed_filter_alpha: 0.35
+  obstacle_association_distance_m: 1.50
+
+# /perception/roi_cloud is already ego-box removed, Z-clipped and split from
+# the ground. This second stage rejects track-boundary bands and sparse noise.
+roi:
+  minimum_q: 0.30
+  maximum_q: 6.00
+  boundary_strip: 0.10
+  voxel_size: 0.10
+  minimum_component_points: 8
+  maximum_component_length: 0.80
+  maximum_component_width: 0.70
+  minimum_obstacle_top_z: 0.02
+
+planner:
+  ego_width: 0.24
+  ego_length: 0.40
+  opponent_width: 0.35
+  opponent_length: 0.40
+  boundary_margin: 0.08
+  minimum_boundary_clearance_for_pass: 0.03
+  lateral_clearance: 0.06
+  longitudinal_clearance: 0.20
+  detection_distance: 6.00
+  trigger_distance: 4.00
+  trigger_ttc: 4.00
+  minimum_closing_speed: 0.10
+  minimum_lane_change_length: 0.80
+  nominal_lane_change_length: 1.60
+  pass_hold_after_opponent: 0.70
+  return_length: 1.60
+  maximum_candidate_length: 12.00
+  sample_ds: 0.10
+  minimum_plan_speed: 0.80
+  maximum_plan_speed: 2.20
+  pass_speed_advantage: 0.60
+  maximum_path_curvature: 1.70
+  maximum_track_curvature_for_pass: 1.20
+  preferred_side: left
+
+state_machine:
+  prepare_time_s: 0.40
+  follow_target_loss_timeout_s: 1.00
+  return_confirm_gap_m: 0.45
+  return_ey_tolerance_m: 0.10
+  abort_recovery_distance_m: 0.55
+
+confirmation:
+  minimum_frames: 2
+  minimum_duration_s: 0.15
+  maximum_gap_s: 0.80
+
+control:
+  update_rate_hz: 20.0
+  cruise_speed_cap_mps: 3.00
+  pass_speed_cap_mps: 2.20
+  follow_minimum_speed_mps: 0.40
+  follow_gap_m: 0.75
+  follow_gap_gain: 0.55

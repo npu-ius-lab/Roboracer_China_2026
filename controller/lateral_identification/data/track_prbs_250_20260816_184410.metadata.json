@@ -1,0 +1,94 @@
+{
+  "abort_reason": "initial one-second predicted body margin 0.380 m is below 0.420 m",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/track_prbs_250_20260816_184410.bag",
+  "body_width_m": 0.24,
+  "command_topic": "/tianracer/ackermann_cmd",
+  "completed": false,
+  "completed_distance_m": 0.0,
+  "control_loop": {
+    "maximum_loop_dt_s": 0.0,
+    "missed_deadlines": 0,
+    "target_hz": 50.0
+  },
+  "effective_profile": {
+    "excitation_kind": "prbs",
+    "excitation_rad": 0.025,
+    "maximum_laps": 2.0,
+    "name": "track_prbs_250",
+    "speed_mps": 2.5,
+    "timeout_s": 75.0,
+    "warmup_s": 2.0
+  },
+  "excitation_active_time_s": 0.0,
+  "excitation_enabled_time_s": 0.0,
+  "excitation_rad": 0.025,
+  "excitation_suppression_count": 0,
+  "excitation_transition_count": 0,
+  "identified_steering_model": {
+    "bias_rad": -0.015,
+    "dead_time_s": 0.09,
+    "gain": 1.147,
+    "time_constant_s": 0.073
+  },
+  "imu_topic": "/livox/imu",
+  "maximum_abs_contour_error_m": 0.17665012780770964,
+  "minimum_excitation_predicted_margin_m": 0.380225848968158,
+  "minimum_physical_margin_m": 0.4007312891768472,
+  "minimum_predicted_margin_m": 0.380225848968158,
+  "odom_topic": "/localization/vehicle_odom",
+  "profile": "track_prbs_250",
+  "run_id": "track_prbs_250_20260816_184410",
+  "safety": {
+    "actuator_model_envelope": [
+      {
+        "bias": 0.0,
+        "delay": 0.0,
+        "gain": 1.0,
+        "tau": 0.08
+      },
+      {
+        "bias": -0.0125,
+        "delay": 0.075,
+        "gain": 1.158,
+        "tau": 0.085
+      },
+      {
+        "bias": -0.0183,
+        "delay": 0.105,
+        "gain": 1.136,
+        "tau": 0.062
+      },
+      {
+        "bias": -0.025,
+        "delay": 0.135,
+        "gain": 1.08,
+        "tau": 0.11
+      },
+      {
+        "bias": 0.005,
+        "delay": 0.135,
+        "gain": 1.2,
+        "tau": 0.1
+      }
+    ],
+    "current_abort_margin_m": 0.27,
+    "excitation_predicted_margin_m": 0.44999999999999996,
+    "predicted_abort_margin_m": 0.42,
+    "prediction_horizon_s": 1.8,
+    "start_margin_m": 0.25
+  },
+  "safety_predictor": {
+    "abort_age_s": 1.0,
+    "freshness_limit_s": 0.4,
+    "maximum_compute_s": 0.13641260899998997,
+    "mean_compute_s": 0.13641260899998997,
+    "mode": "spawned_process",
+    "samples": 1
+  },
+  "speed_cap_mps": 2.5,
+  "stamped_command_topic": "/f1tenth_identification/command_stamped",
+  "started_ros_time": 1786877050.6965466,
+  "track_csv": "/home/tianbot/f1tenth_residual_controller_ws/src/f1tenth_dynamic_mpcc/data/tracks/virtual_track/raceline.csv",
+  "track_length_m": 21.755095333043123,
+  "wheelbase_m": 0.32
+}
