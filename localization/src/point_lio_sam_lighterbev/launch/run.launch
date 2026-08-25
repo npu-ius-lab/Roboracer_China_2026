@@ -1,0 +1,57 @@
+<launch>
+  <!-- Supported Point-LIO frontends: mid360, avia, horizon, ouster64, velody16. -->
+  <arg name="lidar" default="mid360" />
+  <arg name="rviz" default="true" />
+  <arg name="run_frontend" default="true" />
+  <arg name="use_sim_time" default="false" />
+  <arg name="map_name" default="map_save" />
+  <arg name="local_map_backend" default="ivox" />
+  <arg name="odom_topic" default="/aft_mapped_to_init" />
+  <arg name="cloud_topic" default="/cloud_registered" />
+  <arg name="model_path"
+       default="$(find point_lio_sam_lighterbev)/models/pca_kitti_best.pt" />
+  <arg name="bev_geometry_config"
+       default="$(find point_lio_sam_lighterbev)/config/bev_geometry.yaml" />
+
+  <rosparam command="load" file="$(find point_lio_sam_lighterbev)/config/config.yaml" />
+  <rosparam command="load" file="$(arg bev_geometry_config)" />
+  <param name="/use_sim_time" value="$(arg use_sim_time)" />
+  <param name="/basic/odom" value="$(arg odom_topic)" />
+  <param name="/basic/cloud" value="$(arg cloud_topic)" />
+  <param name="/LighterBEV/model_path" value="$(arg model_path)" />
+  <param name="/result/seq_name" value="$(arg map_name)" />
+
+  <node pkg="point_lio_sam_lighterbev"
+        type="point_lio_sam_lighterbev_node"
+        name="point_lio_sam_lighterbev_node"
+        output="screen" />
+
+  <node if="$(arg rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="rviz_point_lio_sam"
+        args="-d $(find point_lio_sam_lighterbev)/config/sam_rviz.rviz"
+        launch-prefix="nice" />
+
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'avia')"
+           file="$(find point_lio)/launch/mapping_avia.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'mid360')"
+           file="$(find point_lio)/launch/mapping_mid360.launch">
+    <arg name="rviz" value="false" />
+    <arg name="local_map_backend" value="$(arg local_map_backend)" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'horizon')"
+           file="$(find point_lio)/launch/mapping_horizon.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'ouster64')"
+           file="$(find point_lio)/launch/mapping_ouster64.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'velody16')"
+           file="$(find point_lio)/launch/mapping_velody16.launch">
+    <arg name="rviz" value="false" />
+  </include>
+</launch>

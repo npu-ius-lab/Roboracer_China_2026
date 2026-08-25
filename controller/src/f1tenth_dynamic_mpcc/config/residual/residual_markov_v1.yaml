@@ -1,0 +1,212 @@
+schema_version: 1
+model_type: robust_ridge_derivative_residual
+feature_names:
+- bias
+- vx
+- vy
+- yaw_rate
+- delta
+- speed_cmd
+- steer_cmd
+- speed_error
+- steer_error
+- vx_yaw_rate
+- vy_yaw_rate
+- abs_vx_vy
+- abs_vx_yaw_rate
+- vx_tan_delta
+- vx_steer_cmd
+- vx2_steer_cmd
+output_names:
+- vx_accel_residual
+- vy_accel_residual
+- yaw_accel_residual
+feature_mean:
+- 0.0
+- 2.1361212748742053
+- 0.00047282893930048294
+- 0.6233777955280088
+- 0.13313899699700266
+- 2.1464764336742737
+- 0.1335965464829139
+- 0.010355158800070001
+- 0.00045754948591149146
+- 1.3455485566723766
+- 0.022916877619597674
+- -0.03885884245056802
+- 1.3455485566723766
+- 0.25895895308108857
+- 0.25602827303774645
+- 0.5872550349221834
+feature_scale:
+- 1.0
+- 0.852152236202736
+- 0.07623799078079009
+- 0.5260928369035858
+- 0.08981238820220108
+- 0.7722039438737776
+- 0.09104407956439038
+- 0.29521644749559467
+- 0.018098847255443053
+- 1.3279871380432626
+- 0.072599003839761
+- 0.1737227071749821
+- 1.3279871380432626
+- 0.17482102875818523
+- 0.17581433516835285
+- 0.5152631221876691
+coefficients_feature_by_output:
+- - -0.023541754281456766
+  - -0.2815950786869563
+  - -4.730418289713419
+- - 0.1289812592160672
+  - -0.033134553158926716
+  - -0.31260699073967363
+- - 0.5936727464451371
+  - 1.2709777357013876
+  - 1.2513987298966165
+- - 1.260257097095832
+  - -0.511605144569844
+  - 7.944873616716527
+- - -0.3761209024866454
+  - -0.02056908957021044
+  - -0.22046201908720203
+- - 0.31505849943050135
+  - -0.04182686623909759
+  - -0.26934840122907033
+- - -0.3247988797555677
+  - -0.03136495080158938
+  - -0.25649635226372425
+- - 0.4517964648418803
+  - -0.013763418448163138
+  - 0.19781028123838712
+- - 0.23257290338957384
+  - -0.05570708480140242
+  - -0.1962696193314593
+- - -0.4843721731492965
+  - 0.46299586670523296
+  - -1.4139820711244324
+- - -0.12782610130572886
+  - -0.00975721216203126
+  - 0.281131111045968
+- - -0.4047434710557656
+  - -0.556320243210814
+  - -0.38732396021882615
+- - -0.4843721731493058
+  - 0.4629958667052686
+  - -1.4139820711246895
+- - 0.5896742619650408
+  - -0.2913477675890753
+  - -4.773786523243106
+- - -1.238193928475124
+  - -0.126566299093269
+  - -3.759482360767237
+- - 0.6587902584220783
+  - 0.21898899768751673
+  - 2.8041372617907987
+output_limits:
+- 4.0
+- 8.0
+- 18.0
+feature_abs_z_limit:
+- 1.0
+- 2.1135544899288052
+- 2.543461733721622
+- 3.179719933564945
+- 2.484606101064096
+- 2.3556043837781355
+- 2.458969246843327
+- 2.5042461557530893
+- 4.405496748090604
+- 3.8434195510261504
+- 4.128662136451816
+- 2.6962373831075563
+- 3.8434195510261504
+- 3.720939180900558
+- 3.7113656968548328
+- 3.9876455551946544
+ood_fade_ratio: 1.5
+metadata:
+  created_at: '2026-08-14T18:13:28.853129'
+  dataset_paths:
+  - data/processed/mpcc_20260814_164049.npz
+  - data/processed/residual_mpcc_3mps_20260814_180454.npz
+  training_samples: 4501
+  command_history_s:
+  - 0.0
+  feature_set: markov_v1
+  nominal_vehicle_config:
+    schema_version: 1
+    vehicle:
+      wheelbase: 0.32
+      mass: 3.8
+      yaw_inertia: 0.06
+      lf: 0.195
+      lr: 0.125
+      tire_cornering_front: 94.274243
+      tire_cornering_rear: 100.948912
+      vx_epsilon: 0.2
+    actuator:
+      speed_gain: 1.0
+      speed_time_constant_s: 0.2
+      speed_dead_time_s: 0.13
+      steering_gain: 1.0
+      steering_bias_rad: 0.0
+      steering_time_constant_s: 0.08
+      steering_dead_time_s: 0.0
+    limits:
+      max_speed_mps: 4.0
+      max_steer_rad: 0.55
+      max_accel_mps2: 2.4
+      max_decel_mps2: 4.0
+      max_steer_rate_radps: 5.5
+    model:
+      integration_substeps: 5
+      low_speed_blend_center_mps: 0.45
+      low_speed_blend_width_mps: 0.08
+      low_speed_vy_tau_s: 0.12
+      low_speed_yaw_tau_s: 0.1
+  training_config:
+    schema_version: 1
+    dataset:
+      feature_set: markov_v1
+      minimum_speed_mps: 0.3
+      minimum_dt_s: 0.01
+      maximum_dt_s: 0.08
+      maximum_pose_step_m: 0.35
+      maximum_yaw_step_rad: 0.5
+      command_history_s:
+      - 0.0
+      smoothing_window: 7
+    training:
+      validation_fraction: 0.25
+      ridge_alpha: 4.0
+      robust_iterations: 4
+      huber_delta: 2.5
+      random_seed: 7
+      residual_accel_limits:
+      - 4.0
+      - 8.0
+      - 18.0
+    evaluation:
+      rollout_horizon_s: 1.0
+      plot_duration_s: 8.0
+  deployment_scale: 0.75
+  validation_metrics:
+    validation_samples: 1501
+    outputs:
+    - vx_accel_residual
+    - vy_accel_residual
+    - yaw_accel_residual
+    nominal_one_step_rmse:
+    - 0.03627042105921721
+    - 0.028886857736276163
+    - 0.19812006496874313
+    corrected_one_step_rmse:
+    - 0.02845303905705008
+    - 0.016440699025210583
+    - 0.05992473921996912
+    improvement_percent:
+    - 21.553050044288202
+    - 43.085886407906784
+    - 69.75332143696637

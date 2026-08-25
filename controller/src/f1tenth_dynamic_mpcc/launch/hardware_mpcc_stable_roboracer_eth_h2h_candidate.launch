@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<!-- Additive C++ head-to-head candidate. Frozen ROBORACER files are referenced
+     only; the original launch, controller configuration and raceline remain
+     byte-for-byte unchanged. -->
+<launch>
+  <arg name="track" default="raceline_smooth"/>
+  <arg name="controller_config" default="candidates/stable_roboracer/controller.yaml"/>
+  <arg name="vehicle_config" default="vehicle_stable_v3_racelineV3.yaml"/>
+  <arg name="runtime_config" default="$(find f1tenth_dynamic_mpcc)/config/candidates/stable_roboracer_eth_h2h/cpp_runtime.yaml"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="race"/>
+  <arg name="allow_real_hardware" default="false"/>
+  <arg name="start_planner" default="true"/>
+  <arg name="start_controller" default="false"/>
+  <arg name="controller_start_enabled" default="false"/>
+  <arg name="rviz" default="false"/>
+  <arg name="rviz_config" default="$(find f1tenth_dynamic_mpcc)/rviz/stable_roboracer.rviz"/>
+  <arg name="telemetry_path" default=""/>
+  <arg name="lap_timer" default="false"/>
+  <arg name="lap_log_path" default=""/>
+  <arg name="runtime_speed_cap_mps" default="4.0"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_residual_mpcc/acados_stable_roboracer_eth_h2h"/>
+  <arg name="residual_model_path" default="$(find f1tenth_dynamic_mpcc)/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"/>
+  <arg name="residual_feature_set" default="markov_v1"/>
+  <arg name="hardware_command_topic" default="/tianracer/ackermann_cmd"/>
+
+  <!-- Point-cloud target extraction, velocity memory, ETH-style state machine,
+       Frenet candidate generation and reference publication are all C++17. -->
+  <node if="$(arg start_planner)" pkg="f1tenth_dynamic_mpcc"
+        type="v5_jubu_local_planner_cpp"
+        name="roboracer_eth_h2h_planner_cpp" output="screen" required="true">
+    <rosparam command="load" file="$(arg runtime_config)"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+  </node>
+
+  <!-- Isolated local-reference MPCC. It uses the frozen ROBORACER controller,
+       vehicle, residual model and raceline, and never owns the hardware topic. -->
+  <node if="$(arg start_controller)" pkg="f1tenth_dynamic_mpcc"
+        type="mpcc_node_auto_relaunch_jubu_cpp"
+        name="f1tenth_dynamic_mpcc_roboracer_eth_h2h"
+        output="screen" required="true">
+    <env name="MPLBACKEND" value="Agg"/>
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="$(arg controller_start_enabled)"/>
+    <param name="command_topic" value="/roboracer_eth_h2h/mpcc/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="telemetry_topic" value="/roboracer_eth_h2h/mpcc/telemetry"/>
+    <param name="markers_topic" value="/roboracer_eth_h2h/mpcc/markers"/>
+    <param name="prediction_topic" value="/roboracer_eth_h2h/mpcc/prediction"/>
+    <param name="telemetry_path" value="$(arg telemetry_path)"/>
+    <param name="runtime_speed_cap_mps" value="$(arg runtime_speed_cap_mps)"/>
+    <param name="generated_dir" value="$(arg generated_dir)"/>
+    <param name="residual_model_path" value="$(arg residual_model_path)"/>
+    <param name="residual_feature_set" value="$(arg residual_feature_set)"/>
+
+    <!-- Exact frozen ROBORACER controller overrides. -->
+    <param name="startup_steering_rate_override" value="3.4"/>
+    <param name="publisher_steering_rate_override" value="3.4"/>
+    <param name="pp_steering_rate_override" value="3.4"/>
+    <param name="oob_recovery_enabled" value="true"/>
+    <param name="cost_contour_override" value="45.0"/>
+    <param name="cost_heading_race_override" value="1.0"/>
+    <param name="cost_steering_command_rate_override" value="0.60"/>
+    <param name="profile_max_decel_override" value="4.0"/>
+    <param name="risk_tiering_enabled" value="true"/>
+    <param name="near_track_horizon_override" value="0.40"/>
+    <param name="predictive_speed_hold_override" value="0.50"/>
+    <param name="predictive_speed_recovery_override" value="1.0"/>
+    <param name="pp_current_margin_override" value="0.02"/>
+    <param name="pp_confirmation_cycles_override" value="2"/>
+
+    <param name="local_reference_topic" value="/roboracer_eth_h2h/local_reference"/>
+    <param name="local_speed_cap_topic" value="/roboracer_eth_h2h/local_speed_cap"/>
+    <param name="local_state_topic" value="/roboracer_eth_h2h/state"/>
+    <param name="local_reference_status_topic" value="/roboracer_eth_h2h/mpcc_reference_status"/>
+    <param name="planner_health_topic" value="/roboracer_eth_h2h/health"/>
+    <param name="planner_required" value="true"/>
+    <param name="planner_health_timeout_s" value="0.45"/>
+    <param name="local_reference_timeout_s" value="0.30"/>
+    <param name="local_reference_max_start_distance_m" value="0.75"/>
+    <param name="local_reference_min_length_m" value="2.00"/>
+    <param name="local_reference_max_curvature_ratio" value="0.85"/>
+    <param name="local_reference_return_tolerance_m" value="0.12"/>
+    <param name="local_reference_default_speed_cap_mps" value="4.00"/>
+
+    <!-- C++ dual-grid launch path. The previous H2H launch omitted these
+         effective bindings, so every start used the slow generic checkpoint
+         recovery. A known grid start may begin within the extracted boundary
+         tolerance, but its rollout still has to pass the C++ safety manager. -->
+    <param name="race_start_enabled" value="true"/>
+    <param name="race_start_center_x_m" value="0.0"/>
+    <param name="race_start_center_y_m" value="0.0"/>
+    <param name="race_start_radius_m" value="2.00"/>
+    <param name="race_start_s_m" value="0.0"/>
+    <param name="race_start_s_tolerance_m" value="1.50"/>
+    <param name="race_start_maximum_contour_error_m" value="0.60"/>
+    <param name="race_start_maximum_heading_error_deg" value="20.0"/>
+    <param name="race_start_minimum_vehicle_margin_m" value="-0.05"/>
+    <param name="race_start_merge_lookahead_m" value="2.50"/>
+    <param name="race_start_speed_mps" value="4.00"/>
+    <param name="race_start_lateral_acceleration_limit_mps2" value="3.20"/>
+  </node>
+
+  <!-- Sole real chassis publisher. The C++ gate starts DISARMED and refuses
+       arming until the C++ planner health stream is fresh and true. -->
+  <group if="$(arg start_controller)">
+    <node if="$(arg allow_real_hardware)" pkg="f1tenth_dynamic_mpcc"
+          type="v5_jubu_command_gate_cpp"
+          name="roboracer_eth_h2h_command_gate_cpp"
+          output="screen" required="true">
+      <param name="allow_real_hardware" value="true"/>
+      <param name="input_topic" value="/roboracer_eth_h2h/mpcc/ackermann_cmd_stamped"/>
+      <param name="output_topic" value="$(arg hardware_command_topic)"/>
+      <param name="planner_health_topic" value="/roboracer_eth_h2h/health"/>
+      <param name="mpcc_enable_service" value="/f1tenth_dynamic_mpcc_roboracer_eth_h2h/set_enabled"/>
+      <param name="state_topic" value="/roboracer_eth_h2h/command_gate_state"/>
+      <param name="start_armed" value="false"/>
+      <param name="planner_health_timeout_s" value="0.45"/>
+      <param name="command_timeout_s" value="0.25"/>
+      <param name="command_startup_timeout_s" value="1.0"/>
+      <param name="publish_rate_hz" value="60.0"/>
+      <!-- Only FORWARDING commands are floored. Gate safety states retain
+           their exact zero command. -->
+      <param name="minimum_forward_speed_mps" value="1.0"/>
+    </node>
+
+    <node if="$(arg lap_timer)" pkg="f1tenth_dynamic_mpcc"
+          type="lap_timer_node_cpp"
+          name="f1tenth_mpcc_lap_timer_roboracer_eth_h2h" output="screen">
+      <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg controller_config)"/>
+      <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/$(arg vehicle_config)"/>
+      <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+      <param name="odom_topic" value="/localization/vehicle_odom"/>
+      <param name="world_frame" value="map"/>
+      <param name="minimum_start_speed_mps" value="0.5"/>
+      <param name="minimum_lap_time_s" value="3.0"/>
+      <param name="maximum_progress_step_m" value="1.0"/>
+      <param name="maximum_odom_gap_s" value="0.5"/>
+      <param name="log_path" value="$(arg lap_log_path)"/>
+    </node>
+
+    <node if="$(arg rviz)" pkg="rviz" type="rviz"
+          name="rviz_roboracer_eth_h2h"
+          args="-d $(arg rviz_config)" output="screen"/>
+  </group>
+</launch>

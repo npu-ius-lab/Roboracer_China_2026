@@ -1,0 +1,105 @@
+{
+  "model_path": "/home/ros/f1tenth_residual_v2_ws/data/models/residual_v2_gpu_combined_20260814_222212.yaml",
+  "model_version": "V2",
+  "backend": "torch",
+  "feature_set": "markov_history_v2",
+  "feature_count": 31,
+  "train_sources": [
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/run01.npz",
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/mpcc_40hz.npz",
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/lateral_mpcc.npz",
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/residual_3mps.npz",
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/mpcc_164049.npz"
+  ],
+  "validation_sources": [
+    "/home/ros/f1tenth_residual_v2_ws/data/training_runs/v2_combined_20260814_211856/processed/run02.npz"
+  ],
+  "final_test_sources": [],
+  "lateral_only": false,
+  "stage_a_before_refine": {
+    "train": [
+      {
+        "vx_rmse": 0.035265794803786096,
+        "vy_rmse": 0.039758176167768375,
+        "yaw_rate_rmse": 0.23665413491841122,
+        "n": 3204
+      },
+      {
+        "vx_rmse": 0.03929341842176303,
+        "vy_rmse": 0.040346615661447455,
+        "yaw_rate_rmse": 0.219975757448192,
+        "n": 3187
+      },
+      {
+        "vx_rmse": 0.036902555651442244,
+        "vy_rmse": 0.04359024976069795,
+        "yaw_rate_rmse": 0.2219145163812616,
+        "n": 3213
+      },
+      {
+        "vx_rmse": 0.0392387399195608,
+        "vy_rmse": 0.03575619473457522,
+        "yaw_rate_rmse": 0.20822206261420953,
+        "n": 4699
+      },
+      {
+        "vx_rmse": 0.04362230543982551,
+        "vy_rmse": 0.031240598420439934,
+        "yaw_rate_rmse": 0.16119309966208373,
+        "n": 1301
+      }
+    ]
+  },
+  "metrics": {
+    "train": [
+      {
+        "vx_rmse": 0.03891271142366469,
+        "vy_rmse": 0.04358096706126167,
+        "yaw_rate_rmse": 0.2585368443258152,
+        "n": 3204
+      },
+      {
+        "vx_rmse": 0.04195180649523679,
+        "vy_rmse": 0.04410607691890992,
+        "yaw_rate_rmse": 0.23622629684200983,
+        "n": 3187
+      },
+      {
+        "vx_rmse": 0.0409248757829152,
+        "vy_rmse": 0.045665345603877354,
+        "yaw_rate_rmse": 0.24117101966239587,
+        "n": 3213
+      },
+      {
+        "vx_rmse": 0.040000440037986904,
+        "vy_rmse": 0.039349289462076595,
+        "yaw_rate_rmse": 0.2207490363175012,
+        "n": 4699
+      },
+      {
+        "vx_rmse": 0.04474081860949803,
+        "vy_rmse": 0.034680311109729564,
+        "yaw_rate_rmse": 0.1690623623163148,
+        "n": 1301
+      }
+    ],
+    "validation": [
+      {
+        "vx_rmse": 0.040537537367122685,
+        "vy_rmse": 0.04071204507224289,
+        "yaw_rate_rmse": 0.20321434981977457,
+        "n": 2226
+      }
+    ],
+    "final_test": []
+  },
+  "stage_b": {
+    "enabled": true,
+    "windows": 362,
+    "success": true,
+    "message": "torch_lbfgs",
+    "initial_loss": 0.35315886377408257,
+    "final_loss": 0.20863289774980917,
+    "iterations": 27
+  }
+}

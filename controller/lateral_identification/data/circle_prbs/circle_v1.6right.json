@@ -1,0 +1,20 @@
+{
+  "run_id": "circle_v1.6right",
+  "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.6right.bag",
+  "radius_m": 2.0,
+  "wheelbase_m": 0.32,
+  "direction": "right",
+  "speed_command_mps": 1.6,
+  "base_effective_angle_rad": -0.1586552621864014,
+  "base_command_angle_rad": -0.12524434366730725,
+  "excitation_rad": 0.026179938779914945,
+  "duration_s": 30.0,
+  "estimated_lateral_accel_mps2": 1.2800000000000002,
+  "estimated_lap_time_s": 3.9269908169872414,
+  "started_wall_time": 1786879348.6768184,
+  "profile": "circle_prbs",
+  "command_topic": "/tianracer/ackermann_cmd",
+  "stamped_command_topic": "/f1tenth_identification/command_stamped",
+  "odom_topic": "/localization/vehicle_odom",
+  "imu_topic": "/livox/imu"
+}

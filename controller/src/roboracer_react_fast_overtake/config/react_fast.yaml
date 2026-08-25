@@ -1,0 +1,79 @@
+topics:
+  odom: "/localization/odom"
+  roi_cloud: "/raw_cloud_perception/roi_cloud"
+  local_reference: "/roboracer_react_fast/local_reference"
+  local_plan_red: "/roboracer_react_fast/local_plan_red"
+  selected_path: "/roboracer_react_fast/selected_path"
+  candidate_left: "/roboracer_react_fast/candidate_left"
+  candidate_right: "/roboracer_react_fast/candidate_right"
+  valid_area: "/roboracer_react_fast/valid_area"
+  occupancy_markers: "/roboracer_react_fast/occupancy_markers"
+  speed_cap: "/roboracer_react_fast/local_speed_cap"
+  state: "/roboracer_react_fast/state"
+  health: "/roboracer_react_fast/health"
+  status: "/roboracer_react_fast/status"
+  diagnostics: "/roboracer_react_fast/diagnostics"
+
+frames:
+  world: "map"
+  allowed_roi: ["raw_body_leveled"]
+
+input:
+  odom_timeout_s: 0.30
+  cloud_timeout_s: 0.50
+  cloud_measurement_max_age_s: 0.80
+  cloud_future_tolerance_s: 0.05
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.30
+  maximum_odom_extrapolation_s: 0.12
+
+# All accepted points are occupancy. There is deliberately no target ID,
+# velocity, dynamic/static classifier, or tracked-target timeout here.
+roi:
+  minimum_q: 0.35
+  maximum_q: 5.50
+  trigger_distance: 4.00
+  boundary_strip: 0.10
+  voxel_size: 0.08
+  minimum_component_points: 5
+  minimum_obstacle_top_z: 0.02
+
+planner:
+  ego_width: 0.24
+  ego_length: 0.40
+  lateral_clearance: 0.08
+  candidate_occupancy_buffer: 0.03
+  longitudinal_clearance: 0.20
+  boundary_margin: 0.08
+  minimum_boundary_clearance: 0.03
+  minimum_lane_change_length: 0.85
+  nominal_lane_change_length: 1.60
+  pass_hold_distance: 0.70
+  return_length: 1.80
+  maximum_candidate_length: 8.00
+  maximum_path_curvature: 1.80
+  maximum_track_curvature_for_pass: 1.20
+  preferred_side: "left"
+  sample_ds: 0.10
+  post_disappearance_clearance_m: 0.65
+  committed_path_hold_s: 0.60
+  return_start_ey_m: 0.12
+  return_finish_ey_m: 0.06
+  # When no obstacle/pass recovery is active, preserve the exact Stable V3
+  # global MPCC instead of creating a local RETURN for normal contour error.
+  idle_global_handoff: true
+
+control:
+  update_rate_hz: 20.0
+  cruise_speed_cap_mps: 4.0
+  # Straight local plans may approach Stable V3 speed. Curved candidates are
+  # automatically reduced by the lateral-acceleration limit below.
+  pass_speed_cap_mps: 3.2
+  return_speed_cap_mps: 3.0
+  local_lateral_acceleration_limit_mps2: 3.0
+  # FOLLOW never requests a full stop. The hardware supervisor can still
+  # command zero for ABORT, stale localization, carry detection, or estop.
+  blocked_minimum_speed_mps: 1.0
+  blocked_maximum_speed_mps: 2.4
+  blocked_stop_gap_m: 0.45
+  blocked_gap_gain: 0.9

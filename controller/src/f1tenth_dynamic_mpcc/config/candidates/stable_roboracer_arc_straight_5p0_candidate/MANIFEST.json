@@ -1,0 +1,123 @@
+{
+  "candidate": "stable_roboracer_arc_straight_5p0_candidate",
+  "status": "isolated_candidate_not_stable",
+  "source_release": "stable_roboracer",
+  "policy": {
+    "runtime_global_cap_mps": 5.0,
+    "fast_arc_round_arc_straight_cap_mps": 5.0,
+    "standard_and_tight_bend_cap_mps": 3.0,
+    "pure_pursuit_candidate_cap_mps": 4.0,
+    "normal_command_deceleration_mps2": 2.2,
+    "safety_command_deceleration_mps2": 4.0,
+    "safety_deceleration_paths": [
+      "predictive_risk",
+      "pure_pursuit_candidate",
+      "out_of_bounds",
+      "checkpoint_recovery",
+      "solver_or_input_failure"
+    ],
+    "fast_zones": [
+      "dynamic_arc_transition",
+      "round_arc_transition",
+      "straight_acceleration"
+    ],
+    "standard_zones": [
+      "standard",
+      "tight_bend_1_standard",
+      "tight_bend_2_standard"
+    ],
+    "all_other_roboracer_behavior_frozen": true
+  },
+  "track": {
+    "length_m": 87.75971526991167,
+    "maximum_planned_speed_mps": 5.0,
+    "fast_entry_row_indexes": [
+      256
+    ],
+    "zones": {
+      "dynamic_arc_transition": {
+        "nodes": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.823423377328213,
+          4.896627932093731
+        ]
+      },
+      "round_arc_transition": {
+        "nodes": 5,
+        "local_limit_mps": [
+          3.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          3.0,
+          5.0
+        ]
+      },
+      "standard": {
+        "nodes": 190,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.484238247911074,
+          3.0
+        ]
+      },
+      "straight_acceleration": {
+        "nodes": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.430805527501177,
+          5.0
+        ]
+      },
+      "tight_bend_1_standard": {
+        "nodes": 19,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.4233299001232333,
+          3.0
+        ]
+      },
+      "tight_bend_2_standard": {
+        "nodes": 16,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.4173359113387947,
+          3.0
+        ]
+      }
+    }
+  },
+  "base_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_roboracer/controller.yaml": "df8f558111e09db665a70bafaf4baacf238bbc37095e116e6fc992e88498bfe2",
+    "src/f1tenth_dynamic_mpcc/config/vehicle_stable_v3_racelineV3.yaml": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6",
+    "src/f1tenth_dynamic_mpcc/data/tracks/raceline_smooth/raceline.csv": "1f7b00d996f67c19181094799621dcd4b684a0bf7a1e7be4f22c779ade060476"
+  },
+  "output_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_roboracer_arc_straight_5p0_candidate/controller.yaml": "473d18a303bd13f9f8f6ac67d2af1e11666eca249ce3cfd1893de30bb8380182",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_roboracer_arc_straight_5p0_candidate/vehicle.yaml": "86da690d33f5a7bfee0faf9e9835ff527bcebeaee076a94105bca14d89bf91cb",
+    "src/f1tenth_dynamic_mpcc/data/tracks/raceline_smooth_roboracer_arc_straight_5p0_candidate/raceline.csv": "ad46e69f1a8c9f0bbf185f7e855190ebf37c3677e099a6ed4cd5e9ab9ba935c0",
+    "src/f1tenth_dynamic_mpcc/data/tracks/raceline_smooth_roboracer_arc_straight_5p0_candidate/speed_zones.csv": "c85672c7873fd52a768284a66f0d3a99bb6505a5c902a2b661c81105e0f0157d",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_roboracer_arc_straight_dual_decel_candidate.launch": "e3720592eab0ffdc74d60f9a423ff20221e8eaf66f8ada14ebfde054c766a1c6",
+    "src/f1tenth_dynamic_mpcc/src/mpcc_node_auto_relaunch_dual_decel.cpp": "ea18a4e1407b8472b903320660ad1d8094b32ed05e6ccdc36e584e25d179a462",
+    "src/f1tenth_dynamic_mpcc/include/f1tenth_dynamic_mpcc/core.hpp": "b01bf07dbcb0e248f95d639709aade8d9a71568e076a7e71f23f24203a8c4ec8",
+    "src/f1tenth_dynamic_mpcc/src/core.cpp": "d256474079033f7097b1d448deabc7dae5a3799879c102e2ef28a97a37350910",
+    "src/f1tenth_dynamic_mpcc/src/pure_pursuit_candidate.cpp": "38b21fe603aa7702dd8a4c9e23abe248f965e725946ad3bd7ba2875b9924a51d",
+    "src/f1tenth_dynamic_mpcc/CMakeLists.txt": "39137ef25d83639d0a4ea3abeae727f95cb788b2714aae1ee473f5d6ce0083e0"
+  }
+}

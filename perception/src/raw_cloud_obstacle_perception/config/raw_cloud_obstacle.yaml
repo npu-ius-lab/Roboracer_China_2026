@@ -1,0 +1,65 @@
+# High-rate Point-LIO body-frame cloud and latest localization attitude.
+cloud_topic: "/cloud_registered_body"
+odom_topic: "/localization/odom"
+
+# Independent outputs; these do not replace the legacy /perception topics.
+roi_topic: "/raw_cloud_perception/roi_cloud"
+obstacle_topic: "/raw_cloud_perception/obstacle_cloud"
+output_frame: "raw_body_leveled"
+
+cloud_queue: 1
+odom_queue: 20
+max_odom_age: 0.25
+publish_tf: true
+
+# Stage 1: cheap crop in the incoming body frame, before attitude correction.
+pre_crop:
+  x_min: 0.0
+  x_max: 6.0
+  y_abs_max: 1.5
+  z_max: 0.30
+
+# Remove returns from the ego chassis before clustering.
+ego_box:
+  enabled: true
+  x_min: -0.25
+  x_max: 0.38
+  y_min: -0.19
+  y_max: 0.19
+  z_min: -0.15
+  z_max: 0.55
+
+# Stage 2: after roll/pitch leveling with the latest localization odometry.
+# Bounds are strict. All compensated points at or below z=0 are ground.
+leveled_roi:
+  x_min: 0.0
+  x_max: 6.0
+  y_abs_max: 1.5
+  z_min: 0.0
+  z_max: 0.30
+
+# Frozen Stable RoboRacer uses the raceline_smooth track. The launch file
+# supplies the package-local frozen copy. Widths come from w_tr_left_m and
+# w_tr_right_m. An inward inset removes the physical boundary/wall region.
+# The local s window prevents adjacent U-complex branches from entering the
+# current-lane ROI even when they are spatially close.
+track_corridor:
+  enabled: true
+  raceline_csv: ""
+  boundary_inset: 0.08
+  behind: 1.0
+  ahead: 8.0
+  marker_topic: "/raw_cloud_perception/corridor_markers"
+
+clustering:
+  voxel_leaf: 0.03
+  tolerance: 0.12
+  min_points: 8
+  max_points: 10000
+
+# Reject wall/guardrail clusters. Dimensions are PCA-aligned in XY.
+size_filter:
+  enabled: true
+  max_length: 0.70
+  max_width: 0.50
+  max_height: 0.40

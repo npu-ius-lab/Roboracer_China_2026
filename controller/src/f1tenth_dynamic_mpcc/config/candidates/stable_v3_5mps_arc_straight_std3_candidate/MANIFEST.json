@@ -1,0 +1,118 @@
+{
+  "candidate": "stable_v3_5mps_arc_straight_std3_candidate",
+  "status": "isolated_candidate_not_stable",
+  "policy": {
+    "global_cap_mps": 5.0,
+    "arc_and_straight_local_cap_mps": 5.0,
+    "standard_local_cap_mps": 3.0,
+    "ordinary_to_fast_entry_cap_mps": 3.0,
+    "fast_zones": [
+      "dynamic_arc_transition",
+      "round_arc_transition",
+      "straight_acceleration"
+    ],
+    "standard_zones": [
+      "standard",
+      "tight_bend_1_standard",
+      "tight_bend_2_standard"
+    ],
+    "profile_max_decel_mps2": 3.0,
+    "pure_pursuit_max_speed_mps": 4.0
+  },
+  "track": {
+    "changed_rows": 95,
+    "fast_entry_ramp_row_indexes": [
+      256
+    ],
+    "zone_counts": {
+      "straight_acceleration": 45,
+      "standard": 190,
+      "tight_bend_1_standard": 19,
+      "tight_bend_2_standard": 16,
+      "round_arc_transition": 5,
+      "dynamic_arc_transition": 45
+    },
+    "zone_speed_envelope": {
+      "dynamic_arc_transition": {
+        "rows": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.823423377328213,
+          4.896627932093731
+        ]
+      },
+      "round_arc_transition": {
+        "rows": 5,
+        "local_limit_mps": [
+          3.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          3.0,
+          5.0
+        ]
+      },
+      "standard": {
+        "rows": 190,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.484238247911074,
+          3.0
+        ]
+      },
+      "straight_acceleration": {
+        "rows": 45,
+        "local_limit_mps": [
+          5.0,
+          5.0
+        ],
+        "planned_speed_mps": [
+          2.315235902997851,
+          5.0
+        ]
+      },
+      "tight_bend_1_standard": {
+        "rows": 19,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.4233299001232333,
+          3.0
+        ]
+      },
+      "tight_bend_2_standard": {
+        "rows": 16,
+        "local_limit_mps": [
+          3.0,
+          3.0
+        ],
+        "planned_speed_mps": [
+          1.4173359113387947,
+          3.0
+        ]
+      }
+    },
+    "track_length_m": 87.75971526991167
+  },
+  "base_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/controller_stable_v3_racelineV3.yaml": "a78197b6c064c9f5f02bf6ed5d08dae0bbf231958d917a69a0ec6593d46e4f54",
+    "src/f1tenth_dynamic_mpcc/config/vehicle_stable_v3_racelineV3.yaml": "0188d1ea37e2f113168fc31c1056912eca8ab37966f35132c8f879910a9d54a6",
+    "src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/raceline.csv": "3bc7c472ed534331c0798960520294e346a9c931a5aa1adbaaea068a753371f9",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3/speed_zones.csv": "2efa8b5fdf7e4433ee408e9b339f5747140669eb20d79b087c20dbb8fbaabd09"
+  },
+  "output_hashes": {
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3_5mps_arc_straight_std3_candidate/controller.yaml": "34a7aa0bfe2b09fce908321ec739b6b134ca977ca400678ebe27439677ddc113",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3_5mps_arc_straight_std3_candidate/vehicle.yaml": "fbe6f459a81deb2814c77c4d9b5b6b50769e36e3fda42e7ede865eb92460a778",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_arc_straight_std3_candidate/raceline.csv": "21c9e3c13727c510aa017e3415bd983d099bc7099bbe0d0a85f81a870b60569b",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_5mps_arc_straight_std3_candidate/speed_zones.csv": "47896590f87c0fe5f0801c3ae627394b544739dec06cc0718c9e27c5e4caad1f"
+  }
+}

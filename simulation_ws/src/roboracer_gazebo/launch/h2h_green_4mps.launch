@@ -1,0 +1,31 @@
+<launch>
+  <arg name="gui" default="true"/><arg name="rviz" default="false"/>
+  <arg name="mid360_downsample" default="3"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_roboracer_sim/h2h_green"/>
+  <include file="$(find roboracer_gazebo)/launch/gazebo_vehicle.launch">
+    <arg name="world" value="competition_track_h2h.world"/>
+    <arg name="command_topic" value="/roboracer_h2h_faststart/mpcc/ackermann_cmd_stamped"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="mid360_downsample" value="$(arg mid360_downsample)"/>
+  </include>
+  <node pkg="roboracer_gazebo" type="gazebo_opponent_driver.py" name="h2h_opponent" required="true">
+    <param name="model_name" value="opponent"/>
+    <param name="speed_mps" value="1.35"/>
+    <param name="start_s_m" value="8.0"/>
+    <param name="raceline_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/raceline_smooth_c11_outer_boundary_expanded_candidate/raceline.csv"/>
+  </node>
+  <include file="$(find raw_cloud_obstacle_perception)/launch/raw_cloud_obstacle.launch">
+    <arg name="cloud_topic" value="/cloud_registered_body"/><arg name="odom_topic" value="/localization/odom"/>
+    <arg name="raceline_csv" value="$(find f1tenth_dynamic_mpcc)/data/perception_corridors/roboracer_green_c10_c12.csv"/>
+    <arg name="boundary_inset" value="0.22"/>
+  </include>
+  <include file="$(find f1tenth_dynamic_mpcc)/launch/hardware_mpcc_stable_roboracer_h2h_c11_stabilized_candidate.launch">
+    <arg name="track" value="raceline_smooth_c11_outer_boundary_expanded_candidate"/>
+    <arg name="runtime_config" value="$(find f1tenth_dynamic_mpcc)/config/candidates/stable_roboracer_oldmap_h2h_green_no_stop/cpp_runtime.yaml"/>
+    <arg name="allow_real_hardware" value="false"/><arg name="runtime_speed_cap_mps" value="4.0"/>
+    <arg name="generated_dir" value="$(arg generated_dir)"/><arg name="rviz" value="$(arg rviz)"/>
+  </include>
+  <node pkg="roboracer_gazebo" type="sim_enable_controller.py" name="enable_h2h" required="true">
+    <param name="service" value="/f1tenth_dynamic_mpcc_roboracer_h2h_faststart/set_enabled"/>
+  </node>
+</launch>

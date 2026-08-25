@@ -1,0 +1,117 @@
+# Additive ROBORACER ETH-style head-to-head policy.
+# Core implementation: v5_jubu_local_planner_cpp (C++17).  No Python planner,
+# opponent tracker, behavior state machine or reference manager is involved.
+topics:
+  odom: /localization/odom
+  roi_cloud: /raw_cloud_perception/obstacle_cloud
+  local_reference: /roboracer_eth_h2h/local_reference
+  candidate_left: /roboracer_eth_h2h/candidate_left
+  candidate_right: /roboracer_eth_h2h/candidate_right
+  selected_path: /roboracer_eth_h2h/selected_path
+  valid_area: /roboracer_eth_h2h/valid_area
+  health: /roboracer_eth_h2h/health
+  speed_cap: /roboracer_eth_h2h/local_speed_cap
+  state: /roboracer_eth_h2h/state
+  status: /roboracer_eth_h2h/status
+  diagnostics: /roboracer_eth_h2h/candidate_diagnostics
+
+frames:
+  world: map
+  # The unchanged raw-cloud perception publishes gravity-levelled ego-frame XY.
+  roi_primary: raw_body_leveled
+  roi_secondary: raw_body_leveled
+
+input:
+  odom_timeout_s: 0.20
+  cloud_timeout_s: 0.35
+  cloud_measurement_max_age_s: 0.35
+  cloud_future_tolerance_s: 0.05
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.20
+  # The planner callback is single-threaded; a cloud callback may run before
+  # the newest 60 Hz odom callback is drained. Bound forward extrapolation by
+  # the same 0.20 s limit used for interpolation brackets.
+  maximum_odom_extrapolation_s: 0.20
+  # A committed maneuver may bridge a few 10 Hz cloud dropouts, but never a
+  # prolonged perception loss.
+  obstacle_memory_timeout_s: 0.65
+  unknown_obstacle_speed_mps: 1.00
+  obstacle_speed_min_mps: -0.20
+  obstacle_speed_max_mps: 4.00
+  obstacle_speed_filter_alpha: 0.30
+  obstacle_association_distance_m: 0.80
+
+roi:
+  minimum_q: 0.25
+  maximum_q: 6.00
+  boundary_strip: 0.00
+  voxel_size: 0.08
+  minimum_component_points: 4
+  maximum_component_length: 0.75
+  maximum_component_width: 0.55
+  minimum_obstacle_top_z: 0.005
+
+planner:
+  ego_width: 0.24
+  ego_length: 0.40
+  # Inflate the nominal opponent footprint to absorb raw-cloud and odometry
+  # uncertainty. The upstream size filter still rejects walls.
+  opponent_width: 0.38
+  opponent_length: 0.48
+  boundary_margin: 0.08
+  minimum_boundary_clearance_for_pass: 0.03
+  lateral_clearance: 0.06
+  longitudinal_clearance: 0.20
+  detection_distance: 6.00
+  trigger_distance: 5.00
+  trigger_ttc: 4.00
+  minimum_closing_speed: 0.05
+  minimum_lane_change_length: 0.80
+  nominal_lane_change_length: 1.60
+  pass_hold_after_opponent: 0.65
+  return_length: 2.00
+  minimum_plan_speed: 0.80
+  maximum_plan_speed: 4.00
+  pass_speed_advantage: 1.00
+  maximum_path_curvature: 1.70
+  maximum_track_curvature_for_pass: 1.20
+  maximum_candidate_length: 16.00
+  preferred_side: none
+  sample_ds: 0.08
+
+# ETH mapping:
+# GB_TRACK=FREE, TRAILING=FOLLOW, OVERTAKE=PREPARE/PASS/RETURN,
+# emergency/invalid spline=ABORT. Candidate confirmation is the side-switch
+# hysteresis; the accepted path is cached through short cloud dropouts.
+state_machine:
+  prepare_time_s: 0.22
+  follow_target_loss_timeout_s: 0.60
+  # Reject isolated ground/boundary fragments before they are allowed to
+  # reduce the speed cap. An actually close obstacle bypasses confirmation.
+  follow_confirmation_frames: 3
+  follow_confirmation_duration_s: 0.18
+  follow_confirmation_maximum_gap_s: 0.35
+  emergency_follow_gap_m: 1.00
+  emergency_follow_ttc_s: 0.70
+  # Keep an already accepted PASS path through the short period in which a
+  # fresh entry spline becomes infeasible solely because the ego has closed.
+  pass_commit_minimum_s: 1.20
+  return_confirm_gap_m: 0.55
+  return_ey_tolerance_m: 0.10
+  abort_recovery_distance_m: 0.65
+
+confirmation:
+  minimum_frames: 3
+  minimum_duration_s: 0.08
+  maximum_gap_s: 0.35
+
+control:
+  update_rate_hz: 25.0
+  cruise_speed_cap_mps: 4.00
+  pass_speed_cap_mps: 4.00
+  # A 0.5 m/s command falls inside the chassis dead zone under load and can
+  # look like a planner stop. Keep obstacle-following motion at 1.0 m/s;
+  # ABORT and the command gate retain authority to command a true zero.
+  follow_minimum_speed_mps: 1.00
+  follow_gap_m: 0.70
+  follow_gap_gain: 0.55

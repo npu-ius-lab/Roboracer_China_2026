@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Start a rosbag recording of every analysis-relevant topic (localization,
+# transforms, control commands, telemetry and IMU). LiDAR point clouds are
+# intentionally excluded to keep the bag small.
+#
+# Usage: record_analysis_bag.sh <output.bag>
+# The recorder runs in the foreground of the caller's background subshell;
+# send SIGINT (Ctrl-C on the parent launch) to finalize the bag cleanly.
+
+BAG_PATH="${1:?usage: record_analysis_bag.sh <output.bag>}"
+mkdir -p "$(dirname "$BAG_PATH")"
+
+exec rosbag record -O "$BAG_PATH" \
+  /aft_mapped_to_init \
+  /localization/odom \
+  /localization/vehicle_odom \
+  /localization/status \
+  /lio/relocalization/lighterbev_match \
+  /tf \
+  /tf_static \
+  /f1tenth_mpcc/real/ackermann_cmd_stamped \
+  /f1tenth_mpcc/telemetry \
+  /tianracer/ackermann_cmd \
+  /tianracer/odom \
+  /tianracer/imu \
+  /livox/imu

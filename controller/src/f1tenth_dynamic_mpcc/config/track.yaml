@@ -1,0 +1,10 @@
+active_track: virtual_track
+tracks:
+  virtual_track: data/tracks/virtual_track/raceline.csv
+  virtual_track_u_turn: data/tracks/virtual_track_u_turn/raceline.csv
+  virtual_track_s_u: data/tracks/virtual_track_s_u/raceline.csv
+
+source_sha256:
+  virtual_track: f90c6de4e38e00764293ba58f3eadfa34d19f9d5c267180de42e6e18a25a2478
+  virtual_track_u_turn: 8c5ec2b0e815341189a87b9e3dbf9a5900e8c68d626c61adce75f5ff1a46dbae
+  virtual_track_s_u: e7231e9af57a740acfb0b03e92aa1ba65c970d6be660caa5a199e91aa249deb3

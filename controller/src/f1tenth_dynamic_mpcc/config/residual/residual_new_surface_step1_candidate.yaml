@@ -1,0 +1,226 @@
+schema_version: 1
+model_type: robust_ridge_derivative_residual
+feature_names:
+- bias
+- vx
+- vy
+- yaw_rate
+- delta
+- speed_cmd
+- steer_cmd
+- speed_error
+- steer_error
+- vx_yaw_rate
+- vy_yaw_rate
+- abs_vx_vy
+- abs_vx_yaw_rate
+- vx_tan_delta
+- vx_steer_cmd
+- vx2_steer_cmd
+output_names:
+- vx_accel_residual
+- vy_accel_residual
+- yaw_accel_residual
+feature_mean:
+- 0.0
+- 2.158159577201465
+- -0.031117383928415288
+- -0.038003072800562566
+- -0.0031890118767426475
+- 2.198360904537866
+- 0.008883177159877916
+- 0.0402013273363955
+- 0.012072189036618731
+- -0.15079789159296758
+- -0.011631389346295623
+- -0.07140606391283903
+- -0.15079789159296758
+- -0.013601810075801635
+- 0.012253333228156598
+- 0.01526073612735022
+feature_scale:
+- 1.0
+- 0.8426953935305592
+- 0.07751013933067921
+- 0.8323566664765677
+- 0.10712271294391544
+- 0.8544689638388361
+- 0.11091264643035
+- 0.24314822187115945
+- 0.0037899334864393585
+- 2.3309826384952004
+- 0.08342989652685814
+- 0.21675670003317915
+- 2.3309826384952004
+- 0.2487707420418086
+- 0.25584739118457855
+- 0.7210500106519321
+coefficients_feature_by_output:
+- - -0.0
+  - -0.1321628072077147
+  - -0.0029804271546279406
+- - -0.0
+  - -0.0027489738494031087
+  - 0.04562064408296456
+- - 0.0
+  - 0.327069419937454
+  - 0.12542410414411262
+- - 0.0
+  - -0.11877921531747553
+  - 3.3395112646666374
+- - -0.0
+  - -0.0009211202142898374
+  - -0.07801708524153457
+- - 0.0
+  - -0.003076106851870445
+  - 0.03641271869866081
+- - -0.0
+  - -0.0009211202117167097
+  - -0.07801708524241943
+- - 0.0
+  - -0.0012827164981285364
+  - -0.030149381897110878
+- - -0.0
+  - -0.0009211202115820788
+  - -0.07801708524245998
+- - -0.0
+  - 0.17840963734632465
+  - 0.036146982402455834
+- - 0.0
+  - 0.000929748025202271
+  - 0.00793691160905994
+- - -0.0
+  - -0.1621962375088387
+  - -0.018121458303292263
+- - -0.0
+  - 0.17840963734632442
+  - 0.03614698240244962
+- - -0.0
+  - -0.13333130670872764
+  - -1.4101909089079934
+- - -0.0
+  - -0.1338257051362442
+  - -1.412423802721426
+- - 0.0
+  - 0.13870764290211393
+  - -0.28689200633844564
+output_limits:
+- 4.0
+- 8.0
+- 18.0
+feature_abs_z_limit:
+- 1.0
+- 1.9204958622985009
+- 2.9733186284021444
+- 1.6141800573085283
+- 1.038532087082112
+- 2.572780285267922
+- 1.038532087082133
+- 7.253833388772577
+- 1.0385320870818893
+- 2.0423175292104037
+- 3.810973514699894
+- 3.7388795115108358
+- 2.0423175292104037
+- 1.6540689325000404
+- 1.7306853763916
+- 2.293444097828336
+ood_fade_ratio: 1.5
+metadata:
+  created_at: '2026-08-20T17:15:59.502519'
+  dataset_paths:
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v1p0_20260820_161350.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v1p5_20260820_161827.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v2p0_20260820_161911.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v2p5_20260820_161955.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v3p0_20260820_162629.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_left_v3p5_20260820_162714.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v1p0_20260820_161435.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v1p5_20260820_161631.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v2p0_20260820_161718.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v2p5_20260820_162112.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v3p0_20260820_162540.npz
+  - /home/tianbot/f1tenth/data/residual_identification/new_surface_r2p5_20260820/residual_workspace_data/processed/circle_r2p5_right_v3p5_20260820_162844.npz
+  training_samples: 6589
+  command_history_s:
+  - 0.0
+  feature_set: markov_v1
+  nominal_vehicle_config:
+    schema_version: 1
+    vehicle:
+      wheelbase: 0.32
+      mass: 3.8
+      yaw_inertia: 0.06
+      lf: 0.195
+      lr: 0.125
+      tire_cornering_front: 73.84
+      tire_cornering_rear: 103.67
+      vx_epsilon: 0.2
+    actuator:
+      speed_gain: 1.0
+      speed_time_constant_s: 0.2
+      speed_dead_time_s: 0.13
+      steering_gain: 0.965829564
+      steering_bias_rad: -0.011768647
+      steering_time_constant_s: 0.062671845
+      steering_dead_time_s: 0.105
+    limits:
+      max_speed_mps: 4.5
+      max_steer_rad: 0.55
+      max_accel_mps2: 2.4
+      max_decel_mps2: 4.0
+      max_steer_rate_radps: 5.5
+    model:
+      integration_substeps: 5
+      low_speed_blend_center_mps: 0.45
+      low_speed_blend_width_mps: 0.08
+      low_speed_vy_tau_s: 0.12
+      low_speed_yaw_tau_s: 0.1
+  training_config:
+    schema_version: 1
+    dataset:
+      feature_set: markov_v1
+      minimum_speed_mps: 0.3
+      minimum_dt_s: 0.01
+      maximum_dt_s: 0.08
+      maximum_pose_step_m: 0.35
+      maximum_yaw_step_rad: 0.5
+      command_history_s:
+      - 0.0
+      smoothing_window: 7
+    training:
+      validation_fraction: 0.25
+      ridge_alpha: 4.0
+      robust_iterations: 4
+      huber_delta: 2.5
+      random_seed: 7
+      residual_accel_limits:
+      - 4.0
+      - 8.0
+      - 18.0
+    evaluation:
+      rollout_horizon_s: 1.0
+      plot_duration_s: 8.0
+  deployment_scale: 1.0
+  deployment_output_scales:
+  - 0.0
+  - 0.25
+  - 0.25
+  validation_metrics:
+    validation_samples: 2195
+    outputs:
+    - vx_accel_residual
+    - vy_accel_residual
+    - yaw_accel_residual
+    nominal_one_step_rmse:
+    - 0.06081373918228717
+    - 0.044864651571821325
+    - 0.1875035042749342
+    corrected_one_step_rmse:
+    - 0.06081373918228717
+    - 0.039010055955743944
+    - 0.169689072239916
+    improvement_percent:
+    - 0.0
+    - 13.049461905895077
+    - 9.500852852807007

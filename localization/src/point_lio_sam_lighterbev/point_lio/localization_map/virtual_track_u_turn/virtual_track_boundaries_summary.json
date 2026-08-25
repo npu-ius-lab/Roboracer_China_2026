@@ -1,0 +1,38 @@
+{
+  "status": "feasible_virtual_stadium_track",
+  "track_shape": "stadium_two_straights_two_180deg_u_turns",
+  "source_map_yaml": "../point_lio_map_2d.yaml",
+  "source_map_image": "../point_lio_map_2d.pgm",
+  "resolution_m_per_px": 0.05,
+  "origin": [
+    -2.62279,
+    -7.123212,
+    0.0
+  ],
+  "stadium_center_local_m": [
+    10.595,
+    4.943888888888889
+  ],
+  "stadium_center_world_m": [
+    7.9722100000000005,
+    -2.1793231111111107
+  ],
+  "straight_length_each_m": 6.355111111111111,
+  "total_straight_length_m": 12.710222222222223,
+  "centerline_turn_radius_m": 1.4,
+  "inner_boundary_turn_radius_m": 0.7999999999999999,
+  "outer_boundary_turn_radius_m": 2.0,
+  "track_width_m": 1.2,
+  "minimum_obstacle_clearance_m": 0.25528696861765016,
+  "requested_minimum_obstacle_clearance_m": 0.25,
+  "centerline_length_m": 21.506514250806955,
+  "num_points": 720,
+  "outputs": {
+    "left_boundary_csv": "virtual_left_boundary.csv",
+    "right_boundary_csv": "virtual_right_boundary.csv",
+    "corridor_csv": "virtual_track_corridor.csv",
+    "virtual_map_pgm": "virtual_track_map.pgm",
+    "virtual_map_yaml": "virtual_track_map.yaml",
+    "debug_png": "virtual_track_boundaries_debug.png"
+  }
+}

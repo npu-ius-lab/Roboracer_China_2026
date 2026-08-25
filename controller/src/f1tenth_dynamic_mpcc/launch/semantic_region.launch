@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="config" default="$(find f1tenth_dynamic_mpcc)/config/semantic_regions.yaml" />
+  <arg name="odom_topic" default="/localization/vehicle_odom" />
+  <arg name="state_topic" default="/semantic_region/state" />
+  <arg name="raw_state_topic" default="/semantic_region/raw_state" />
+  <arg name="name_topic" default="/semantic_region/name" />
+
+  <node pkg="f1tenth_dynamic_mpcc"
+        type="semantic_region_node_cpp"
+        name="semantic_region"
+        output="screen">
+    <rosparam command="load" file="$(arg config)" />
+    <param name="odom_topic" value="$(arg odom_topic)" />
+    <param name="state_topic" value="$(arg state_topic)" />
+    <param name="raw_state_topic" value="$(arg raw_state_topic)" />
+    <param name="name_topic" value="$(arg name_topic)" />
+  </node>
+</launch>

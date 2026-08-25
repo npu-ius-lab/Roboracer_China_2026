@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="config" default="$(find roboracer_react_fast_overtake)/config/react_fast.yaml"/>
+  <arg name="raceline_csv"
+       default="$(find f1tenth_dynamic_mpcc)/data/tracks/raceline_smooth/raceline.csv"/>
+  <arg name="roi_cloud" default="/raw_cloud_perception/roi_cloud"/>
+  <arg name="odom" default="/localization/odom"/>
+  <arg name="roi_frame" default="raw_body_leveled"/>
+
+  <node pkg="roboracer_react_fast_overtake"
+        type="roboracer_react_fast_overtake_node"
+        name="roboracer_react_fast_overtake"
+        output="screen" required="true">
+    <rosparam command="load" file="$(arg config)"/>
+    <param name="raceline_csv" value="$(arg raceline_csv)"/>
+    <param name="topics/roi_cloud" value="$(arg roi_cloud)"/>
+    <param name="topics/odom" value="$(arg odom)"/>
+    <rosparam param="frames/allowed_roi" subst_value="true">["$(arg roi_frame)"]</rosparam>
+  </node>
+</launch>

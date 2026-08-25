@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="track" default="racelinev3_stable_v5_fast5_std32"/>
+  <node pkg="f1tenth_dynamic_mpcc" type="v5_jubu_local_planner_cpp"
+        name="v5_jubu_smoke_planner" output="screen" required="true">
+    <rosparam command="load"
+              file="$(find f1tenth_dynamic_mpcc)/config/candidates/v5_jubu/cpp_runtime.yaml"/>
+    <param name="controller_config"
+           value="$(find f1tenth_dynamic_mpcc)/config/candidates/v5_jubu/controller.yaml"/>
+    <param name="vehicle_config"
+           value="$(find f1tenth_dynamic_mpcc)/config/candidates/v5_jubu/vehicle.yaml"/>
+    <param name="track_csv"
+           value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="topics/odom" value="/v5_jubu_smoke/odom"/>
+    <param name="topics/roi_cloud" value="/v5_jubu_smoke/roi_cloud"/>
+    <param name="topics/local_reference" value="/v5_jubu_smoke/local_reference"/>
+    <param name="topics/candidate_left" value="/v5_jubu_smoke/candidate_left"/>
+    <param name="topics/candidate_right" value="/v5_jubu_smoke/candidate_right"/>
+    <param name="topics/selected_path" value="/v5_jubu_smoke/selected_path"/>
+    <param name="topics/valid_area" value="/v5_jubu_smoke/valid_area"/>
+    <param name="topics/health" value="/v5_jubu_smoke/health"/>
+    <param name="topics/speed_cap" value="/v5_jubu_smoke/speed_cap"/>
+    <param name="topics/state" value="/v5_jubu_smoke/state"/>
+    <param name="topics/status" value="/v5_jubu_smoke/status"/>
+    <param name="topics/diagnostics" value="/v5_jubu_smoke/diagnostics"/>
+    <!-- Wiring/state-machine smoke: the production 1.20 1/m curvature gate
+         remains covered by the pure C++ planner unit test. -->
+    <param name="planner/maximum_track_curvature_for_pass" value="10.0"/>
+    <param name="planner/ego_width" value="0.10"/>
+    <param name="planner/ego_length" value="0.20"/>
+    <param name="planner/opponent_width" value="0.10"/>
+    <param name="planner/opponent_length" value="0.20"/>
+    <param name="planner/boundary_margin" value="0.0"/>
+    <param name="planner/minimum_boundary_clearance_for_pass" value="0.0"/>
+    <param name="planner/lateral_clearance" value="0.02"/>
+    <param name="planner/longitudinal_clearance" value="0.10"/>
+  </node>
+
+  <test test-name="v5_jubu_planner_smoke" pkg="f1tenth_dynamic_mpcc"
+        type="v5_jubu_planner_smoke_test" time-limit="15.0">
+    <param name="track_csv"
+           value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+  </test>
+</launch>

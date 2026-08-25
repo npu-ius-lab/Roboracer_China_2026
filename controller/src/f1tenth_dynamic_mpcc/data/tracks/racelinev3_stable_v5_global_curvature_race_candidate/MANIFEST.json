@@ -1,0 +1,225 @@
+{
+  "candidate": "stable_v5_global_curvature_race_candidate",
+  "status": "offline_candidate_not_hardware_approved",
+  "source_hashes": {
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_fast5_std32/raceline.csv": "88ca2acf725207a68d0ea20aa9e26d8af93dcff027afd235b9ce2045f866b82a",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_fast5_std32/speed_zones.csv": "3ace10062380356525c99d02e07d61f125c971b476594bdd4c26c2da6f250132",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v3_5mps_auto_relaunch_brake4_asym_60hz_candidate/controller.yaml": "5b03916a4d8e53e2d15a692ff5f909a1df3f4ac5f2d9af1f66f828df87ac3fff",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5/vehicle.yaml": "fd5f9d91bc1fe967d7429cb12f42d982e8527d0d8e559f41dbefd8f2cf24366d"
+  },
+  "optimizer": {
+    "success": false,
+    "message": "b'STOP: TOTAL NO. of ITERATIONS REACHED LIMIT'",
+    "iterations": 180,
+    "evaluations": 10368,
+    "objective": 1.3223534982725171
+  },
+  "geometry_constraints": {
+    "edited_source_s_m": [
+      0.0,
+      75.0
+    ],
+    "maximum_abs_shift_m": 0.13939729749050653,
+    "limit_m": 0.14,
+    "minimum_center_clearance_m": 0.34
+  },
+  "speed_envelope": {
+    "cap_mps": 4.0,
+    "normal_accel_mps2": 2.0,
+    "normal_decel_mps2": 1.8,
+    "emergency_decel_mps2": 4.0
+  },
+  "controller_changes": {
+    "speed_prior_race": [
+      0.0,
+      0.5
+    ],
+    "speed_command_rate": [
+      0.2,
+      0.8
+    ]
+  },
+  "stable_v5": {
+    "length_m": 87.75971526991167,
+    "max_abs_curvature_1pm": 1.5925192289432726,
+    "max_abs_curvature_gradient_1pm2": 2.187664891174279,
+    "minimum_speed_mps": 1.4173361560209297,
+    "maximum_speed_mps": 5.0,
+    "ideal_profile_lap_s": 31.119885201069128,
+    "minimum_left_width_m": 0.4560504787805708,
+    "minimum_right_width_m": 0.4380172098767785,
+    "peaks": [
+      {
+        "s_m": 9.049994387349956,
+        "kappa_1pm": 1.452421375595196,
+        "speed_mps": 1.484238247911074
+      },
+      {
+        "s_m": 19.196957791348392,
+        "kappa_1pm": 1.106453318608567,
+        "speed_mps": 1.7002904156037697
+      },
+      {
+        "s_m": 22.48786484129383,
+        "kappa_1pm": 1.043393383691376,
+        "speed_mps": 1.7510313594570521
+      },
+      {
+        "s_m": 29.06967894118471,
+        "kappa_1pm": -1.3792683075800733,
+        "speed_mps": 1.522758301174674
+      },
+      {
+        "s_m": 30.44089021199531,
+        "kappa_1pm": -1.3333536997147948,
+        "speed_mps": 1.5488628666698139
+      },
+      {
+        "s_m": 36.74846205772407,
+        "kappa_1pm": 0.991851102517321,
+        "speed_mps": 1.7956540419515437
+      },
+      {
+        "s_m": 39.490884599345264,
+        "kappa_1pm": 0.9513578387981352,
+        "speed_mps": 1.8335769491656937
+      },
+      {
+        "s_m": 45.5264081289452,
+        "kappa_1pm": -1.1765650001576706,
+        "speed_mps": 1.6489300058234202
+      },
+      {
+        "s_m": 47.994588416404284,
+        "kappa_1pm": -1.3420338895201283,
+        "speed_mps": 1.543634764152747
+      },
+      {
+        "s_m": 50.46276870386336,
+        "kappa_1pm": -0.4743867423289474,
+        "speed_mps": 2.596765426781208
+      },
+      {
+        "s_m": 51.55973772051184,
+        "kappa_1pm": 0.6402708576562471,
+        "speed_mps": 2.2351272061529297
+      },
+      {
+        "s_m": 53.7536757538088,
+        "kappa_1pm": 0.7157428125558885,
+        "speed_mps": 2.114231035663196
+      },
+      {
+        "s_m": 61.706701124510275,
+        "kappa_1pm": 1.5785071673587685,
+        "speed_mps": 1.4236396951448276
+      },
+      {
+        "s_m": 62.529427886996636,
+        "kappa_1pm": 1.483122899433318,
+        "speed_mps": 1.4686017040268484
+      },
+      {
+        "s_m": 68.28851522440115,
+        "kappa_1pm": -1.5925192289432726,
+        "speed_mps": 1.4173361560209297
+      }
+    ]
+  },
+  "candidate_metrics": {
+    "length_m": 89.85428230435872,
+    "max_abs_curvature_1pm": 1.3101983793715404,
+    "max_abs_curvature_gradient_1pm2": 1.8435031201836836,
+    "minimum_speed_mps": 1.552698098,
+    "maximum_speed_mps": 4.0,
+    "ideal_profile_lap_s": 32.8554647377877,
+    "minimum_left_width_m": 0.34052422281277483,
+    "minimum_right_width_m": 0.38754977953784536,
+    "peaks": [
+      {
+        "s_m": 9.196355884953991,
+        "kappa_1pm": 1.1935837751947473,
+        "speed_mps": 1.628411312530065
+      },
+      {
+        "s_m": 19.374345263245768,
+        "kappa_1pm": 0.8902212123866022,
+        "speed_mps": 1.889092856
+      },
+      {
+        "s_m": 21.339858550821425,
+        "kappa_1pm": 0.508380481865367,
+        "speed_mps": 2.49681312630206
+      },
+      {
+        "s_m": 22.46300900086466,
+        "kappa_1pm": 0.7036287679041295,
+        "speed_mps": 2.121030228
+      },
+      {
+        "s_m": 29.413063985732187,
+        "kappa_1pm": -1.1451805456822273,
+        "speed_mps": 1.663635549
+      },
+      {
+        "s_m": 30.958519004991675,
+        "kappa_1pm": -1.1257419018295913,
+        "speed_mps": 1.6768916236544673
+      },
+      {
+        "s_m": 37.48626942064294,
+        "kappa_1pm": 0.8706944661115305,
+        "speed_mps": 1.905420192
+      },
+      {
+        "s_m": 40.43566250245647,
+        "kappa_1pm": 0.8360774759920218,
+        "speed_mps": 1.945915985
+      },
+      {
+        "s_m": 46.96341291810774,
+        "kappa_1pm": -1.060275775568231,
+        "speed_mps": 1.728281866
+      },
+      {
+        "s_m": 49.49050143070502,
+        "kappa_1pm": -0.9452818568168484,
+        "speed_mps": 1.835142881226563
+      },
+      {
+        "s_m": 50.89443949325906,
+        "kappa_1pm": -0.533018302421173,
+        "speed_mps": 2.435251771
+      },
+      {
+        "s_m": 52.9295881087374,
+        "kappa_1pm": 0.7393623181131396,
+        "speed_mps": 2.072188937
+      },
+      {
+        "s_m": 55.106253680921185,
+        "kappa_1pm": 0.6037669039447927,
+        "speed_mps": 2.284547706218866
+      },
+      {
+        "s_m": 63.177212814931856,
+        "kappa_1pm": 1.2848049024183663,
+        "speed_mps": 1.5710874700896498
+      },
+      {
+        "s_m": 64.09145728126705,
+        "kappa_1pm": 1.2211882035857784,
+        "speed_mps": 1.612413995
+      },
+      {
+        "s_m": 70.26878475650483,
+        "kappa_1pm": -1.3101983793715404,
+        "speed_mps": 1.552698098
+      }
+    ]
+  },
+  "output_hashes": {
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_global_curvature_race_candidate/raceline.csv": "1b69e51d9dfd59f64b7371d29c20c642eea3fc0e4db7847dbc8393c7bbd9be1a",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5_global_curvature_race_candidate/controller.yaml": "cb1308a9ce64dbc3c83b7e818a20bc838bc2b4aeebd1b829ce5548c813304432"
+  }
+}

@@ -1,0 +1,588 @@
+{
+  "source_release": "stable_roboracer",
+  "status": "offline_closed_loop_screen_not_hardware_approval",
+  "variants": {
+    "4p5": {
+      "candidate": "stable_roboracer_arc_straight_4p5_candidate",
+      "cap_mps": 4.5,
+      "scenarios": {
+        "left_offset": {
+          "completed_lap": true,
+          "lap_time_s": 31.125,
+          "maximum_abs_contour_error_m": 0.177252744871416,
+          "maximum_abs_front_slip_rad": 0.16427563423053732,
+          "maximum_abs_heading_error_rad": 0.28911348723872066,
+          "maximum_abs_rear_slip_rad": 0.17062932991799354,
+          "maximum_abs_steering_command_rate_radps": 1.5384589666472586,
+          "maximum_abs_steering_rad": 0.4897362107497912,
+          "maximum_speed_mps": 4.485545055051564,
+          "mean_speed_mps": 2.738678918552955,
+          "minimum_physical_margin_m": 0.20771631494004666,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.000270204519772,
+          "rms_contour_error_m": 0.07841575636075833,
+          "rms_heading_error_rad": 0.08382889820295958,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.0834388009711358,
+          "solver_time_p95_ms": 3.4882932496884678,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.348482187262562,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.3955871670842046,
+              "minimum_physical_margin_m": 0.24773774206652233,
+              "rms_contour_error_m": 0.07558777723304194
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.446277157845335,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.929474359345378,
+              "minimum_physical_margin_m": 0.28060996131831883,
+              "rms_contour_error_m": 0.04008291267005915
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.9999748705825517,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.5863797501013646,
+              "minimum_physical_margin_m": 0.2442236645263897,
+              "rms_contour_error_m": 0.08027161670264805
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.485545055051564,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.5221083556122412,
+              "minimum_physical_margin_m": 0.2821509545713108,
+              "rms_contour_error_m": 0.0621927781994069
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.9989798837483823,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1311146863371615,
+              "minimum_physical_margin_m": 0.29309221914715866,
+              "rms_contour_error_m": 0.08649935572483643
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.9777393165522543,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1330294024067755,
+              "minimum_physical_margin_m": 0.20771631494004666,
+              "rms_contour_error_m": 0.08605261594433566
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.15540118788565224,
+              "mean_speed_mps": 2.6374430448959307,
+              "minimum_physical_margin_m": 0.40610619539727777,
+              "minimum_speed_mps": 1.9812532644946912,
+              "rms_contour_error_m": 0.08797040123669868
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.14615526272971224,
+              "mean_speed_mps": 2.32592628846832,
+              "minimum_physical_margin_m": 0.40074997953122854,
+              "minimum_speed_mps": 1.6453093071327543,
+              "rms_contour_error_m": 0.07425545562108969
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.14921488308809158,
+              "mean_speed_mps": 2.50611450457989,
+              "minimum_physical_margin_m": 0.4333841029215686,
+              "minimum_speed_mps": 2.012537337735189,
+              "rms_contour_error_m": 0.08253194214428439
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.1585927245780029,
+              "mean_speed_mps": 2.463754083306301,
+              "minimum_physical_margin_m": 0.4152554644266075,
+              "minimum_speed_mps": 1.7724384812015794,
+              "rms_contour_error_m": 0.08483324164150746
+            }
+          }
+        },
+        "nominal": {
+          "completed_lap": true,
+          "lap_time_s": 31.150000000000002,
+          "maximum_abs_contour_error_m": 0.18034753442642212,
+          "maximum_abs_front_slip_rad": 0.1605427332109742,
+          "maximum_abs_heading_error_rad": 0.28836505070846186,
+          "maximum_abs_rear_slip_rad": 0.16672509451685544,
+          "maximum_abs_steering_command_rate_radps": 1.5216733311273392,
+          "maximum_abs_steering_rad": 0.48986813440020455,
+          "maximum_speed_mps": 4.480574158340873,
+          "mean_speed_mps": 2.739198977319412,
+          "minimum_physical_margin_m": 0.2078410117878218,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.0011777627750955,
+          "rms_contour_error_m": 0.07607826416853018,
+          "rms_heading_error_rad": 0.08409605808018307,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.077061802727405,
+          "solver_time_p95_ms": 3.4772094999652836,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.358292481952654,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.4002550253125507,
+              "minimum_physical_margin_m": 0.24766482951695873,
+              "rms_contour_error_m": 0.07535808165255178
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.445541006204374,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.9291745374024645,
+              "minimum_physical_margin_m": 0.28070759828203945,
+              "rms_contour_error_m": 0.03990274005455865
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.9998038057138268,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.5862285971997947,
+              "minimum_physical_margin_m": 0.2441554043874259,
+              "rms_contour_error_m": 0.08049861986647325
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.480574158340873,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.519500842742146,
+              "minimum_physical_margin_m": 0.31789006695939376,
+              "rms_contour_error_m": 0.02271213947157565
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.9978147847934666,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1306965172605303,
+              "minimum_physical_margin_m": 0.293119330300132,
+              "rms_contour_error_m": 0.08645643821410895
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.975654912658565,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1310848377156213,
+              "minimum_physical_margin_m": 0.2078410117878218,
+              "rms_contour_error_m": 0.08605645816848878
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.15542881570642075,
+              "mean_speed_mps": 2.6383639822679914,
+              "minimum_physical_margin_m": 0.4062034129897959,
+              "minimum_speed_mps": 1.9821104759244845,
+              "rms_contour_error_m": 0.0880240236491524
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.14613957703179153,
+              "mean_speed_mps": 2.325713817470763,
+              "minimum_physical_margin_m": 0.4007295223910315,
+              "minimum_speed_mps": 1.6457498011784417,
+              "rms_contour_error_m": 0.07422321512765563
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.14919452229498995,
+              "mean_speed_mps": 2.5062711556990713,
+              "minimum_physical_margin_m": 0.4336269770783249,
+              "minimum_speed_mps": 2.0138771075547743,
+              "rms_contour_error_m": 0.08257806099332107
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.15853663534872936,
+              "mean_speed_mps": 2.464122436545749,
+              "minimum_physical_margin_m": 0.4152790231388591,
+              "minimum_speed_mps": 1.7731417419491702,
+              "rms_contour_error_m": 0.08479304853803865
+            }
+          }
+        },
+        "right_offset": {
+          "completed_lap": true,
+          "lap_time_s": 31.150000000000002,
+          "maximum_abs_contour_error_m": 0.1835349802804711,
+          "maximum_abs_front_slip_rad": 0.15709323008043177,
+          "maximum_abs_heading_error_rad": 0.2881184879486846,
+          "maximum_abs_rear_slip_rad": 0.16273980617223857,
+          "maximum_abs_steering_command_rate_radps": 1.513840461805998,
+          "maximum_abs_steering_rad": 0.4895150700753043,
+          "maximum_speed_mps": 4.495369085344667,
+          "mean_speed_mps": 2.7396496925610334,
+          "minimum_physical_margin_m": 0.20811896341406302,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.0012153377460336,
+          "rms_contour_error_m": 0.07819428220820947,
+          "rms_heading_error_rad": 0.08537001036009845,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.082331374502809,
+          "solver_time_p95_ms": 3.4791222000876587,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.364015067412201,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.4019303909866117,
+              "minimum_physical_margin_m": 0.2482170061392016,
+              "rms_contour_error_m": 0.07537864713054256
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.457736748074724,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.9452845481044,
+              "minimum_physical_margin_m": 0.2820096179905033,
+              "rms_contour_error_m": 0.04080095053007618
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.999052112272323,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.5855983347519245,
+              "minimum_physical_margin_m": 0.24425318181916614,
+              "rms_contour_error_m": 0.08069825811443411
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.495369085344667,
+              "maximum_runtime_cap_mps": 4.5,
+              "mean_actual_speed_mps": 3.5280479881037943,
+              "minimum_physical_margin_m": 0.23229363676661763,
+              "rms_contour_error_m": 0.056846578090601896
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.9955797638314507,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.136661961645065,
+              "minimum_physical_margin_m": 0.2928433015434816,
+              "rms_contour_error_m": 0.08639765708446774
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.9720799599404764,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1383779375949943,
+              "minimum_physical_margin_m": 0.20811896341406302,
+              "rms_contour_error_m": 0.08573798622860775
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.15490726451609305,
+              "mean_speed_mps": 2.633112073387782,
+              "minimum_physical_margin_m": 0.4070812954851121,
+              "minimum_speed_mps": 1.984390876249906,
+              "rms_contour_error_m": 0.08782148734135842
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.14644570567806575,
+              "mean_speed_mps": 2.3237608894435184,
+              "minimum_physical_margin_m": 0.4005783225770421,
+              "minimum_speed_mps": 1.6472617421041436,
+              "rms_contour_error_m": 0.07458442730514649
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.14975283949511464,
+              "mean_speed_mps": 2.5099676131930715,
+              "minimum_physical_margin_m": 0.4336971901369653,
+              "minimum_speed_mps": 2.014494109226361,
+              "rms_contour_error_m": 0.08277313119083395
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.15841728297709803,
+              "mean_speed_mps": 2.4639672325241886,
+              "minimum_physical_margin_m": 0.4153505852161934,
+              "minimum_speed_mps": 1.7718160076908116,
+              "rms_contour_error_m": 0.08470696580858705
+            }
+          }
+        }
+      }
+    },
+    "5p0": {
+      "candidate": "stable_roboracer_arc_straight_5p0_candidate",
+      "cap_mps": 5.0,
+      "scenarios": {
+        "left_offset": {
+          "completed_lap": true,
+          "lap_time_s": 30.900000000000002,
+          "maximum_abs_contour_error_m": 0.17721206736486686,
+          "maximum_abs_front_slip_rad": 0.16432995360310063,
+          "maximum_abs_heading_error_rad": 0.2892926081082529,
+          "maximum_abs_rear_slip_rad": 0.17068510934287007,
+          "maximum_abs_steering_command_rate_radps": 1.539279082014688,
+          "maximum_abs_steering_rad": 0.489791098207792,
+          "maximum_speed_mps": 4.99998122951035,
+          "mean_speed_mps": 2.7583950612426174,
+          "minimum_physical_margin_m": 0.20770386577049268,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.0001285268506372,
+          "rms_contour_error_m": 0.07872134123595456,
+          "rms_heading_error_rad": 0.0841208277490399,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.131090997576011,
+          "solver_time_p95_ms": 3.568624000035925,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.534435434723211,
+              "maximum_runtime_cap_mps": 4.932676392871666,
+              "mean_actual_speed_mps": 3.4010440618757674,
+              "minimum_physical_margin_m": 0.24782390704997187,
+              "rms_contour_error_m": 0.07557494475327396
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.8479024970231395,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 4.117311001994919,
+              "minimum_physical_margin_m": 0.2806517182004118,
+              "rms_contour_error_m": 0.04180809468861961
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.9999748875150076,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.586520076776753,
+              "minimum_physical_margin_m": 0.24423012197695462,
+              "rms_contour_error_m": 0.08026157523799261
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.99998122951035,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 3.7362823763890916,
+              "minimum_physical_margin_m": 0.28161440529069853,
+              "rms_contour_error_m": 0.06439355281424564
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.9993431806585553,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1316307693136145,
+              "minimum_physical_margin_m": 0.29317069806062157,
+              "rms_contour_error_m": 0.08643579001730363
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.9785757535993,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.132878089975211,
+              "minimum_physical_margin_m": 0.20770386577049268,
+              "rms_contour_error_m": 0.08607215626829985
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.15540463664451518,
+              "mean_speed_mps": 2.637442646309675,
+              "minimum_physical_margin_m": 0.406108852475375,
+              "minimum_speed_mps": 1.9812445495281341,
+              "rms_contour_error_m": 0.08797152120500655
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.14615669494298728,
+              "mean_speed_mps": 2.325952525884903,
+              "minimum_physical_margin_m": 0.4007538194509001,
+              "minimum_speed_mps": 1.6452574450356556,
+              "rms_contour_error_m": 0.07425950565681726
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.14922506024108034,
+              "mean_speed_mps": 2.506164580479485,
+              "minimum_physical_margin_m": 0.4333769473539546,
+              "minimum_speed_mps": 2.0124550173767792,
+              "rms_contour_error_m": 0.0825368342864804
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.15859293799382615,
+              "mean_speed_mps": 2.4640322825421572,
+              "minimum_physical_margin_m": 0.41525892547512216,
+              "minimum_speed_mps": 1.7756909696455194,
+              "rms_contour_error_m": 0.08482384895640423
+            }
+          }
+        },
+        "nominal": {
+          "completed_lap": true,
+          "lap_time_s": 30.925,
+          "maximum_abs_contour_error_m": 0.18035297842682288,
+          "maximum_abs_front_slip_rad": 0.16053493681096148,
+          "maximum_abs_heading_error_rad": 0.2883670340638138,
+          "maximum_abs_rear_slip_rad": 0.16671073287259636,
+          "maximum_abs_steering_command_rate_radps": 1.5216350664312657,
+          "maximum_abs_steering_rad": 0.48986820030268086,
+          "maximum_speed_mps": 4.999948860880072,
+          "mean_speed_mps": 2.759362929670988,
+          "minimum_physical_margin_m": 0.2078418152937674,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.0011968701962566,
+          "rms_contour_error_m": 0.07636342883306439,
+          "rms_heading_error_rad": 0.08441412553934931,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.1396792431250176,
+          "solver_time_p95_ms": 3.5979027999246678,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.573717806755224,
+              "maximum_runtime_cap_mps": 4.968037586460473,
+              "mean_actual_speed_mps": 3.406201900286576,
+              "minimum_physical_margin_m": 0.24766541040328446,
+              "rms_contour_error_m": 0.07535769373824694
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.861583430423452,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 4.130420607477091,
+              "minimum_physical_margin_m": 0.28070681274377685,
+              "rms_contour_error_m": 0.04157833256326053
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.999802604918288,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.586226324275114,
+              "minimum_physical_margin_m": 0.2441550999709176,
+              "rms_contour_error_m": 0.0804988737974326
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.999948860880072,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 3.7370300291522227,
+              "minimum_physical_margin_m": 0.3177787227782954,
+              "rms_contour_error_m": 0.023628436785434886
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.99780745462928,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1306858833590674,
+              "minimum_physical_margin_m": 0.293118579560842,
+              "rms_contour_error_m": 0.0864567852844201
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.9756374433158745,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1310864795847535,
+              "minimum_physical_margin_m": 0.2078418152937674,
+              "rms_contour_error_m": 0.08605596553729833
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.1554288569593199,
+              "mean_speed_mps": 2.638363660285268,
+              "minimum_physical_margin_m": 0.40620349135369993,
+              "minimum_speed_mps": 1.982110902908226,
+              "rms_contour_error_m": 0.08802400238227845
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.14613956933056407,
+              "mean_speed_mps": 2.3257131247287863,
+              "minimum_physical_margin_m": 0.4007294760326783,
+              "minimum_speed_mps": 1.6457513034879379,
+              "rms_contour_error_m": 0.07422314669968605
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.1491942530743773,
+              "mean_speed_mps": 2.5062696782585574,
+              "minimum_physical_margin_m": 0.4336272979481937,
+              "minimum_speed_mps": 2.013879881203903,
+              "rms_contour_error_m": 0.08257796659037644
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.15853629788918155,
+              "mean_speed_mps": 2.4641223469085953,
+              "minimum_physical_margin_m": 0.4152792374792935,
+              "minimum_speed_mps": 1.7731434568719255,
+              "rms_contour_error_m": 0.08479241724451135
+            }
+          }
+        },
+        "right_offset": {
+          "completed_lap": true,
+          "lap_time_s": 30.925,
+          "maximum_abs_contour_error_m": 0.18359613315369816,
+          "maximum_abs_front_slip_rad": 0.15708343075958864,
+          "maximum_abs_heading_error_rad": 0.2880259247411263,
+          "maximum_abs_rear_slip_rad": 0.16264932193748316,
+          "maximum_abs_steering_command_rate_radps": 1.5137356336929682,
+          "maximum_abs_steering_rad": 0.4895670389974085,
+          "maximum_speed_mps": 4.992133038311166,
+          "mean_speed_mps": 2.757951327413488,
+          "minimum_physical_margin_m": 0.20820561839150672,
+          "minimum_speed_mps": 0.66,
+          "progress_laps": 1.0005753504144526,
+          "rms_contour_error_m": 0.07850757799677369,
+          "rms_heading_error_rad": 0.08570115104631117,
+          "solver_failure_count": 0,
+          "solver_success_rate": 1.0,
+          "solver_time_mean_ms": 3.126903046040091,
+          "solver_time_p95_ms": 3.566015050000713,
+          "speed_zone_metrics": {
+            "dynamic_arc_transition": {
+              "maximum_actual_speed_mps": 4.5569275491638805,
+              "maximum_runtime_cap_mps": 4.953640443589948,
+              "mean_actual_speed_mps": 3.406460255676026,
+              "minimum_physical_margin_m": 0.24839662711388694,
+              "rms_contour_error_m": 0.07539037940447588
+            },
+            "round_arc_transition": {
+              "maximum_actual_speed_mps": 4.850854278192661,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 4.130486689971489,
+              "minimum_physical_margin_m": 0.2818880294199964,
+              "rms_contour_error_m": 0.04234848452662019
+            },
+            "standard": {
+              "maximum_actual_speed_mps": 2.999050203041045,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.5854891579646275,
+              "minimum_physical_margin_m": 0.24426353939260081,
+              "rms_contour_error_m": 0.08069887891256959
+            },
+            "straight_acceleration": {
+              "maximum_actual_speed_mps": 4.992133038311166,
+              "maximum_runtime_cap_mps": 5.0,
+              "mean_actual_speed_mps": 3.7329483233684897,
+              "minimum_physical_margin_m": 0.2311105808112931,
+              "rms_contour_error_m": 0.058879733972630764
+            },
+            "tight_bend_1_standard": {
+              "maximum_actual_speed_mps": 2.995171074603003,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.136147507097768,
+              "minimum_physical_margin_m": 0.29283667884068126,
+              "rms_contour_error_m": 0.0864161132003001
+            },
+            "tight_bend_2_standard": {
+              "maximum_actual_speed_mps": 2.9711053915198824,
+              "maximum_runtime_cap_mps": 3.0,
+              "mean_actual_speed_mps": 2.1383809094921404,
+              "minimum_physical_margin_m": 0.20820561839150672,
+              "rms_contour_error_m": 0.08571352791040804
+            }
+          },
+          "zone_metrics": {
+            "C1": {
+              "maximum_abs_contour_error_m": 0.15489560229990051,
+              "mean_speed_mps": 2.633072637233708,
+              "minimum_physical_margin_m": 0.40711377818187244,
+              "minimum_speed_mps": 1.98451456681084,
+              "rms_contour_error_m": 0.08781683018933759
+            },
+            "C2": {
+              "maximum_abs_contour_error_m": 0.1464321455088424,
+              "mean_speed_mps": 2.323685807005191,
+              "minimum_physical_margin_m": 0.4005825876810407,
+              "minimum_speed_mps": 1.6473337636483414,
+              "rms_contour_error_m": 0.07457937250215346
+            },
+            "C3": {
+              "maximum_abs_contour_error_m": 0.14974973695849156,
+              "mean_speed_mps": 2.5099893675374196,
+              "minimum_physical_margin_m": 0.4337193850244254,
+              "minimum_speed_mps": 2.014635367315191,
+              "rms_contour_error_m": 0.08277302389968896
+            },
+            "C4": {
+              "maximum_abs_contour_error_m": 0.15839323990477308,
+              "mean_speed_mps": 2.4639749675843823,
+              "minimum_physical_margin_m": 0.41536989682566816,
+              "minimum_speed_mps": 1.7718677746042388,
+              "rms_contour_error_m": 0.08468319172801218
+            }
+          }
+        }
+      }
+    }
+  }
+}

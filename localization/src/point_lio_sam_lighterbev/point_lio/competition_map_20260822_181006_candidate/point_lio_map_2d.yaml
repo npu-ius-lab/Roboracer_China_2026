@@ -1,0 +1,7 @@
+image: point_lio_map_2d.pgm
+resolution: 0.050000
+origin: [-14.051912, -10.450453, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

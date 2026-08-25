@@ -1,0 +1,193 @@
+{
+  "bags": [
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v0.8banjin2.0.bag",
+      "direction_selected": "left",
+      "directional": {
+        "bias_rad": -0.00520511965713451,
+        "p95_abs_error_rad": 0.03478319899372039,
+        "p95_optimistic_abs_delta_rad": 0.017978147885131565,
+        "r2": 0.694004713157648,
+        "rmse_rad": 0.016617428339133638,
+        "samples": 1712
+      },
+      "median_speed_mps": 0.7972624962327421,
+      "rmse_improvement_percent": 3.55041055108899,
+      "unified": {
+        "bias_rad": -0.005157370922434777,
+        "p95_abs_error_rad": 0.03666471886265237,
+        "p95_optimistic_abs_delta_rad": 0.01931386730171689,
+        "r2": 0.6710620583101645,
+        "rmse_rad": 0.01722913330588704,
+        "samples": 1712
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.2banjin2.0.bag",
+      "direction_selected": "left",
+      "directional": {
+        "bias_rad": -0.003318908530581882,
+        "p95_abs_error_rad": 0.031806787643664174,
+        "p95_optimistic_abs_delta_rad": 0.018957223519832853,
+        "r2": 0.7567284844216344,
+        "rmse_rad": 0.014394266024602835,
+        "samples": 2978
+      },
+      "median_speed_mps": 1.193278960103886,
+      "rmse_improvement_percent": 0.5285292049069515,
+      "unified": {
+        "bias_rad": -0.0033088518307074176,
+        "p95_abs_error_rad": 0.03085616360188552,
+        "p95_optimistic_abs_delta_rad": 0.017900681322435923,
+        "r2": 0.7541364309176397,
+        "rmse_rad": 0.014470748154769324,
+        "samples": 2978
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.6banjin2.0.bag",
+      "direction_selected": "left",
+      "directional": {
+        "bias_rad": 0.004121188389442997,
+        "p95_abs_error_rad": 0.03457606501896226,
+        "p95_optimistic_abs_delta_rad": 0.02955063412985947,
+        "r2": 0.6488079911490525,
+        "rmse_rad": 0.02027009380537188,
+        "samples": 923
+      },
+      "median_speed_mps": 1.5969664010291378,
+      "rmse_improvement_percent": 2.8320479742166618,
+      "unified": {
+        "bias_rad": 0.004067061166810302,
+        "p95_abs_error_rad": 0.03484529570829172,
+        "p95_optimistic_abs_delta_rad": 0.027870568800430158,
+        "r2": 0.6280380408198865,
+        "rmse_rad": 0.020860884049499415,
+        "samples": 923
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_r2p5_2p0.bag",
+      "direction_selected": "left",
+      "directional": {
+        "bias_rad": 0.004609334182218399,
+        "p95_abs_error_rad": 0.021407329648647666,
+        "p95_optimistic_abs_delta_rad": 0.02090247855850902,
+        "r2": 0.806280253519722,
+        "rmse_rad": 0.010754897184188938,
+        "samples": 1971
+      },
+      "median_speed_mps": 1.9892225920291469,
+      "rmse_improvement_percent": -1.9472971816594664,
+      "unified": {
+        "bias_rad": 0.004572913448027582,
+        "p95_abs_error_rad": 0.02111337626717434,
+        "p95_optimistic_abs_delta_rad": 0.020156139701312845,
+        "r2": 0.8136100639007281,
+        "rmse_rad": 0.010549467697044318,
+        "samples": 1971
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v0.8right.bag",
+      "direction_selected": "right",
+      "directional": {
+        "bias_rad": 0.010204603007397306,
+        "p95_abs_error_rad": 0.0367210257371421,
+        "p95_optimistic_abs_delta_rad": 0.018566876756658912,
+        "r2": 0.40516585285398865,
+        "rmse_rad": 0.019456895553902988,
+        "samples": 1826
+      },
+      "median_speed_mps": 0.797859048925242,
+      "rmse_improvement_percent": 2.524670510724893,
+      "unified": {
+        "bias_rad": 0.010189358853692645,
+        "p95_abs_error_rad": 0.03752844484641944,
+        "p95_optimistic_abs_delta_rad": 0.01977595869814347,
+        "r2": 0.3739536786312512,
+        "rmse_rad": 0.01996084102084904,
+        "samples": 1826
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.2right.bag",
+      "direction_selected": "right",
+      "directional": {
+        "bias_rad": 0.0012884406755237989,
+        "p95_abs_error_rad": 0.028603503743980813,
+        "p95_optimistic_abs_delta_rad": 0.023352792660887606,
+        "r2": 0.6244927604416732,
+        "rmse_rad": 0.016085926503278825,
+        "samples": 1252
+      },
+      "median_speed_mps": 1.198713029461051,
+      "rmse_improvement_percent": 0.9178316289762575,
+      "unified": {
+        "bias_rad": 0.0012090382389141829,
+        "p95_abs_error_rad": 0.02919936825829799,
+        "p95_optimistic_abs_delta_rad": 0.02301122763071092,
+        "r2": 0.61750363731229,
+        "rmse_rad": 0.016234935879726974,
+        "samples": 1252
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v1.6right.bag",
+      "direction_selected": "right",
+      "directional": {
+        "bias_rad": -0.005967139375845426,
+        "p95_abs_error_rad": 0.03231035401335001,
+        "p95_optimistic_abs_delta_rad": 0.03179870225623831,
+        "r2": 0.5908374149615946,
+        "rmse_rad": 0.017542149163741715,
+        "samples": 1104
+      },
+      "median_speed_mps": 1.6014265599380009,
+      "rmse_improvement_percent": 0.8723033319143142,
+      "unified": {
+        "bias_rad": -0.005989724636488303,
+        "p95_abs_error_rad": 0.03344904681278883,
+        "p95_optimistic_abs_delta_rad": 0.03219769960350488,
+        "r2": 0.5836046377933721,
+        "rmse_rad": 0.017696516466511863,
+        "samples": 1104
+      }
+    },
+    {
+      "bag": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_v2.0right.bag",
+      "direction_selected": "right",
+      "directional": {
+        "bias_rad": -0.010507020220531557,
+        "p95_abs_error_rad": 0.03505902873973207,
+        "p95_optimistic_abs_delta_rad": 0.03505902873973207,
+        "r2": 0.3677314733917162,
+        "rmse_rad": 0.02039706987809879,
+        "samples": 693
+      },
+      "median_speed_mps": 1.993781284804261,
+      "rmse_improvement_percent": -0.020054541469378313,
+      "unified": {
+        "bias_rad": -0.010724182154040533,
+        "p95_abs_error_rad": 0.037817902537885216,
+        "p95_optimistic_abs_delta_rad": 0.037817902537885216,
+        "r2": 0.36798499423323705,
+        "rmse_rad": 0.020392980159435872,
+        "samples": 693
+      }
+    }
+  ],
+  "candidate_file": "/home/tianbot/f1tenth_residual_controller_ws/lateral_identification/data/circle_prbs/circle_actuator_candidates_20260816.json",
+  "decision": "directional_candidate_better_on_replay",
+  "deployment_status": "experimental_only_stable_untouched",
+  "generated_at": "2026-08-16T19:39:41",
+  "method": "offline_command_replay_against_effective_angle_proxy",
+  "summary": {
+    "directional_sample_weighted_rmse_rad": 0.01608411058962067,
+    "unified_sample_weighted_rmse_rad": 0.016299998867336917
+  },
+  "warnings": [
+    "Equivalent-angle proxy comes from yaw rate and contains tire/road effects.",
+    "This replay validates command-to-motion prediction, not a front-wheel sensor measurement."
+  ]
+}

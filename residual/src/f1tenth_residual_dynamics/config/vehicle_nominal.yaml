@@ -1,0 +1,30 @@
+schema_version: 1
+vehicle:
+  wheelbase: 0.320
+  mass: 3.80
+  yaw_inertia: 0.060
+  lf: 0.195
+  lr: 0.125
+  tire_cornering_front: 94.274243
+  tire_cornering_rear: 100.948912
+  vx_epsilon: 0.20
+actuator:
+  speed_gain: 1.0
+  speed_time_constant_s: 0.20
+  speed_dead_time_s: 0.13
+  steering_gain: 1.0
+  steering_bias_rad: 0.0
+  steering_time_constant_s: 0.08
+  steering_dead_time_s: 0.0
+limits:
+  max_speed_mps: 4.0
+  max_steer_rad: 0.55
+  max_accel_mps2: 2.4
+  max_decel_mps2: 4.0
+  max_steer_rate_radps: 5.5
+model:
+  integration_substeps: 5
+  low_speed_blend_center_mps: 0.45
+  low_speed_blend_width_mps: 0.08
+  low_speed_vy_tau_s: 0.12
+  low_speed_yaw_tau_s: 0.10

@@ -1,0 +1,32 @@
+static_id_base: 1000000000
+minimum_observations: 3
+maximum_observation_gap_s: 0.80
+input_timeout_s: 0.80
+odom_timeout_s: 0.30
+filter:
+  minimum_x_m: 0.35
+  maximum_x_m: 5.50
+  maximum_abs_y_m: 1.20
+  maximum_length_m: 0.55
+  maximum_width_m: 0.45
+  minimum_extent_m: 0.06
+  track_margin_m: 0.03
+  dynamic_merge_distance_m: 0.45
+# Fixed start actuator immediately before s=0. This is an exact Frenet
+# landmark exclusion, not a blanket start-zone mask: a car or box elsewhere
+# near the start line is still fused and avoided.
+start_gate_ignore:
+  enabled: true
+  center_s_m: 87.55
+  # The pole centroid slides from s=87.53 to s=0.37 as different faces are
+  # visible, so cover that measured projection spread across the seam.
+  half_length_s_m: 0.70
+  center_ey_m: 0.46
+  half_width_ey_m: 0.18
+topics:
+  odom: /localization/odom
+  dynamic_targets: /v5_chaoche/perception/targets_dynamic
+  perception_markers: /v5_chaoche/perception/target_markers
+  output: /v5_chaoche/perception/targets_detailed
+  static_markers: /v5_chaoche/perception/static_obstacle_markers
+  status: /v5_chaoche/perception/fusion_status

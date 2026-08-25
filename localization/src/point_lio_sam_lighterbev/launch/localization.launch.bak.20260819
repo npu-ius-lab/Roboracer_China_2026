@@ -1,0 +1,90 @@
+<launch>
+  <arg name="lidar" default="mid360" />
+  <arg name="rviz" default="true" />
+  <arg name="run_frontend" default="true" />
+  <arg name="use_sim_time" default="false" />
+  <arg name="map_dir"
+       default="$(find point_lio_sam_lighterbev)/point_lio/localization_map" />
+  <arg name="model_path"
+       default="$(find point_lio_sam_lighterbev)/models/pca_kitti_best.pt" />
+  <arg name="lighterbev_device" default="cpu" />
+  <arg name="frontend_max_hz" default="50.0" />
+  <arg name="control_output_hz" default="50.0" />
+  <arg name="backend_hz" default="10.0" />
+  <arg name="odom_topic" default="/aft_mapped_to_init" />
+  <arg name="cloud_topic" default="/cloud_registered" />
+  <arg name="vehicle_base_to_body_x_m" default="0.125" />
+  <arg name="body_to_vehicle_base_x_m" default="-0.125" />
+
+  <!-- PointLIO's local world is the odom frame in localization mode. -->
+  <rosparam command="load"
+            file="$(find point_lio_sam_lighterbev)/config/bev_geometry.yaml" />
+  <param name="/use_sim_time" value="$(arg use_sim_time)" />
+  <param name="/laserMapping/publish/world_frame" value="odom" />
+
+  <node pkg="point_lio_sam_lighterbev"
+        type="pointlio_robust_localization_node"
+        name="pointlio_robust_localizer"
+        output="screen">
+    <rosparam command="load"
+              file="$(find point_lio_sam_lighterbev)/config/localization.yaml" />
+    <param name="map_dir" value="$(arg map_dir)" />
+    <param name="model_path" value="$(arg model_path)" />
+    <param name="lighterbev_device" value="$(arg lighterbev_device)" />
+    <param name="frontend_max_hz" value="$(arg frontend_max_hz)" />
+    <param name="control_output_hz" value="$(arg control_output_hz)" />
+    <param name="backend_hz" value="$(arg backend_hz)" />
+    <param name="odom_topic" value="$(arg odom_topic)" />
+    <param name="cloud_topic" value="$(arg cloud_topic)" />
+    <param name="vehicle_base_to_body_x_m"
+           value="$(arg vehicle_base_to_body_x_m)" />
+  </node>
+
+  <!-- Point-LIO publishes odom -> localization_base_link after shifting its
+       body/MID360 pose backwards by 0.125 m. Preserve the sensor frame as a
+       static child, yielding map -> odom -> localization_base_link -> body. -->
+  <node pkg="tf2_ros"
+        type="static_transform_publisher"
+        name="localization_base_to_pointlio_body_tf"
+        if="$(eval arg('lidar') == 'mid360')"
+        args="$(arg vehicle_base_to_body_x_m) 0 0 0 0 0 1 localization_base_link body" />
+
+  <!-- Other supported PointLIO launch files retain their original odom->body
+       dynamic TF, so keep the legacy body->vehicle-center direction there. -->
+  <node pkg="tf2_ros"
+        type="static_transform_publisher"
+        name="localization_vehicle_base_tf"
+        unless="$(eval arg('lidar') == 'mid360')"
+        args="$(arg body_to_vehicle_base_x_m) 0 0 0 0 0 1 body localization_base_link" />
+
+  <node if="$(arg rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="rviz_pointlio_localization"
+        args="-d $(find point_lio_sam_lighterbev)/config/localization.rviz"
+        launch-prefix="nice" />
+
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'avia')"
+           file="$(find point_lio)/launch/mapping_avia.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'mid360')"
+           file="$(find point_lio)/launch/mapping_mid360.launch">
+    <arg name="rviz" value="false" />
+    <arg name="tf_child_frame" value="localization_base_link" />
+    <arg name="tf_child_to_body_x_m"
+         value="$(arg vehicle_base_to_body_x_m)" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'horizon')"
+           file="$(find point_lio)/launch/mapping_horizon.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'ouster64')"
+           file="$(find point_lio)/launch/mapping_ouster64.launch">
+    <arg name="rviz" value="false" />
+  </include>
+  <include if="$(eval arg('run_frontend') and arg('lidar') == 'velody16')"
+           file="$(find point_lio)/launch/mapping_velody16.launch">
+    <arg name="rviz" value="false" />
+  </include>
+</launch>

@@ -1,0 +1,309 @@
+schema_version: 1
+model_type: robust_ridge_derivative_residual
+feature_names:
+- bias
+- vx
+- vy
+- yaw_rate
+- delta
+- speed_cmd
+- steer_cmd
+- speed_error
+- steer_error
+- vx_yaw_rate
+- vy_yaw_rate
+- abs_vx_vy
+- abs_vx_yaw_rate
+- vx_tan_delta
+- vx_steer_cmd
+- vx2_steer_cmd
+output_names:
+- vx_accel_residual
+- vy_accel_residual
+- yaw_accel_residual
+feature_mean:
+- 0.0
+- 1.975032147698108
+- -0.051959309062413424
+- 0.1408695387831146
+- 0.011919956183575678
+- 2.030080786516466
+- 0.02556636934140289
+- 0.05504863881835873
+- 0.013646413157827173
+- 0.34095369517700713
+- 0.05643748658118594
+- -0.11823847813698177
+- 0.34095369517700713
+- 0.03412424708304757
+- 0.061464708695691525
+- 0.15067662307916177
+feature_scale:
+- 1.0
+- 0.726764444445661
+- 0.10090319314272823
+- 0.917605657192788
+- 0.19456541102612165
+- 0.6539136343049352
+- 0.20123038059604434
+- 0.3532862976431945
+- 0.06893536654369257
+- 1.763153363936381
+- 0.12081187597030776
+- 0.1880970549555714
+- 1.763153363936381
+- 0.28681769434443555
+- 0.2980711272781352
+- 0.6194607747569125
+coefficients_feature_by_output:
+- - 0.0
+  - -0.1634879369596415
+  - 0.10646622741574595
+- - 0.0
+  - -0.007233060957217838
+  - -0.011975888180970392
+- - 0.0
+  - 0.3363127252374807
+  - 0.09351240749338542
+- - 0.0
+  - -0.11878175980208787
+  - 3.7081074203812228
+- - 0.0
+  - -0.04969934309797371
+  - -0.3076468846041941
+- - 0.0
+  - -0.011461851495827258
+  - -0.004347091483093447
+- - 0.0
+  - -0.027105310236637065
+  - -0.37361702775892824
+- - 0.0
+  - -0.006336236685808373
+  - 0.01659001357235961
+- - 0.0
+  - 0.056162687508295145
+  - 0.07759367624893719
+- - 0.0
+  - 0.11983770240844571
+  - -0.29012268422905213
+- - 0.0
+  - 0.010603745757663131
+  - 0.03918407715527487
+- - 0.0
+  - -0.10583887389873169
+  - 0.05337800939116997
+- - 0.0
+  - 0.11983770240828766
+  - -0.2901226842452553
+- - 0.0
+  - -0.07608089760998887
+  - -3.225037089360537
+- - 0.0
+  - -0.050305821480811475
+  - 0.27344663900776284
+- - 0.0
+  - 0.035593236273980526
+  - 0.3408919782196187
+output_limits:
+- 4.0
+- 8.0
+- 18.0
+feature_abs_z_limit:
+- 1.0
+- 2.130260687666911
+- 2.70249143275126
+- 2.4406634124837803
+- 2.8519708309590532
+- 2.3625308987004257
+- 2.8602360118661228
+- 2.017454783477515
+- 3.600778605914747
+- 3.015487924444319
+- 3.791831123484937
+- 3.0531000131353068
+- 3.015487924444319
+- 3.0767826222643984
+- 2.9777565883515065
+- 3.518084013853481
+ood_fade_ratio: 1.5
+metadata:
+  created_at: '2026-08-20T22:44:16.668016'
+  dataset_paths:
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/new_surface_step1_candidate_20260820_192249_seg01_t0010.0-0016.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/new_surface_step1_candidate_20260820_192249_seg02_t0020.3-0022.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/new_surface_step1_candidate_20260820_192249_seg03_t0043.9-0046.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/new_surface_step1_candidate_20260820_192249_seg04_t0046.5-0061.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/new_surface_step1_candidate_20260820_192249_seg05_t0061.8-0066.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg01_t0062.4-0066.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg02_t0066.1-0068.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg03_t0074.2-0100.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg04_t0100.8-0108.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg05_t0111.3-0113.7.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg06_t0121.7-0125.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg07_t0130.1-0133.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg08_t0133.3-0135.8.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg09_t0138.9-0141.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg10_t0141.5-0146.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg11_t0146.3-0150.9.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg12_t0170.9-0178.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg13_t0179.0-0199.8.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg14_t0243.4-0249.5.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_210745_seg15_t0249.6-0253.8.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg01_t0017.5-0022.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg02_t0033.9-0036.4.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg03_t0038.9-0041.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg04_t0041.7-0045.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg05_t0048.5-0062.5.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg06_t0062.6-0074.8.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg07_t0074.9-0085.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg08_t0088.4-0091.4.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg09_t0091.5-0106.7.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg10_t0107.2-0113.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg11_t0113.3-0117.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/train/stable_v2_20260820_214200_seg12_t0128.7-0132.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg01_t0017.3-0019.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg02_t0021.3-0026.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg03_t0028.1-0030.2.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg04_t0035.9-0048.3.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg05_t0048.4-0056.0.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg06_t0056.1-0063.7.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg07_t0063.8-0068.7.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg08_t0069.2-0075.9.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg09_t0079.8-0083.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg10_t0086.6-0092.6.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg11_t0094.4-0099.1.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg12_t0100.6-0105.3.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg13_t0105.5-0108.1.npz
+  - /home/tianbot/f1tenth/data/residual_identification/mpcc_closed_loop_20260820/selected_final/holdout/stable_v2_20260820_220423_seg14_t0108.2-0116.1.npz
+  training_samples: 7315
+  training_windows: 7223
+  feature_set: markov_v1
+  command_history_s:
+  - 0.0
+  nominal_vehicle_config:
+    schema_version: 1
+    vehicle:
+      wheelbase: 0.32
+      mass: 3.8
+      yaw_inertia: 0.06
+      lf: 0.195
+      lr: 0.125
+      tire_cornering_front: 73.84
+      tire_cornering_rear: 103.67
+      vx_epsilon: 0.2
+    actuator:
+      speed_gain: 1.0
+      speed_time_constant_s: 0.2
+      speed_dead_time_s: 0.13
+      steering_gain: 0.965829564
+      steering_bias_rad: -0.011768647
+      steering_time_constant_s: 0.062671845
+      steering_dead_time_s: 0.105
+    limits:
+      max_speed_mps: 4.5
+      max_steer_rad: 0.55
+      max_accel_mps2: 2.4
+      max_decel_mps2: 4.0
+      max_steer_rate_radps: 5.5
+    model:
+      integration_substeps: 5
+      low_speed_blend_center_mps: 0.45
+      low_speed_blend_width_mps: 0.08
+      low_speed_vy_tau_s: 0.12
+      low_speed_yaw_tau_s: 0.1
+  training_config:
+    schema_version: 1
+    dataset:
+      feature_set: markov_v1
+      minimum_speed_mps: 0.3
+      minimum_dt_s: 0.01
+      maximum_dt_s: 0.08
+      maximum_pose_step_m: 0.35
+      maximum_yaw_step_rad: 0.5
+      command_history_s:
+      - 0.0
+      smoothing_window: 7
+    training:
+      validation_fraction: 0.25
+      ridge_alpha: 4.0
+      robust_iterations: 4
+      huber_delta: 2.5
+      random_seed: 7
+      residual_accel_limits:
+      - 4.0
+      - 8.0
+      - 18.0
+    evaluation:
+      rollout_horizon_s: 1.0
+      plot_duration_s: 8.0
+  fit_method: recursive_gauss_newton_multistep_residual
+  fit_horizon: 3
+  fit_horizon_weights:
+  - 1.0
+  - 0.7
+  - 0.5
+  lateral_deployment_scale: 0.25
+  deployment_output_scales:
+  - 0.0
+  - 0.25
+  - 0.25
+  batch_nominal_reference_max_error: 0.0
+  optimizer_metrics:
+    windows: 7223
+    horizon: 3
+    median_dt_s: 0.03341341018676758
+    median_horizon_s: 0.13344740867614746
+    state_error_scales:
+    - 0.06133558259292557
+    - 0.18540972952668483
+    horizon_weights:
+    - 1.0
+    - 0.7
+    - 0.5
+    initial_objective: 0.22529839009102828
+    final_objective: 0.20949749147987318
+    initial_horizon_rmse:
+    - - 0.04219415871708586
+      - 0.023402172915855616
+      - 0.07925017950995729
+    - - 0.07352027717134099
+      - 0.03731419666436594
+      - 0.10814755245179564
+    - - 0.09811449484199734
+      - 0.04567141506430395
+      - 0.13085759094610364
+    final_horizon_rmse:
+    - - 0.04219415871708586
+      - 0.023312619009457185
+      - 0.07643163498966388
+    - - 0.07352027717134099
+      - 0.03593419774338093
+      - 0.10516759009684894
+    - - 0.09811449484199734
+      - 0.04272824515368902
+      - 0.12692075263165095
+    iterations:
+    - iteration: 1
+      objective_before: 0.17406950423647533
+      objective_after: 0.16487608810970686
+      step_norm: 1.079857041976684
+      line_search_factor: 1.0
+      robust_threshold: 0.5545281996671104
+    - iteration: 2
+      objective_before: 0.1640785677872657
+      objective_after: 0.16380535734296675
+      step_norm: 0.24478495319019322
+      line_search_factor: 1.0
+      robust_threshold: 0.53312696450713
+    - iteration: 3
+      objective_before: 0.16436669953594107
+      objective_after: 0.16435693985119107
+      step_norm: 0.057928740027203086
+      line_search_factor: 1.0
+      robust_threshold: 0.535285887086214
+    - iteration: 4
+      objective_before: 0.1643330522408519
+      objective_after: 0.16433196483940427
+      step_norm: 0.020362807399385074
+      line_search_factor: 1.0
+      robust_threshold: 0.5350021893096298

@@ -1,0 +1,19 @@
+{
+  "test": {
+    "duration_s": 30.0,
+    "runtime_speed_cap_mps": 4.0,
+    "odometry_age_range_s": [0.11, 0.13],
+    "mpcc_solves": 1200,
+    "injected_pp_takeovers": 1
+  },
+  "v3pro": {
+    "center": {"distance_m": 85.265409, "max_abs_contour_error_m": 0.239114, "minimum_track_margin_m": 0.136569, "status4": 0},
+    "left_0p15": {"distance_m": 84.327345, "max_abs_contour_error_m": 0.240333, "minimum_track_margin_m": 0.136462, "status4": 0},
+    "right_0p15": {"distance_m": 84.882776, "max_abs_contour_error_m": 0.361046, "minimum_track_margin_m": 0.089707, "status4": 0}
+  },
+  "candidate": {
+    "center": {"distance_m": 91.908704, "max_abs_contour_error_m": 0.237961, "minimum_track_margin_m": 0.110725, "status4": 0},
+    "left_0p15": {"distance_m": 94.036649, "max_abs_contour_error_m": 0.200232, "minimum_track_margin_m": 0.109059, "status4": 0},
+    "right_0p15": {"distance_m": 84.895919, "max_abs_contour_error_m": 0.361186, "minimum_track_margin_m": 0.115737, "status4": 0}
+  }
+}

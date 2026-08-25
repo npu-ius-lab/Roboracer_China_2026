@@ -1,0 +1,7 @@
+# Candidate-only association tuning.  The original perception.yaml is loaded
+# first; these values are merged only into the V5 Chaoche node namespace.
+tracking:
+  # Bag regression selected 0.50 m as the conservative setting.  0.65 m
+  # increased coverage further but created duplicate target IDs, so it is not
+  # used by the candidate launcher.
+  gate: 0.50

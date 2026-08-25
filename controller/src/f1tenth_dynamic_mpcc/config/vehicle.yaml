@@ -1,0 +1,165 @@
+# 轨迹生成和 NMPC 共用的实车参数契约。所有数值使用 SI 单位。
+# 标记为 assumed 的值只是保守初值，不得表述为已辨识的实车参数。
+
+schema_version: 1
+profile_name: tianracer_real_vehicle_v1
+updated_at: "2026-08-13"
+
+vehicle:
+  wheelbase: 0.320
+  track_width: 0.18
+  front_hinge_track: 0.13
+  ego_width: 0.24
+  ego_length: 0.40
+  wheel_radius: 0.032
+
+dynamic_model:
+  mass: 3.80
+  yaw_inertia: 0.060
+  lf: 0.195
+  lr: 0.125
+  cg_height: 0.074
+  # f1tenth_gym 的归一化侧偏系数按轴荷和 mu 换算为本模型的 N/rad。
+  tire_cornering_front: 94.274243
+  tire_cornering_rear: 100.948912
+  friction_coefficient: 1.0489
+  gravity: 9.81
+  vx_epsilon: 0.20
+
+limits:
+  min_speed: 0.20
+  max_speed: 4.0
+  max_steer: 0.55
+  max_accel: 2.4
+  max_decel: 4.0
+  max_steer_rate: 5.5
+  lateral_accel_limit: 3.2
+  track_margin: 0.08
+  speed_time_constant: 0.20
+  steering_time_constant: 0.08
+
+planning:
+  minimum_tracker_boundary_margin: 0.25
+  localization_margin: 0.05
+  friction_usage_fraction: 0.40
+  raceline_points: 260
+
+actuator_calibration:
+  steering_command_gain: 1.0
+  steering_command_offset_rad: 0.0
+  steering_dead_time_s: 0.0
+  speed_command_gain: 1.0
+  speed_command_offset_mps: 0.0
+  speed_dead_time_s: 0.13
+
+# No steering-angle sensor is installed. These remain conservative assumed
+# values until the static map, time constant and delay are identified on-car.
+steering_actuator:
+  identified: false
+  parameter_status: assumed_not_identified
+  map_type: linear
+  gain: 1.0
+  bias: 0.0
+  tau: 0.08
+  delay: 0.0
+  delta_min: -0.55
+  delta_max: 0.55
+
+steering_observer:
+  enabled: true
+  rate_hz: 50.0
+  model_only_max_speed_mps: 0.3
+  dynamic_correction_min_speed_mps: 1.5
+  # Conservative initial filter settings, not identified vehicle parameters.
+  kinematic_gain_max: 0.15
+  dynamic_gain_max: 0.10
+  vy_derivative_cutoff_hz: 1.5
+  yaw_rate_derivative_cutoff_hz: 1.5
+  pseudo_angle_cutoff_hz: 1.5
+  innovation_limit_rad: 0.15
+  dropout_timeout_s: 0.25
+  initial_variance_rad2: 0.04
+
+deployment_limits:
+  first_test_command_speed_mps: 2.0
+  first_test_speed_slew_mps2: 1.0
+  first_test_steer_slew_radps: 3.0
+  servo_hard_steer_limit_rad: 0.60
+
+approval:
+  geometry_ready_for_low_speed: true
+  actuator_model_identified: false
+  dynamic_model_identified: false
+  tire_model_identified: false
+  high_speed_closed_loop_approved: false
+
+parameter_status:
+  wheelbase:
+    status: user_measured
+    method: user_reported_measurement
+    uncertainty: null
+    measured_at: "2026-08-11"
+  ego_width:
+    status: user_measured
+    method: user_reported_measurement
+    uncertainty: null
+    measured_at: "2026-08-11"
+  ego_length:
+    status: evidence_backed_initial
+    method: existing_planner_footprint
+    uncertainty: null
+    measured_at: null
+  mass:
+    status: user_measured
+    method: user_reported_measurement
+    uncertainty: null
+    measured_at: "2026-08-13"
+  yaw_inertia:
+    status: user_specified
+    method: user_specified_model_parameter
+    uncertainty: null
+    measured_at: "2026-08-13"
+  lf_lr:
+    status: user_measured
+    method: user_reported_front_axle_to_cg_and_wheelbase_measurement
+    uncertainty: null
+    measured_at: "2026-08-13"
+  cg_height:
+    status: nominal_f1tenth_gym
+    method: official_f1tenth_gym_baseline_not_vehicle_identified
+    uncertainty: null
+    measured_at: null
+  friction_coefficient:
+    status: nominal_f1tenth_gym
+    method: official_f1tenth_gym_baseline_not_floor_identified
+    uncertainty: null
+    measured_at: null
+  tire_cornering_stiffness:
+    status: nominal_f1tenth_gym_converted
+    method: normalized_coefficients_converted_to_effective_newton_per_radian
+    uncertainty: null
+    measured_at: null
+  steering_dynamics:
+    status: assumed
+    method: simulator_seed
+    uncertainty: null
+    measured_at: null
+  speed_dynamics:
+    status: identified_initial
+    method: constant_circle_fopdt_2026_08_12
+    uncertainty: null
+    measured_at: "2026-08-12"
+
+runtime_profiles:
+  f1tenth_simulator:
+    scan_topic: /scan
+    odom_topic: /odom
+    command_topic: /drive
+    base_frame: base_link
+    laser_frame: laser
+  tianracer_real:
+    scan_topic: /tianracer/scan
+    odom_topic: /tianracer/amcl_localized_odom
+    command_topic: /tianracer/ackermann_cmd_stamped
+    base_frame: tianracer/base_footprint
+    laser_frame: tianracer/laser

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<robot name="roboracer" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="mid360_downsample" default="2"/>
+  <!-- Values mirror vehicle_stable_v3_racelineV3.yaml. -->
+  <xacro:property name="wheelbase" value="0.320"/>
+  <xacro:property name="track_width" value="0.180"/>
+  <xacro:property name="body_length" value="0.400"/>
+  <xacro:property name="body_width" value="0.240"/>
+  <xacro:property name="wheel_radius" value="0.032"/>
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/><child link="base_link"/>
+    <origin xyz="0 0 0.060"/>
+  </joint>
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0.014"/>
+      <mass value="3.535"/>
+      <inertia ixx="0.0180" ixy="0" ixz="0" iyy="0.0520" iyz="0" izz="0.0600"/>
+    </inertial>
+    <visual><geometry><box size="${body_length} ${body_width} 0.080"/></geometry>
+      <material name="v3blue"><color rgba="0.03 0.19 0.42 1"/></material></visual>
+    <collision><geometry><box size="${body_length} ${body_width} 0.080"/></geometry></collision>
+  </link>
+
+  <xacro:macro name="wheel" params="name x y">
+    <link name="${name}">
+      <inertial><mass value="0.06625"/><origin xyz="0 0 0"/>
+        <inertia ixx="0.00004" ixy="0" ixz="0" iyy="0.00004" iyz="0" izz="0.00002"/></inertial>
+      <visual><origin rpy="1.570796 0 0"/><geometry><cylinder radius="${wheel_radius}" length="0.025"/></geometry>
+        <material name="rubber"><color rgba="0.03 0.03 0.03 1"/></material></visual>
+      <collision><origin rpy="1.570796 0 0"/><geometry><cylinder radius="${wheel_radius}" length="0.025"/></geometry></collision>
+    </link>
+    <joint name="${name}_joint" type="fixed"><parent link="base_link"/><child link="${name}"/>
+      <origin xyz="${x} ${y} -0.028"/></joint>
+  </xacro:macro>
+  <xacro:wheel name="front_left_wheel" x="0.195" y="0.090"/>
+  <xacro:wheel name="front_right_wheel" x="0.195" y="-0.090"/>
+  <xacro:wheel name="rear_left_wheel" x="-0.125" y="0.090"/>
+  <xacro:wheel name="rear_right_wheel" x="-0.125" y="-0.090"/>
+
+  <link name="livox_frame">
+    <inertial><mass value="0.265"/><origin xyz="0 0 0"/>
+      <inertia ixx="0.00016" ixy="0" ixz="0" iyy="0.00016" iyz="0" izz="0.00019"/></inertial>
+    <visual><geometry><box size="0.065 0.065 0.060"/></geometry>
+      <material name="livox"><color rgba="0.15 0.15 0.15 1"/></material></visual>
+    <collision><geometry><box size="0.065 0.065 0.060"/></geometry></collision>
+  </link>
+  <joint name="livox_mount" type="fixed"><parent link="base_link"/><child link="livox_frame"/>
+    <origin xyz="0.030 0 0.130"/></joint>
+
+  <gazebo reference="base_link"><material>Gazebo/Blue</material><mu1>1.0489</mu1><mu2>1.0489</mu2></gazebo>
+  <gazebo reference="front_left_wheel"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="front_right_wheel"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="rear_left_wheel"><material>Gazebo/Black</material></gazebo>
+  <gazebo reference="rear_right_wheel"><material>Gazebo/Black</material></gazebo>
+
+  <!-- Livox MID-360: official non-repetitive scan pattern at 10 Hz. -->
+  <gazebo reference="livox_frame">
+    <sensor type="ray" name="mid360">
+      <always_on>true</always_on><update_rate>10</update_rate><visualize>false</visualize>
+      <!-- Keep Gazebo's built-in RaySensor at one ray. The plugin below owns
+           the actual non-repetitive ODE ray set. -->
+      <ray>
+        <scan>
+          <horizontal><samples>1</samples><resolution>1</resolution><min_angle>0</min_angle><max_angle>0</max_angle></horizontal>
+          <vertical><samples>1</samples><resolution>1</resolution><min_angle>0</min_angle><max_angle>0</max_angle></vertical>
+        </scan>
+        <range><min>0.10</min><max>40.0</max><resolution>0.02</resolution></range>
+      </ray>
+      <plugin name="mid360_ros" filename="liblivox_laser_simulation.so">
+        <ray>
+          <scan>
+            <horizontal><samples>100</samples><resolution>1</resolution><min_angle>0</min_angle><max_angle>6.283185307</max_angle></horizontal>
+            <vertical><samples>360</samples><resolution>1</resolution><min_angle>-0.126013</min_angle><max_angle>0.963770</max_angle></vertical>
+          </scan>
+          <range><min>0.10</min><max>40.0</max><resolution>0.02</resolution></range>
+        </ray>
+        <samples>24000</samples>
+        <downsample>$(arg mid360_downsample)</downsample>
+        <csv_file_name>package://livox_laser_simulation/scan_mode/mid360.csv</csv_file_name>
+        <ros_topic>/livox/lidar</ros_topic>
+        <pointcloud_topic>/cloud_registered_body</pointcloud_topic>
+        <frame_id>livox_frame</frame_id>
+        <body_frame_id>body</body_frame_id>
+        <body_offset_x>0.030</body_offset_x>
+        <body_offset_y>0.0</body_offset_y>
+        <body_offset_z>0.190</body_offset_z>
+      </plugin>
+    </sensor>
+  </gazebo>
+</robot>

@@ -1,0 +1,30 @@
+topics:
+  scan: /scan
+  odom: /localization/odom
+  targets: /perception/targets_detailed
+  markers: /perception/target_markers
+
+frames:
+  target: body_leveled
+
+scan:
+  x_offset_m: 0.135
+  y_offset_m: 0.0
+  minimum_range_m: 0.25
+  maximum_range_m: 6.0
+  maximum_lateral_m: 1.6
+  cluster_gap_m: 0.20
+  minimum_cluster_points: 2
+  maximum_cluster_span_m: 0.75
+
+tracking:
+  association_gate_m: 0.65
+  minimum_hits: 3
+  maximum_age_s: 0.60
+  minimum_dynamic_speed_mps: 0.12
+  velocity_alpha: 0.45
+
+classification:
+  corridor_inner_margin_m: 0.08
+  maximum_projection_distance_m: 1.25
+

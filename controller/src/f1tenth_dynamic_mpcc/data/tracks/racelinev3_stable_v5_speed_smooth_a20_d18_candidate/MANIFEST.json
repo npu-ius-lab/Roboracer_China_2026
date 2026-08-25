@@ -1,0 +1,139 @@
+{
+  "candidate": "stable_v5_speed_smooth_a20_d18_candidate",
+  "status": "offline_validated_candidate",
+  "created_date": "2026-08-22",
+  "source_release": "stable_v5",
+  "source_track": "racelinev3_stable_v5_fast5_std32",
+  "candidate_track": "racelinev3_stable_v5_speed_smooth_a20_d18_candidate",
+  "change_scope": [
+    "speed_limit_mps",
+    "vx_mps",
+    "ax_mps2"
+  ],
+  "geometry_columns_identical": true,
+  "target_envelope": {
+    "maximum_acceleration_mps2": 2.0,
+    "maximum_deceleration_mps2": 1.8
+  },
+  "analysis": {
+    "candidate": "stable_v5_speed_smooth_a20_d18_candidate",
+    "source_track": "racelinev3_stable_v5_fast5_std32",
+    "candidate_track": "racelinev3_stable_v5_speed_smooth_a20_d18_candidate",
+    "change_scope": "speed_limit_mps/vx_mps/ax_mps2 only",
+    "geometry_identical": true,
+    "target_envelope": {
+      "maximum_acceleration_mps2": 2.0,
+      "maximum_deceleration_mps2": 1.8
+    },
+    "runtime_safety_limits_unchanged": {
+      "vehicle_max_acceleration_mps2": 2.4,
+      "vehicle_max_deceleration_mps2": 4.0,
+      "publisher_deceleration_mps2": 4.0
+    },
+    "stable_v5": {
+      "ideal_lap_time_s": 31.119885201069128,
+      "speed_mps": {
+        "minimum": 1.4173361560209297,
+        "median": 3.2,
+        "p90": 5.0,
+        "maximum": 5.0
+      },
+      "dv_ds_mps_per_m": {
+        "minimum": -2.247623682118899,
+        "maximum": 1.4842395640197878
+      },
+      "zones": {
+        "T3": {
+          "s_range_m": [
+            17.003,
+            20.843
+          ],
+          "speed_minimum_mps": 1.7002904156037697,
+          "speed_maximum_mps": 3.2,
+          "steepest_decrease_dv_ds": -1.9912066353266482,
+          "steepest_recovery_dv_ds": 1.227356821948888
+        },
+        "T5": {
+          "s_range_m": [
+            38.669,
+            41.686
+          ],
+          "speed_minimum_mps": 1.8335024297956208,
+          "speed_maximum_mps": 3.2,
+          "steepest_decrease_dv_ds": -1.2614283903454862,
+          "steepest_recovery_dv_ds": 1.2342522161175111
+        },
+        "T6-T7": {
+          "s_range_m": [
+            49.091,
+            55.124
+          ],
+          "speed_minimum_mps": 2.114231035663196,
+          "speed_maximum_mps": 3.2,
+          "steepest_decrease_dv_ds": -1.9706951744648222,
+          "steepest_recovery_dv_ds": 1.1234003626157119
+        }
+      }
+    },
+    "candidate_summary": {
+      "ideal_lap_time_s": 32.454090008358556,
+      "speed_mps": {
+        "minimum": 1.417335911,
+        "median": 2.940651498563184,
+        "p90": 4.648626014856716,
+        "maximum": 5.0
+      },
+      "dv_ds_mps_per_m": {
+        "minimum": -1.2363239890378281,
+        "maximum": 1.3854019618595999
+      },
+      "zones": {
+        "T3": {
+          "s_range_m": [
+            17.003,
+            20.843
+          ],
+          "speed_minimum_mps": 1.7002904156037697,
+          "speed_maximum_mps": 3.2,
+          "steepest_decrease_dv_ds": -0.978108896532774,
+          "steepest_recovery_dv_ds": 1.0109227092089554
+        },
+        "T5": {
+          "s_range_m": [
+            38.669,
+            41.686
+          ],
+          "speed_minimum_mps": 1.8335024297956208,
+          "speed_maximum_mps": 3.2,
+          "steepest_decrease_dv_ds": -0.8947824627455816,
+          "steepest_recovery_dv_ds": 1.0242046859063976
+        },
+        "T6-T7": {
+          "s_range_m": [
+            49.091,
+            55.124
+          ],
+          "speed_minimum_mps": 2.114231035663196,
+          "speed_maximum_mps": 2.952589421,
+          "steepest_decrease_dv_ds": -0.9769643830924224,
+          "steepest_recovery_dv_ds": 0.9419268945647445
+        }
+      }
+    }
+  },
+  "hashes": {
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_speed_smooth_a20_d18_candidate/raceline.csv": "73e024a832cc9d7b0f7cea4b1e93554b94e2b02d96ef0fd136c66b085fce84b2",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_speed_smooth_a20_d18_candidate/speed_zones.csv": "3ace10062380356525c99d02e07d61f125c971b476594bdd4c26c2da6f250132",
+    "src/f1tenth_dynamic_mpcc/data/tracks/racelinev3_stable_v5_speed_smooth_a20_d18_candidate/README.md": "2d83f31ca21eebc545fb48d4b6b07de32107857a30871560064de1b2504317f1",
+    "scripts/start_mpcc_hardware_stable_v5_speed_smooth_a20_d18_candidate.sh": "bb785422e89592e8e30c887157d9e05dbd055a6daaf5f1fdac190281926d31ae",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5/controller.yaml": "350b532ca033aba4c7fd03a63cb7170cfd34989673705767752ab95491c685cb",
+    "src/f1tenth_dynamic_mpcc/config/candidates/stable_v5/vehicle.yaml": "fd5f9d91bc1fe967d7429cb12f42d982e8527d0d8e559f41dbefd8f2cf24366d",
+    "src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_v5.launch": "604c80574833135f460b7057bf16be0887a5f8391151621e79475f0a96b63d45",
+    "src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml": "95a13797eb762132c47928dde83aa454b62d9a344154ddbae4b90b8b612a2d44",
+    "src/f1tenth_dynamic_mpcc/src/mpcc_node_auto_relaunch.cpp": "344bc7003ff491ff082351a2fb6979a608b9ead2df0238a0cee6c0d1b911bde0",
+    "src/f1tenth_dynamic_mpcc/scripts/automatic_relaunch_supervisor.py": "f9996adfb6c59f66a2ccaf7522f40825e2c74a9e3370c7f8ffc5e4fa1a22545a",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/automatic_relaunch.py": "43760fcbb6a965da5c7d8e68b7683a2a520d2129da30dcc8d4eff8db2521a8d6",
+    "src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/quick_relaunch.py": "21217b67871accf841c1bef76f9e6c7f874526cfd1bd99c497706b989cb7b178",
+    "scripts/record_stable_v5_bag.sh": "1ebd7a7a5b4b5531058206b3a64377b5bb17ff03643d97bbb5dc294d695302ec"
+  }
+}

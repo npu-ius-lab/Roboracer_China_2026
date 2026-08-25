@@ -1,0 +1,7 @@
+image: /home/tianbot/localization_main/src/point_lio_sam_lighterbev/point_lio/competition_map/point_lio_map_2d.pgm
+resolution: 0.050000
+origin: [-15.217452, -3.122564, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

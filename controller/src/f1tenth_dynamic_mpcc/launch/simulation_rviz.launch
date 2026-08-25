@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="track" default="virtual_track"/>
+  <arg name="formulation" default="mpcc"/>
+  <arg name="mode" default="race"/>
+  <arg name="rviz" default="true"/>
+
+  <!-- This launch is ROS-isolated from the TianRacer hardware command topic. -->
+  <node pkg="f1tenth_dynamic_mpcc"
+        type="rviz_closed_loop_sim.py"
+        name="f1tenth_mpcc_closed_loop_plant"
+        output="screen">
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/controller.yaml"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/vehicle.yaml"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="telemetry_topic" value="/f1tenth_mpcc/telemetry"/>
+  </node>
+
+  <node pkg="f1tenth_dynamic_mpcc"
+        type="mpcc_node_cpp"
+        name="f1tenth_dynamic_mpcc"
+        output="screen">
+    <param name="controller_config" value="$(find f1tenth_dynamic_mpcc)/config/controller.yaml"/>
+    <param name="vehicle_config" value="$(find f1tenth_dynamic_mpcc)/config/vehicle.yaml"/>
+    <param name="track_csv" value="$(find f1tenth_dynamic_mpcc)/data/tracks/$(arg track)/raceline.csv"/>
+    <param name="formulation" value="$(arg formulation)"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="start_enabled" value="true"/>
+    <param name="odom_topic" value="/localization/vehicle_odom"/>
+    <param name="command_topic" value="/f1tenth_mpcc/sim/ackermann_cmd_stamped"/>
+    <param name="allow_real_command_topic" value="false"/>
+    <param name="collision_required" value="false"/>
+    <param name="startup_steering_rate_override" value="-1.0"/>
+    <param name="publisher_steering_rate_override" value="-1.0"/>
+    <param name="pp_steering_rate_override" value="-1.0"/>
+    <param name="oob_recovery_enabled" value="false"/>
+  </node>
+
+  <node if="$(arg rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="rviz_f1tenth_mpcc_simulation"
+        args="-d $(find f1tenth_dynamic_mpcc)/rviz/nav.rviz"
+        output="screen"/>
+</launch>

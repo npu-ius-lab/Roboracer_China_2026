@@ -1,0 +1,160 @@
+{
+  "controller": "frozen stableV3 MPCC with 4.0 m/s runtime cap",
+  "scenarios": {
+    "left_offset": {
+      "completed_lap": true,
+      "lap_time_s": 31.05,
+      "maximum_abs_contour_error_m": 0.17251293525335473,
+      "maximum_abs_front_slip_rad": 0.15949678147801047,
+      "maximum_abs_heading_error_rad": 0.21228022976171856,
+      "maximum_abs_rear_slip_rad": 0.1633625337493489,
+      "maximum_abs_steering_command_rate_radps": 1.7793371875030795,
+      "maximum_abs_steering_rad": 0.44958272328959464,
+      "maximum_speed_mps": 3.9999998939312635,
+      "mean_speed_mps": 2.7332170734923014,
+      "minimum_physical_margin_m": 0.12423161158403961,
+      "minimum_speed_mps": 0.66,
+      "progress_laps": 1.0010641507418636,
+      "rms_contour_error_m": 0.07632485309826857,
+      "rms_heading_error_rad": 0.07122164663797863,
+      "solver_failure_count": 0,
+      "solver_success_rate": 1.0,
+      "solver_time_mean_ms": 3.0182074199557745,
+      "solver_time_p95_ms": 3.225155300015103,
+      "zone_metrics": {
+        "C1": {
+          "maximum_abs_contour_error_m": 0.14922117797854878,
+          "mean_speed_mps": 2.6349108376345045,
+          "minimum_physical_margin_m": 0.33670092907442456,
+          "minimum_speed_mps": 1.9960093826928258,
+          "rms_contour_error_m": 0.08230917436208313
+        },
+        "C2": {
+          "maximum_abs_contour_error_m": 0.13449451992860423,
+          "mean_speed_mps": 2.397067751394191,
+          "minimum_physical_margin_m": 0.27687180705742387,
+          "minimum_speed_mps": 1.7279134699246252,
+          "rms_contour_error_m": 0.07618814228744421
+        },
+        "C3": {
+          "maximum_abs_contour_error_m": 0.13767986229473034,
+          "mean_speed_mps": 2.4983735638736886,
+          "minimum_physical_margin_m": 0.2774814966606267,
+          "minimum_speed_mps": 1.9396823535191718,
+          "rms_contour_error_m": 0.07929295363604437
+        },
+        "C4": {
+          "maximum_abs_contour_error_m": 0.14007510900800635,
+          "mean_speed_mps": 2.442566117831929,
+          "minimum_physical_margin_m": 0.3134160557014921,
+          "minimum_speed_mps": 1.7148379026232659,
+          "rms_contour_error_m": 0.08858816557378135
+        }
+      }
+    },
+    "nominal": {
+      "completed_lap": true,
+      "lap_time_s": 31.05,
+      "maximum_abs_contour_error_m": 0.17572611689630097,
+      "maximum_abs_front_slip_rad": 0.1557018372612175,
+      "maximum_abs_heading_error_rad": 0.21588861899400547,
+      "maximum_abs_rear_slip_rad": 0.1598701576211435,
+      "maximum_abs_steering_command_rate_radps": 1.7196203422870444,
+      "maximum_abs_steering_rad": 0.449940444197555,
+      "maximum_speed_mps": 3.9999998932501586,
+      "mean_speed_mps": 2.7338515362798774,
+      "minimum_physical_margin_m": 0.12487021824037695,
+      "minimum_speed_mps": 0.66,
+      "progress_laps": 1.0010028735259882,
+      "rms_contour_error_m": 0.07376790713361171,
+      "rms_heading_error_rad": 0.07149882135839339,
+      "solver_failure_count": 0,
+      "solver_success_rate": 1.0,
+      "solver_time_mean_ms": 3.027612450521142,
+      "solver_time_p95_ms": 3.243991800263756,
+      "zone_metrics": {
+        "C1": {
+          "maximum_abs_contour_error_m": 0.14971187872920733,
+          "mean_speed_mps": 2.639414217937625,
+          "minimum_physical_margin_m": 0.33657957422737966,
+          "minimum_speed_mps": 1.9954883646811397,
+          "rms_contour_error_m": 0.08244031610968192
+        },
+        "C2": {
+          "maximum_abs_contour_error_m": 0.13460092548097763,
+          "mean_speed_mps": 2.3927714760814522,
+          "minimum_physical_margin_m": 0.2768478769877167,
+          "minimum_speed_mps": 1.7276897647576492,
+          "rms_contour_error_m": 0.0765509077640357
+        },
+        "C3": {
+          "maximum_abs_contour_error_m": 0.1378717450478898,
+          "mean_speed_mps": 2.4938265869977827,
+          "minimum_physical_margin_m": 0.2774034459951508,
+          "minimum_speed_mps": 1.9397378640774188,
+          "rms_contour_error_m": 0.07965344328413114
+        },
+        "C4": {
+          "maximum_abs_contour_error_m": 0.1394832532969953,
+          "mean_speed_mps": 2.4401632941777764,
+          "minimum_physical_margin_m": 0.3137018007646861,
+          "minimum_speed_mps": 1.712431338341843,
+          "rms_contour_error_m": 0.0884357998409699
+        }
+      }
+    },
+    "right_offset": {
+      "completed_lap": true,
+      "lap_time_s": 31.05,
+      "maximum_abs_contour_error_m": 0.1789065037693013,
+      "maximum_abs_front_slip_rad": 0.1515557508848334,
+      "maximum_abs_heading_error_rad": 0.23173018823745883,
+      "maximum_abs_rear_slip_rad": 0.15607722824199693,
+      "maximum_abs_steering_command_rate_radps": 1.7449451270818703,
+      "maximum_abs_steering_rad": 0.449417630465635,
+      "maximum_speed_mps": 3.993791533809681,
+      "mean_speed_mps": 2.7332533742084935,
+      "minimum_physical_margin_m": 0.12520418895714308,
+      "minimum_speed_mps": 0.66,
+      "progress_laps": 1.0004477778519858,
+      "rms_contour_error_m": 0.07555921985290948,
+      "rms_heading_error_rad": 0.07301275645036037,
+      "solver_failure_count": 0,
+      "solver_success_rate": 1.0,
+      "solver_time_mean_ms": 3.0309294070869672,
+      "solver_time_p95_ms": 3.251429100009773,
+      "zone_metrics": {
+        "C1": {
+          "maximum_abs_contour_error_m": 0.14964443601633293,
+          "mean_speed_mps": 2.637682992526817,
+          "minimum_physical_margin_m": 0.33667832049726426,
+          "minimum_speed_mps": 1.9981508784736985,
+          "rms_contour_error_m": 0.0826376634459226
+        },
+        "C2": {
+          "maximum_abs_contour_error_m": 0.1342785277528766,
+          "mean_speed_mps": 2.390586108800954,
+          "minimum_physical_margin_m": 0.2770250637611593,
+          "minimum_speed_mps": 1.7304816884209147,
+          "rms_contour_error_m": 0.07639202046462028
+        },
+        "C3": {
+          "maximum_abs_contour_error_m": 0.13725027482637225,
+          "mean_speed_mps": 2.496790864639239,
+          "minimum_physical_margin_m": 0.27749209321121904,
+          "minimum_speed_mps": 1.9403228896499287,
+          "rms_contour_error_m": 0.07919582265750455
+        },
+        "C4": {
+          "maximum_abs_contour_error_m": 0.1400554939566011,
+          "mean_speed_mps": 2.4438324779523874,
+          "minimum_physical_margin_m": 0.31371122346069313,
+          "minimum_speed_mps": 1.7126799918605815,
+          "rms_contour_error_m": 0.08843586065083606
+        }
+      }
+    }
+  },
+  "status": "offline_closed_loop_screen_not_hardware_approval",
+  "track": "/home/tianbot/f1tenth/code/localization_main/src/point_lio_sam_lighterbev/point_lio/bag_20260822_181006/handdrawn_v2_optimized_candidate/raceline.csv"
+}

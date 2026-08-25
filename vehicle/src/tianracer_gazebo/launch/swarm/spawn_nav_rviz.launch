@@ -1,0 +1,41 @@
+<launch>
+
+  <!-- 迷你机器人，基础参数 -->
+  <arg name="robot_name" default="tianracer_01"/>
+  <arg name="world" default="tianracer_racetrack" />
+
+  <!-- 仿真环境机器人初始位置 -->
+  <arg name="x_pos" default="0" />
+  <arg name="y_pos" default="0" />
+
+  <arg name="z_pos" default="0" />
+  <arg name="R_pos" default="0" />
+  <arg name="P_pos" default="0" />
+  <arg name="Y_pos" default="1.5708" />
+
+  <!-- Specify the default map to be used, "tianracer_racetrack.yaml" in this case -->
+  <arg name="map" default="$(arg world).yaml" />
+
+  <!-- Map server node to load and serve the map -->
+  <node name="map_server" pkg="map_server" type="map_server" ns="$(arg robot_name)" args="$(find tianracer_gazebo)/maps/$(arg map)">
+      <!-- Set the frame ID for the map -->
+      <param name="frame_id" value="map" />
+  </node>
+
+  <!-- move base -->
+  <include file="$(find tianracer_gazebo)/launch/includes/teb_base.launch.xml">
+      <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+
+  <!-- AMCL -->
+
+  <include file="$(find tianracer_gazebo)/launch/includes/amcl.launch.xml">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="initial_pose_y" value="$(arg y_pos)"/>
+  </include>
+
+  <!-- Launch RViz for visualization and debugging -->
+  <!-- RViz for the robotname -->
+  <node name="rviz_$(arg robot_name)" pkg="rviz" type="rviz" args="-d $(find tianracer_gazebo)/rviz/nav_$(arg robot_name).rviz" />
+
+</launch>

@@ -1,0 +1,39 @@
+<launch>
+  <arg name="world" default="competition_track_clear.world"/>
+  <arg name="command_topic" default="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="pointlio" default="true"/>
+  <arg name="mid360_downsample" default="3"/>
+  <env name="GAZEBO_MODEL_PATH" value="$(find roboracer_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+  <param name="use_sim_time" value="true"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find roboracer_gazebo)/worlds/$(arg world)"/>
+    <arg name="gui" value="$(arg gui)"/><arg name="paused" value="$(arg paused)"/>
+  </include>
+  <param name="robot_description" command="$(find xacro)/xacro $(find roboracer_gazebo)/urdf/roboracer.urdf.xacro mid360_downsample:=$(arg mid360_downsample)"/>
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_roboracer"
+        args="-urdf -param robot_description -model roboracer -x 0.106211745 -y 0.171355458 -z 0.06 -Y 0.024190847"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="roboracer_state_publisher"/>
+  <!-- The simulator publishes the body-frame cloud directly in the vehicle
+       centre frame.  Join that frame to the ground-truth localization tree so
+       RViz can transform body -> raw_body_leveled into the map fixed frame. -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="localization_base_to_cloud_body_tf"
+        args="0 0 0 0 0 0 1 localization_base_link body"/>
+  <node pkg="roboracer_gazebo" type="gazebo_vehicle_bridge.py" name="vehicle_bridge" output="screen">
+    <rosparam command="load" file="$(find roboracer_gazebo)/config/simulation.yaml"/>
+    <param name="command_topic" value="$(arg command_topic)"/>
+  </node>
+  <group if="$(arg pointlio)">
+    <node pkg="roboracer_gazebo" type="mid360_imu_adapter.py"
+          name="mid360_imu_adapter" output="screen"/>
+    <include file="$(find point_lio)/launch/mapping_mid360.launch">
+      <arg name="rviz" value="false"/>
+      <arg name="tf_child_frame" value="pointlio_body"/>
+      <arg name="scan_world_publish_en" value="false"/>
+      <arg name="scan_world_downsample_publish_en" value="false"/>
+      <arg name="scan_bodyframe_pub_en" value="false"/>
+    </include>
+  </group>
+</launch>

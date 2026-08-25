@@ -1,0 +1,19 @@
+<launch>
+  <arg name="gui" default="true"/><arg name="rviz" default="false"/>
+  <arg name="mid360_downsample" default="3"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_roboracer_sim/no_overtake"/>
+  <include file="$(find roboracer_gazebo)/launch/gazebo_vehicle.launch">
+    <arg name="world" value="competition_track_clear.world"/>
+    <arg name="command_topic" value="/f1tenth_mpcc/real/ackermann_cmd_stamped"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="mid360_downsample" value="$(arg mid360_downsample)"/>
+  </include>
+  <include file="$(find f1tenth_dynamic_mpcc)/launch/hardware_mpcc_stable_roboracer.launch">
+    <arg name="allow_real_hardware" value="false"/><arg name="runtime_speed_cap_mps" value="4.0"/>
+    <arg name="generated_dir" value="$(arg generated_dir)"/><arg name="lap_timer" value="true"/>
+    <arg name="rviz" value="$(arg rviz)"/>
+  </include>
+  <node pkg="roboracer_gazebo" type="sim_enable_controller.py" name="enable_no_overtake" required="true">
+    <param name="service" value="/f1tenth_dynamic_mpcc/set_enabled"/>
+  </node>
+</launch>

@@ -1,0 +1,45 @@
+{
+  "status": "feasible_virtual_complex_track",
+  "track_shape": "complex_s_chicane_two_u_turns_and_straights",
+  "source_map_yaml": "../point_lio_map_2d.yaml",
+  "source_map_image": "../point_lio_map_2d.pgm",
+  "resolution_m_per_px": 0.05,
+  "origin": [
+    -2.622909,
+    -7.121865,
+    0.0
+  ],
+  "track_center_local_m": [
+    10.587232727272717,
+    4.985200000000001
+  ],
+  "track_center_world_m": [
+    7.964323727272717,
+    -2.136664999999999
+  ],
+  "bottom_straight_length_m": 6.306399999999994,
+  "top_straight_length_each_m": 0.5675759999999994,
+  "total_explicit_straight_length_m": 7.441551999999993,
+  "u_turn_radius_centerline_m": 1.4,
+  "u_turn_radius_inner_boundary_m": 0.7999999999999999,
+  "u_turn_radius_outer_boundary_m": 2.0,
+  "s_chicane_span_m": 5.171247999999995,
+  "s_chicane_amplitude_m": 0.4,
+  "s_chicane_peak_to_peak_m": 0.8,
+  "maximum_s_chicane_curvature_radpm": 1.2131105298945637,
+  "minimum_s_chicane_radius_m": 0.8243271947255408,
+  "minimum_offset_radius_requirement_m": 0.75,
+  "track_width_m": 1.2,
+  "minimum_obstacle_clearance_m": 0.25455781895637114,
+  "requested_minimum_obstacle_clearance_m": 0.25,
+  "centerline_length_m": 21.747164755496048,
+  "num_points": 899,
+  "outputs": {
+    "left_boundary_csv": "virtual_left_boundary.csv",
+    "right_boundary_csv": "virtual_right_boundary.csv",
+    "corridor_csv": "virtual_track_corridor.csv",
+    "virtual_map_pgm": "virtual_track_map.pgm",
+    "virtual_map_yaml": "virtual_track_map.yaml",
+    "debug_png": "virtual_track_boundaries_debug.png"
+  }
+}

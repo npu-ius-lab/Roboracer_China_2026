@@ -1,0 +1,53 @@
+topics:
+  odom: /localization/odom
+  targets: /perception/targets_detailed
+  selected_path: /v5_jubu/selected_path
+  diagnostics: /v5_jubu/candidate_diagnostics
+  markers: /v5_jubu/markers
+  track_markers: /v5_jubu/track_markers
+  red_local_plan: /v5_jubu/local_reference
+  status: /v5_jubu/status
+  decision: /v5_jubu/decision
+  control_state: /v5_jubu/state
+  speed_cap: /v5_jubu/local_speed_cap
+  health: /v5_jubu/health
+
+frames:
+  world: map
+
+input:
+  odom_twist_frame: body
+  odom_timeout_s: 0.30
+  target_timeout_s: 0.45
+  target_message_timeout_s: 0.80
+  target_measurement_max_age_s: 0.80
+  odom_history_duration_s: 2.0
+  maximum_odom_bracket_gap_s: 0.30
+  maximum_odom_extrapolation_s: 0.10
+
+classification:
+  obstacle_half_width_m: 0.18
+  track_overlap_margin_m: 0.03
+  maximum_projection_distance_m: 1.20
+
+state_machine:
+  prepare_time: 0.40
+  follow_target_loss_timeout: 1.00
+  return_confirm_gap: 0.45
+  return_ey_tolerance: 0.10
+  abort_center_distance: 0.30
+  abort_recovery_distance: 0.55
+  reference_hold_timeout_s: 1.50
+
+control:
+  health_timeout_s: 1.00
+  cruise_speed_cap_mps: 3.00
+  pass_speed_cap_mps: 2.20
+  follow_minimum_speed_mps: 0.40
+  follow_gap_m: 0.75
+  follow_gap_gain: 0.55
+
+confirmation:
+  minimum_frames: 2
+  minimum_duration_s: 0.15
+  maximum_gap_s: 0.80

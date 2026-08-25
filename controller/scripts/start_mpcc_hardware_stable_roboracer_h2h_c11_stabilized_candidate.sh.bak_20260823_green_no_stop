@@ -1,0 +1,311 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BASE_START="$ROOT/scripts/start_mpcc_hardware_stable_roboracer.sh"
+LAUNCH="$ROOT/src/f1tenth_dynamic_mpcc/launch/hardware_mpcc_stable_roboracer_h2h_c11_stabilized_candidate.launch"
+TRACK="${TWO_MAP_TRACK:-raceline_smooth_c11_stabilized_candidate}"
+CANDIDATE="${TWO_MAP_H2H_CANDIDATE_NAME:-stable_roboracer_oldmap_h2h_guarded}"
+CONTROLLER_CONFIG="${TWO_MAP_CONTROLLER_CONFIG:-candidates/stable_roboracer_c11_stabilized/controller.yaml}"
+MAP_ID="${TWO_MAP_LOCALIZATION_ID:-old}"
+RACE_START_CENTER_X="${TWO_MAP_RACE_START_CENTER_X:-0.0}"
+RACE_START_CENTER_Y="${TWO_MAP_RACE_START_CENTER_Y:-0.0}"
+TRACK_CSV="$ROOT/src/f1tenth_dynamic_mpcc/data/tracks/$TRACK/raceline.csv"
+CONTROLLER="$ROOT/src/f1tenth_dynamic_mpcc/config/$CONTROLLER_CONFIG"
+CORE="$ROOT/src/f1tenth_dynamic_mpcc/src/core.cpp"
+RUNTIME_CONFIG="${TWO_MAP_RUNTIME_CONFIG:-$ROOT/src/f1tenth_dynamic_mpcc/config/candidates/stable_roboracer_oldmap_h2h_guarded/cpp_runtime.yaml}"
+SUPERVISOR="$ROOT/src/f1tenth_dynamic_mpcc/scripts/automatic_relaunch_supervisor_stable_roboracer_race_start_only_candidate.py"
+POLICY="$ROOT/src/f1tenth_dynamic_mpcc/python/f1tenth_dynamic_mpcc/safe_race_start.py"
+FOLLOW_GATE="$ROOT/src/f1tenth_dynamic_mpcc/src/roboracer_h2h_follow_gate.cpp"
+RECORDER="$ROOT/scripts/record_roboracer_h2h_safe_start_fast2_bag.sh"
+PERCEPTION_HELPER="$ROOT/scripts/ensure_raw_cloud_perception.sh"
+RVIZ_CONFIG="${TWO_MAP_RVIZ_CONFIG:-$ROOT/src/f1tenth_dynamic_mpcc/rviz/stable_roboracer.rviz}"
+RESIDUAL="$ROOT/src/f1tenth_dynamic_mpcc/config/residual/residual_stable_v3_racelinev3_h3_scale030.yaml"
+MAP_IDENTITY_CHECK="$ROOT/scripts/check_localization_map_identity.sh"
+EXPECTED_TRACK_SHA256="${TWO_MAP_TRACK_SHA256:-108cba2767748efedcc5bd0c8ef9fc4c744966dabcdd50de48d85543ae5c9b15}"
+EXPECTED_CONTROLLER_SHA256="${TWO_MAP_CONTROLLER_SHA256:-c6c90509cfbc81dd15bb20ad7f33e102c0f10ed4f512722dad1669cb90ac4f3f}"
+PROFILE_ACCEL_MPS2="${TWO_MAP_PROFILE_ACCEL_MPS2:-1.5}"
+PROFILE_DECEL_MPS2="${TWO_MAP_PROFILE_DECEL_MPS2:-2.0}"
+PERCEPTION_START_RETRIES="${TWO_MAP_PERCEPTION_START_RETRIES:-1}"
+PERCEPTION_RETRY_DELAY_S="${TWO_MAP_PERCEPTION_RETRY_DELAY_S:-1}"
+
+ACTION="${1:-mpcc}"
+case "$ACTION" in
+  mpcc|--check-only|--prepare-only) ;;
+  *) echo "usage: $0 [mpcc|--check-only|--prepare-only]" >&2; exit 2 ;;
+esac
+
+for path in "$BASE_START" "$LAUNCH" "$RUNTIME_CONFIG" "$SUPERVISOR" \
+    "$POLICY" "$FOLLOW_GATE" "$RECORDER" "$PERCEPTION_HELPER" "$RVIZ_CONFIG"; do
+  [[ -f "$path" ]] || { echo "[FAIL] missing H2H fast-start dependency: $path" >&2; exit 1; }
+done
+
+"$BASE_START" --check-only
+[[ "$(sha256sum "$LAUNCH" | awk '{print $1}')" == "c1eef1d69e1134bccf478d99cc79331f894d3e0a89cc8012de4bd55efad66ffa" ]]
+[[ "$(sha256sum "$TRACK_CSV" | awk '{print $1}')" == "$EXPECTED_TRACK_SHA256" ]]
+[[ "$(sha256sum "$CONTROLLER" | awk '{print $1}')" == "$EXPECTED_CONTROLLER_SHA256" ]]
+[[ "$(sha256sum "$RUNTIME_CONFIG" | awk '{print $1}')" == "fb3d44fbd48dec58e83572691d0a68ce001a81ffbbdda2542637d0fc2e79efa3" ]]
+[[ "$(sha256sum "$CORE" | awk '{print $1}')" == "2d61cba865498e41edd06ade95491cef0bc87d0a642eceacb1e391428b53d476" ]]
+grep -Fq 'type="v5_jubu_local_planner_cpp"' "$LAUNCH"
+grep -Fq 'type="mpcc_node_auto_relaunch_jubu_cpp"' "$LAUNCH"
+grep -Fq 'type="automatic_relaunch_supervisor_stable_roboracer_race_start_only_candidate.py"' "$LAUNCH"
+grep -Fq 'type="roboracer_h2h_follow_gate_cpp"' "$LAUNCH"
+grep -Fq 'minimum_follow_speed_mps" value="1.0"' "$LAUNCH"
+python3 - "$LAUNCH" <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+
+path = sys.argv[1]
+root = ET.parse(path).getroot()
+supervisor = next(
+    node for node in root.findall("node")
+    if node.get("name") == "automatic_relaunch_supervisor_roboracer_h2h_faststart"
+)
+params = {
+    param.get("name"): param.get("value")
+    for param in supervisor.findall("param")
+}
+probe = float(params["probe_speed_mps"])
+recovery_minimum = float(params["recovery_minimum_speed_mps"])
+race_speed = float(params["race_start_speed_mps"])
+fixed_handoff = float(params["race_start_handoff_speed_mps"])
+if recovery_minimum > probe:
+    raise SystemExit(
+        "[FAIL] H2H recovery_minimum_speed_mps exceeds probe_speed_mps: "
+        f"{recovery_minimum} > {probe}"
+    )
+if race_speed < probe:
+    raise SystemExit(
+        "[FAIL] H2H race_start_speed_mps is below probe_speed_mps: "
+        f"{race_speed} < {probe}"
+    )
+if fixed_handoff > race_speed:
+    raise SystemExit(
+        "[FAIL] H2H race_start_handoff_speed_mps exceeds race_start_speed_mps: "
+        f"{fixed_handoff} > {race_speed}"
+    )
+print(
+    "[OK] H2H supervisor constructor constraints: "
+    f"recovery_min={recovery_minimum:.2f} probe={probe:.2f} "
+    f"race={race_speed:.2f} fixed_handoff={fixed_handoff:.2f} m/s"
+)
+PY
+if grep -R -nE 'overtake_planner\.py|state_visualizer\.py|reference_manager\.py|target_tracker\.py' \
+    "$LAUNCH" "$RUNTIME_CONFIG"; then
+  echo "[FAIL] Python overtaking core referenced by the candidate" >&2
+  exit 1
+fi
+python3 - "$RUNTIME_CONFIG" <<'PY'
+import sys, yaml
+topics = yaml.safe_load(open(sys.argv[1], encoding="utf-8"))["topics"]
+prefix = "/roboracer_h2h_faststart/"
+for key in ("local_reference", "health", "speed_cap", "state", "status", "diagnostics"):
+    if not topics[key].startswith(prefix):
+        raise SystemExit(f"[FAIL] H2H topic graph mismatch: {key}={topics[key]}")
+print("[OK] H2H planner/MPCC/follow-gate topic graph is consistent")
+PY
+
+RACE_START_ENABLED="${ROBORACER_SAFE_RACE_START_ENABLED:-true}"
+case "$RACE_START_ENABLED" in
+  true|false) ;;
+  *) echo "[FAIL] ROBORACER_SAFE_RACE_START_ENABLED must be true or false" >&2; exit 2 ;;
+esac
+if ! [[ "$PERCEPTION_START_RETRIES" =~ ^[1-9][0-9]*$ ]]; then
+  echo "[FAIL] TWO_MAP_PERCEPTION_START_RETRIES must be a positive integer" >&2
+  exit 2
+fi
+if ! awk -v value="$PERCEPTION_RETRY_DELAY_S" \
+  'BEGIN { exit !(value >= 0.0) }'; then
+  echo "[FAIL] TWO_MAP_PERCEPTION_RETRY_DELAY_S must be non-negative" >&2
+  exit 2
+fi
+
+if [[ "$ACTION" == "--check-only" ]]; then
+  echo "[OK] isolated RoboRacer H2H C11 stabilized candidate"
+  if [[ "$TRACK" == "raceline_smooth" ]]; then
+    echo "[OK] frozen old raceline geometry + shared C11 logic; profile/publisher accel/decel=${PROFILE_ACCEL_MPS2}/${PROFILE_DECEL_MPS2} m/s^2"
+  else
+    echo "[OK] candidate track=$TRACK + publisher-matched profile accel/decel=${PROFILE_ACCEL_MPS2}/${PROFILE_DECEL_MPS2} m/s^2"
+  fi
+  echo "[OK] launch/carry/global handoff=safe-start-fast2; overtaking core=C++17"
+  echo "[OK] 1.0m/s floor=confirmed healthy FOLLOW only; exact zero is preserved"
+  echo "[OK] raw-cloud perception auto-start attempts=$PERCEPTION_START_RETRIES"
+  if [[ -n "${ROBORACER_OBSTACLE_RACELINE_CSV:-}" ]]; then
+    echo "[OK] perception track=${ROBORACER_OBSTACLE_RACELINE_CSV}"
+  fi
+  if [[ -n "${ROBORACER_OBSTACLE_BOUNDARY_INSET_M:-}" ]]; then
+    echo "[OK] perception corridor inset=${ROBORACER_OBSTACLE_BOUNDARY_INSET_M}m"
+  fi
+  if [[ "${ROBORACER_OBSTACLE_MARKER_REQUIRED:-false}" == true ]]; then
+    echo "[OK] green perception corridor marker is required"
+  fi
+  echo "[OK] no node or hardware publisher started"
+  exit 0
+fi
+
+source "$ROOT/scripts/ros_env.sh"
+
+GENERATED_DIR="${MPCC_GENERATED_DIR:-$HOME/.cache/f1tenth_residual_mpcc/acados_${CANDIDATE}}"
+if [[ -z "${RESIDUAL_DYNAMICS_WS:-}" ]] \
+   && [[ ! -f "$(dirname "$ROOT")/f1tenth_residual_ws/devel/setup.bash" ]]; then
+  export RESIDUAL_DYNAMICS_WS="$ROOT"
+fi
+export MPCC_GENERATED_DIR="$GENERATED_DIR"
+export MPCC_TRACK="$TRACK"
+export MPCC_CONTROLLER_CONFIG="$CONTROLLER_CONFIG"
+export MPCC_VEHICLE_CONFIG="vehicle_stable_v3_racelineV3.yaml"
+export MPCC_RESIDUAL_MODEL_PATH="$RESIDUAL"
+export MPCC_RESIDUAL_FEATURE_SET="markov_v1"
+export MPCC_COST_CONTOUR_OVERRIDE="45.0"
+export MPCC_COST_HEADING_RACE_OVERRIDE="1.0"
+export MPCC_COST_STEERING_COMMAND_RATE_OVERRIDE="0.60"
+"$ROOT/scripts/ensure_acados_solvers.sh"
+
+if [[ "$ACTION" == "--prepare-only" ]]; then
+  echo "[OK] RoboRacer H2H safe-start-fast2 solver is ready"
+  exit 0
+fi
+
+LOCALIZATION_WS="${AUTO_RELAUNCH_LOCALIZATION_WS:-/home/tianbot/localization_main}"
+if [[ ! -f "$LOCALIZATION_WS/devel/setup.bash" ]]; then
+  echo "[FAIL] localization workspace setup is missing: $LOCALIZATION_WS/devel/setup.bash" >&2
+  exit 1
+fi
+RESTORE_NOUNSET=false
+case "$-" in *u*) RESTORE_NOUNSET=true ;; esac
+set +u
+source "$LOCALIZATION_WS/devel/setup.bash" --extend
+if [[ "$RESTORE_NOUNSET" == true ]]; then set -u; fi
+unset RESTORE_NOUNSET
+export PYTHONPATH="$ROOT/src/f1tenth_dynamic_mpcc/python${PYTHONPATH:+:$PYTHONPATH}"
+python3 -c 'from point_lio_sam_lighterbev.msg import LocalizationStatus; from f1tenth_dynamic_mpcc.safe_race_start import SafeRaceStartPolicy'
+
+if ! rosnode list >/dev/null 2>&1; then
+  echo "[FAIL] ROS master is unavailable" >&2
+  exit 1
+fi
+
+topic_has_publisher() {
+  rostopic info "$1" 2>/dev/null \
+    | sed -n '/^Publishers:/,/^Subscribers:/p' \
+    | grep -q '^ \* '
+}
+
+require_live_topic() {
+  local topic="$1" expected_type="$2" wait_s="$3" actual_type
+  actual_type="$(rostopic type "$topic" 2>/dev/null || true)"
+  if [[ "$actual_type" != "$expected_type" ]] || ! topic_has_publisher "$topic"; then
+    echo "[FAIL] missing live $topic ($expected_type); actual=$actual_type" >&2
+    return 1
+  fi
+  timeout "$wait_s" rostopic echo -n 1 --noarr "$topic" >/dev/null 2>&1 || {
+    echo "[FAIL] $topic produced no fresh message within ${wait_s}s" >&2
+    return 1
+  }
+  echo "[OK] live input $topic ($expected_type)"
+}
+
+require_live_topic /localization/odom nav_msgs/Odometry 4
+require_live_topic /localization/vehicle_odom nav_msgs/Odometry 4
+require_live_topic /localization/status point_lio_sam_lighterbev/LocalizationStatus 4
+"$MAP_IDENTITY_CHECK" "$MAP_ID"
+
+# Check controller ownership before ensure_raw_cloud_perception is allowed to
+# replace a healthy-but-differently-configured persistent perception node.
+for node in /f1tenth_dynamic_mpcc /f1tenth_dynamic_mpcc_roboracer_chaoche \
+    /f1tenth_dynamic_mpcc_v5_jubu /f1tenth_dynamic_mpcc_roboracer_eth_h2h \
+    /f1tenth_dynamic_mpcc_roboracer_h2h_faststart \
+    /automatic_relaunch_supervisor /automatic_relaunch_supervisor_roboracer_h2h_faststart; do
+  if rosnode list 2>/dev/null | grep -Fqx "$node"; then
+    echo "[FAIL] another MPCC/supervisor is registered: $node" >&2
+    exit 1
+  fi
+done
+
+perception_ready=false
+for ((attempt = 1; attempt <= PERCEPTION_START_RETRIES; ++attempt)); do
+  echo "[PERCEPTION] readiness attempt $attempt/$PERCEPTION_START_RETRIES"
+  if "$PERCEPTION_HELPER"; then
+    perception_ready=true
+    break
+  fi
+  if (( attempt < PERCEPTION_START_RETRIES )); then
+    echo "[PERCEPTION] not ready yet; retrying in ${PERCEPTION_RETRY_DELAY_S}s" >&2
+    sleep "$PERCEPTION_RETRY_DELAY_S"
+  fi
+done
+if [[ "$perception_ready" != true ]]; then
+  echo "[FAIL] raw-cloud perception did not become race-ready after $PERCEPTION_START_RETRIES attempts" >&2
+  exit 1
+fi
+require_live_topic /raw_cloud_perception/obstacle_cloud sensor_msgs/PointCloud2 6
+
+for node in /f1tenth_dynamic_mpcc /f1tenth_dynamic_mpcc_roboracer_chaoche \
+    /f1tenth_dynamic_mpcc_v5_jubu /f1tenth_dynamic_mpcc_roboracer_eth_h2h \
+    /f1tenth_dynamic_mpcc_roboracer_h2h_faststart \
+    /automatic_relaunch_supervisor /automatic_relaunch_supervisor_roboracer_h2h_faststart; do
+  if rosnode list 2>/dev/null | grep -Fqx "$node"; then
+    echo "[FAIL] another MPCC/supervisor is registered: $node" >&2
+    exit 1
+  fi
+done
+
+SPEED_CAP="${H2H_SPEED_CAP_MPS:-${RESIDUAL_MPCC_SPEED_CAP:-4.0}}"
+if ! awk -v value="$SPEED_CAP" 'BEGIN { exit !(value > 0.0 && value <= 4.0) }'; then
+  echo "[FAIL] speed cap must be in (0, 4.0]" >&2
+  exit 2
+fi
+
+STAMP="$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$ROOT/log" "$ROOT/bags"
+pids=()
+cleanup() {
+  local pid
+  for pid in "${pids[@]}"; do kill -INT "$pid" 2>/dev/null || true; done
+  wait "${pids[@]}" 2>/dev/null || true
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+if [[ "${MPCC_RECORD_BAG:-false}" == "true" ]]; then
+  BAG_PATH="${MPCC_RECORD_BAG_PATH:-$ROOT/bags/roboracer_h2h_c11_stabilized_${STAMP}.bag}"
+  "$RECORDER" "$BAG_PATH" &
+  pids+=("$!")
+  echo "[RECORD] H2H safe-start-fast2 bag -> $BAG_PATH"
+fi
+
+echo "============================================================"
+echo "[ROBORACER_H2H_FASTSTART] isolated candidate; cap=$SPEED_CAP m/s"
+if [[ "$TRACK" == "raceline_smooth" ]]; then
+  echo "[ROBORACER_H2H_FASTSTART] frozen old raceline geometry + C11 shared logic; profile/publisher=${PROFILE_ACCEL_MPS2}/${PROFILE_DECEL_MPS2}m/s^2"
+else
+  echo "[ROBORACER_H2H_FASTSTART] C11 shared fix active; track=$TRACK; profile/publisher=${PROFILE_ACCEL_MPS2}/${PROFILE_DECEL_MPS2}m/s^2"
+fi
+echo "[ROBORACER_H2H_FASTSTART] race-start=$RACE_START_ENABLED; carry recovery=frozen RoboRacer"
+echo "[ROBORACER_H2H_FASTSTART] launch PP<=2.0m/s, continuous handoff, no MPCC start notch reaches hardware"
+echo "[ROBORACER_H2H_FASTSTART] overtaking=current C++ parameters; static target is pass-eligible"
+echo "[ROBORACER_H2H_FASTSTART] 1.0m/s floor only for confirmed healthy FOLLOW"
+echo "[ROBORACER_H2H_FASTSTART] all zero/risk/recovery/PREPARE/PASS/RETURN commands pass exactly"
+echo "[WARNING] Hold physical E-stop until supervisor reports WAIT_RELEASE."
+echo "============================================================"
+
+roslaunch f1tenth_dynamic_mpcc \
+  hardware_mpcc_stable_roboracer_h2h_c11_stabilized_candidate.launch \
+  track:="$TRACK" \
+  controller_config:="$CONTROLLER_CONFIG" \
+  vehicle_config:=vehicle_stable_v3_racelineV3.yaml \
+  runtime_config:="$RUNTIME_CONFIG" \
+  formulation:=mpcc \
+  allow_real_hardware:=true \
+  race_start_enabled:="$RACE_START_ENABLED" \
+  race_start_center_x_m:="$RACE_START_CENTER_X" \
+  race_start_center_y_m:="$RACE_START_CENTER_Y" \
+  rviz:="${MPCC_REMOTE_RVIZ:-false}" \
+  rviz_config:="$RVIZ_CONFIG" \
+  lap_timer:="${AUTO_RELAUNCH_LAP_TIMER:-true}" \
+  lap_log_path:="$ROOT/log/laps_roboracer_h2h_safe_start_fast2_${STAMP}.csv" \
+  runtime_speed_cap_mps:="$SPEED_CAP" \
+  generated_dir:="$GENERATED_DIR" \
+  residual_model_path:="$RESIDUAL" \
+  residual_feature_set:=markov_v1

@@ -1,0 +1,100 @@
+# Generated from frozen Stable V3 vehicle; only max_speed may differ.
+schema_version: 1
+profile_name: tianracer_new_surface_step1_candidate
+updated_at: '2026-08-20'
+vehicle:
+  wheelbase: 0.32
+  track_width: 0.18
+  front_hinge_track: 0.13
+  ego_width: 0.24
+  ego_length: 0.4
+  wheel_radius: 0.032
+dynamic_model:
+  mass: 3.8
+  yaw_inertia: 0.06
+  lf: 0.195
+  lr: 0.125
+  cg_height: 0.074
+  tire_cornering_front: 73.84
+  tire_cornering_rear: 103.67
+  friction_coefficient: 1.0489
+  gravity: 9.81
+  vx_epsilon: 0.2
+limits:
+  min_speed: 0.2
+  max_speed: 5.0
+  max_steer: 0.55
+  max_accel: 2.4
+  max_decel: 4.0
+  max_steer_rate: 5.5
+  lateral_accel_limit: 3.2
+  track_margin: 0.08
+  speed_time_constant: 0.2
+  steering_time_constant: 0.062671845
+planning:
+  minimum_tracker_boundary_margin: 0.25
+  localization_margin: 0.05
+  friction_usage_fraction: 0.4
+  raceline_points: 260
+actuator_calibration:
+  steering_command_gain: 0.965829564
+  steering_command_offset_rad: -0.011768647
+  steering_dead_time_s: 0.105
+  speed_command_gain: 1.0
+  speed_command_offset_mps: 0.0
+  speed_dead_time_s: 0.13
+steering_actuator:
+  identified: true
+  parameter_status: new_surface_12bag_nominal
+  map_type: linear
+  gain: 0.965829564
+  bias: -0.011768647
+  tau: 0.062671845
+  delay: 0.105
+  delta_min: -0.55
+  delta_max: 0.55
+steering_observer:
+  enabled: true
+  rate_hz: 50.0
+  model_only_max_speed_mps: 0.3
+  dynamic_correction_min_speed_mps: 1.5
+  kinematic_gain_max: 0.15
+  dynamic_gain_max: 0.1
+  vy_derivative_cutoff_hz: 1.5
+  yaw_rate_derivative_cutoff_hz: 1.5
+  pseudo_angle_cutoff_hz: 1.5
+  innovation_limit_rad: 0.15
+  dropout_timeout_s: 0.25
+  initial_variance_rad2: 0.04
+deployment_limits:
+  first_test_command_speed_mps: 3.0
+  first_test_speed_slew_mps2: 1.0
+  first_test_steer_slew_radps: 3.4
+  servo_hard_steer_limit_rad: 0.6
+approval:
+  geometry_ready_for_low_speed: true
+  actuator_model_identified: true
+  dynamic_model_identified: true
+  tire_model_identified: true
+  high_speed_closed_loop_approved: false
+parameter_status:
+  steering_actuator:
+    status: candidate_from_new_surface_12bags
+    method: circle_r2p5_left_right_1p0_to_3p5_mps
+    measured_at: '2026-08-20'
+  residual_dynamics:
+    status: one_step_candidate
+    method: robust_ridge_markov_v1_speed_pair_leave_one_out
+    deployment_output_scales:
+    - 0.0
+    - 0.25
+    - 0.25
+    training_bags: 12
+    measured_at: '2026-08-20'
+  closed_loop_verification:
+    status: pending_current_track_test
+  tire_model:
+    status: candidate_from_new_surface_12bags
+    cf_n_per_rad: 73.84
+    cr_n_per_rad: 103.67
+    measured_at: '2026-08-20'

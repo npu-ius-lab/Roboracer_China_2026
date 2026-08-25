@@ -1,0 +1,45 @@
+{
+  "planning_status": "feasible_converged",
+  "planner_feasible": true,
+  "source_corridor_csv": "virtual_track_corridor.csv",
+  "source_map_yaml": "../point_lio_map_2d.yaml",
+  "centerline_length_m": 21.74716475542248,
+  "raceline_length_m": 22.322997570488297,
+  "num_points": 260,
+  "optimizer": {
+    "enabled": true,
+    "control_points": 16,
+    "minimum_tracker_boundary_margin_m": 0.25,
+    "numerical_guard_m": 0.002,
+    "success": true,
+    "status": 0,
+    "iterations": 246,
+    "objective": 0.20947400660602744,
+    "message": "CONVERGENCE: REL_REDUCTION_OF_F_<=_FACTR*EPSMCH"
+  },
+  "maximum_abs_offset_m": 0.15806972773119904,
+  "speed_min_mps": 1.7259193638841557,
+  "speed_max_mps": 1.85,
+  "maximum_abs_curvature_radpm": 1.0742589377707166,
+  "maximum_abs_implied_steer_rad": 0.2773418936372512,
+  "maximum_abs_implied_steer_rate_radps": 1.797430386602095,
+  "minimum_margin_after_vehicle_and_buffer_m": 0.25193027226880094,
+  "vehicle": {
+    "wheelbase_m": 0.265,
+    "width_m": 0.22
+  },
+  "limits": {
+    "track_margin_m": 0.08,
+    "minimum_tracker_boundary_margin_m": 0.25,
+    "max_steer_rad": 0.55,
+    "max_steer_rate_radps": 5.5,
+    "max_accel_mps2": 2.4,
+    "max_decel_mps2": 4.0,
+    "lateral_accel_limit_mps2": 3.2
+  },
+  "outputs": {
+    "centerline_csv": "centerline.csv",
+    "raceline_csv": "raceline.csv",
+    "debug_png": "centerline_raceline_debug.png"
+  }
+}

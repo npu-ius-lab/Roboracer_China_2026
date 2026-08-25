@@ -1,0 +1,42 @@
+{
+  "status": "feasible_virtual_track",
+  "source_map_yaml": "../point_lio_map_2d.yaml",
+  "source_map_image": "../point_lio_map_2d.pgm",
+  "resolution_m_per_px": 0.05,
+  "origin": [
+    -2.622909,
+    -7.121865,
+    0.0
+  ],
+  "wall_envelope_local_m": {
+    "xmin": 0.325,
+    "xmax": 16.090999999999983,
+    "ymin": 0.625,
+    "ymax": 9.075000000000001
+  },
+  "ellipse_center_local_m": [
+    10.71304222222221,
+    5.097866666666667
+  ],
+  "ellipse_center_world_m": [
+    8.09013322222221,
+    -2.0239983333333322
+  ],
+  "ellipse_radius_m": [
+    4.545863333333329,
+    1.9519500000000003
+  ],
+  "track_width_m": 1.2,
+  "minimum_obstacle_clearance_m": 0.2763176070863678,
+  "requested_minimum_obstacle_clearance_m": 0.25,
+  "centerline_length_m": 21.23512765614893,
+  "num_points": 720,
+  "outputs": {
+    "left_boundary_csv": "virtual_left_boundary.csv",
+    "right_boundary_csv": "virtual_right_boundary.csv",
+    "corridor_csv": "virtual_track_corridor.csv",
+    "virtual_map_pgm": "virtual_track_map.pgm",
+    "virtual_map_yaml": "virtual_track_map.yaml",
+    "debug_png": "virtual_track_boundaries_debug.png"
+  }
+}

@@ -1,0 +1,14 @@
+model_name: roboracer
+wheelbase: 0.320
+speed_time_constant: 0.20
+steering_time_constant: 0.062671845
+max_accel: 2.4
+max_decel: 4.0
+max_steer: 0.55
+speed_cap: 4.0
+initial_x: 0.106211745
+initial_y: 0.171355458
+initial_yaw: 0.024190847
+command_timeout: 0.5
+publish_rate: 100.0
+mid360_mount: [0.030, 0.0, 0.190]

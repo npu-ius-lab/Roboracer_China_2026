@@ -1,0 +1,24 @@
+<launch>
+  <arg name="gui" default="true"/><arg name="rviz" default="false"/>
+  <arg name="mid360_downsample" default="3"/>
+  <arg name="generated_dir" default="$(env HOME)/.cache/f1tenth_roboracer_sim/reactive_green"/>
+  <include file="$(find roboracer_gazebo)/launch/gazebo_vehicle.launch">
+    <arg name="world" value="competition_track_reactive.world"/>
+    <arg name="command_topic" value="/roboracer_c11_react/mpcc/ackermann_cmd_stamped"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="mid360_downsample" value="$(arg mid360_downsample)"/>
+  </include>
+  <include file="$(find raw_cloud_obstacle_perception)/launch/raw_cloud_obstacle.launch">
+    <arg name="cloud_topic" value="/cloud_registered_body"/><arg name="odom_topic" value="/localization/odom"/>
+    <arg name="raceline_csv" value="$(find f1tenth_dynamic_mpcc)/data/perception_corridors/roboracer_green_c10_c12.csv"/>
+    <arg name="boundary_inset" value="0.22"/>
+  </include>
+  <include file="$(find roboracer_react_fast_overtake)/launch/roboracer_c11_react_control.launch">
+    <arg name="start_controller" value="true"/><arg name="allow_real_hardware" value="false"/>
+    <arg name="runtime_speed_cap_mps" value="4.0"/><arg name="generated_dir" value="$(arg generated_dir)"/>
+    <arg name="rviz" value="$(arg rviz)"/><arg name="lap_timer" value="true"/>
+  </include>
+  <node pkg="roboracer_gazebo" type="sim_enable_controller.py" name="enable_reactive" required="true">
+    <param name="service" value="/f1tenth_dynamic_mpcc_roboracer_c11_react/set_enabled"/>
+  </node>
+</launch>
